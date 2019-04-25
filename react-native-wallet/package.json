@@ -1,0 +1,33 @@
+{
+  "name": "GrinCode",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node node_modules/react-native/local-cli/cli.js start",
+    "test": "jest"
+  },
+  "dependencies": {
+    "qr.js": "0.0.0",
+    "react": "16.6.3",
+    "react-native": "0.58.4",
+    "react-native-gesture-handler": "^1.0.15",
+    "react-native-swiper": "^1.5.14",
+    "react-navigation": "^3.2.3",
+    "react-redux": "^6.0.1",
+    "redux": "^4.0.1",
+    "redux-actions": "^2.6.4",
+    "redux-logger": "^3.0.6",
+    "redux-persist": "^5.10.0",
+    "redux-thunk": "^2.3.0"
+  },
+  "devDependencies": {
+    "babel-core": "^7.0.0-bridge.0",
+    "babel-jest": "24.1.0",
+    "jest": "24.1.0",
+    "metro-react-native-babel-preset": "0.51.1",
+    "react-test-renderer": "16.6.3"
+  },
+  "jest": {
+    "preset": "react-native"
+  }
+}
