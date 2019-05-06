@@ -6,7 +6,7 @@ Once you have downloaded or cloned this repository, run `npm install` inside the
 ## Running the Mobile Apps
 
 #### iOS
-- Run the `react-native run-android` in the root of this project.
+- Run the `react-native run-ios` in the root of this project.
 
 or
 
