@@ -9,7 +9,7 @@
   "dependencies": {
     "qr.js": "0.0.0",
     "react": "16.6.3",
-    "react-native": "0.58.4",
+    "react-native": "^0.59.9",
     "react-native-gesture-handler": "^1.0.15",
     "react-native-swiper": "^1.5.14",
     "react-navigation": "^3.2.3",
