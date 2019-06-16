@@ -6,7 +6,7 @@ target 'GrinCode' do
   # use_frameworks!
 
   # Pods for GrinCode
-  pod 'cocoa_grinwallet', :git => 'https://github.com/gottstech/cocoa_grinwallet.git', :commit => 'c4f67ba864be1d6a62869a6ef3fc0d4d082e9e81'
+  pod 'cocoa_grinwallet', :git => 'https://github.com/gottstech/cocoa_grinwallet.git', :commit => 'ec5a686234e24f3b2faeedbedf40ffbf966e427e'
 
   target 'GrinCode-tvOSTests' do
     inherit! :search_paths
