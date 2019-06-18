@@ -17,8 +17,8 @@
 
 @interface RCT_EXTERN_MODULE(GrinBridge, NSObject)
 
-RCT_EXTERN_METHOD(init: (Booo)isMainnet (String)walletUrl (String)password)
+RCT_EXTERN_METHOD(init: (BOOL)isMainnet walletUrl:(NSString)walletUrl password:(NSString)password)
 
-RCT_EXTERN_METHOD(walletRecovery: (String)phrase)
+//RCT_EXTERN_METHOD(walletRecovery: (NSString)phrase)
 
 @end

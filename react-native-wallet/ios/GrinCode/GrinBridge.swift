@@ -46,7 +46,7 @@ class GrinBridge: NSObject {
     return false
   }
   
-  public init(isMainnet: Bool, walletUrl: String,  password: String) {
+  @objc public init(_ isMainnet: Bool, walletUrl: String,  password: String) {
         super.init()
         self.walletUrl = URL.init(fileURLWithPath: walletUrl)
         if isMainnet {
@@ -181,7 +181,7 @@ class GrinBridge: NSObject {
         return handleCResult(error:error, cResult:cResult!)
     }
 
-    public func walletRecovery(phrase: String) -> Result<String, GrinWalletError> {
+    public func walletRecovery(_ phrase: String) -> Result<String, GrinWalletError> {
         var error: UInt8 = 0
         let cResult = grin_wallet_init_recover(getWalletCfg().toJSONString(), phrase, self.password, &error)
         return handleCResult(error:error, cResult:cResult!)
