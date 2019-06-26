@@ -26,7 +26,7 @@ func handleCResult(error: UInt8,
   ) -> Void {
     let result = String(cString: cResult)
     cstr_free(cResult)
-    NSLog("GrinCode - grin wallet api returned: %s", result)
+    //NSLog("grin wallet api returned: %@, error: %d", result, error)
     switch error {
     case 0:
         resolve(result)

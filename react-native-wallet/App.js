@@ -12,7 +12,7 @@ export default class App extends Component {
   configureStore = createStore()
 
   // Gary+ Just a demo here for Grin Wallet RN APIs
-  componentDidMount(): void {
+  async componentDidMount(): void {
 
     const result: RustState = {
       account: 'default',
@@ -24,13 +24,13 @@ export default class App extends Component {
     }
     const state: String = JSON.stringify(result)
 
-    NativeModules.GrinBridge.walletInit(state, result.password)
+    await NativeModules.GrinBridge.walletInit(state, result.password)
 
     console.debug( 'wallet data directory: ' + result.data_dir )
 
-    const walletMnemonic = NativeModules.GrinBridge.walletPhrase(state)
+    const walletMnemonic = await NativeModules.GrinBridge.walletPhrase(state)
 
-    console.debug( 'wallet mnemonic phrases: ' + JSON.stringify(walletMnemonic) )
+    console.debug( 'wallet mnemonic phrases: ' + walletMnemonic )
   }
   // Gary-
 
