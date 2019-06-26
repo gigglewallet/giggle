@@ -1,7 +1,6 @@
 // Copyright © 2019 vite labs.
 //
 // ( Origin from https://github.com/vitelabs/Vite_GrinWallet/blob/master/Vite_GrinWallet/Classes/GrinTypes.swift
-//   And refactored & optimized & enhanced by Gotts Developers: https://github.com/gottstech.
 // )
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,6 +14,8 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
+//! To Be Removed.
 
 import Foundation
 import ObjectMapper

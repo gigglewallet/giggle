@@ -1,8 +1,6 @@
-// Copyright © 2019 vite labs.
+// Copyright 2019 Ivan Sorokin.
 //
-// ( Origin from https://github.com/vitelabs/Vite_GrinWallet/blob/master/Vite_GrinWallet/Classes/GrinBridge.swift
-//   And refactored & optimized & enhanced by Gotts Developers: https://github.com/gottstech.
-// )
+// (Origin: https://github.com/cyclefortytwo/ironbelly/blob/master/ios/Ironbelly/GrinBridge.swift )
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -21,290 +19,137 @@ import Result
 import ObjectMapper
 import SwiftyJSON
 
-func handleCResult(error: UInt8, cResult: UnsafePointer<Int8>) -> Result<String, GrinWalletError> {
+func handleCResult(error: UInt8,
+                   cResult: UnsafePointer<Int8>,
+                   resolve: RCTPromiseResolveBlock,
+                   reject: RCTPromiseRejectBlock
+  ) -> Void {
     let result = String(cString: cResult)
     cstr_free(cResult)
+    NSLog("GrinCode - grin wallet api returned: %s", result)
     switch error {
     case 0:
-        return .success(result)
+        resolve(result)
     case 2:
-        print("not validated!")
-        return .success(result)
+        //todo: "not validated!"
+        resolve(result)
     default:
-        return .failure(GrinWalletError(code: Int(error), message: result))
+        reject(nil, result, nil)
     }
 }
 
 @objc(GrinBridge)
 class GrinBridge: NSObject {
   
-  override init() {
-    super.init()
-  }
+    @objc static func requiresMainQueueSetup() -> Bool {
+      return false
+    }
   
-  @objc static func requiresMainQueueSetup() -> Bool {
-    return false
-  }
+    @objc public func walletInit(_ state: String, password: String, resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) -> Void {
+      var error: UInt8 = 0
+      let cResult = grin_wallet_init(state, password, &error)
+      handleCResult(error:error, cResult:cResult!, resolve: resolve, reject: reject)
+    }
   
-  @objc public init(_ isMainnet: Bool, walletUrl: String,  password: String) {
-        super.init()
-        self.walletUrl = URL.init(fileURLWithPath: walletUrl)
-        if isMainnet {
-          self.chainType = "mainnet"
-        } else {
-          self.chainType = "floonet"
-        }
-        self.password = password
-        self.checkDirectories()
-        self.checkApiSecret()
+    @objc public func walletPhrase(_ state: String, resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) -> Void {
+      var error: UInt8 = 0
+      let cResult = grin_get_wallet_mnemonic(state, &error)
+      handleCResult(error:error, cResult:cResult!, resolve: resolve, reject: reject)
     }
-    
-    open var chainType: String = "mainnet"
-    open var walletUrl: URL!
-    open var password: String = ""
-    open var checkNodeApiHttpAddr = "http://127.0.0.1:13413/"
-    open var apiSecret = ""
-    open var account = "default"
-    lazy var paresDataError = GrinWalletError(code: -1, message: "paresDataError")
-    
-    public func getWalletCfg() -> MobileWalletCfg {
-        return MobileWalletCfg(account: self.account, chain_type: self.chainType, data_dir: self.walletUrl?.path, node_api_addr: self.checkNodeApiHttpAddr)
+  
+    @objc public func walletRecovery(_ state: String, phrase: String, resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) -> Void {
+      var error: UInt8 = 0
+      let cResult = grin_wallet_init_recover(state, phrase, &error)
+      handleCResult(error:error, cResult:cResult!, resolve: resolve, reject: reject)
     }
-    
-    public func walletExists() -> Bool {
-        let path = walletUrl!.path + "/wallet_data/wallet.seed"
-        return FileManager.default.fileExists(atPath:path)
-    }
-    
-    public func walletInfo() -> Result<WalletInfo, GrinWalletError> {
-        var error: UInt8 = 0
-        let cResult = grin_get_balance(getWalletCfg().toJSONString(), password, &error)
-        return handleCResult(error:error, cResult:cResult!)
-            .flatMap {
-                if let walletInfo = WalletInfo(JSONString: $0) {
-                    return .success(walletInfo)
-                } else {
-                    return .failure(paresDataError)
-                }
-        }
-    }
-    
-    public func txsGet() -> Result<(refreshed:Bool, txLogEntries:[TxLogEntry]), GrinWalletError> {
-        var error: UInt8 = 0
-        let cResult = grin_txs_retrieve(getWalletCfg().toJSONString(), password, &error)
-        return handleCResult(error:error, cResult:cResult!)
-            .flatMap {
-                guard let jsonArray = JSON(parseJSON: $0).array,
-                    let refreshed = jsonArray.first?.bool,
-                    let txLogEntries =  Mapper<TxLogEntry>().mapArray(JSONObject: jsonArray.last?.arrayObject) else {
-                        return .failure(paresDataError)
-                }
-                return .success((refreshed, txLogEntries))
-        }
-    }
-    
-    public func txGet(txSlateId: String?) -> Result<(refreshed:Bool, txLogEntry:TxLogEntry), GrinWalletError> {
-        var error: UInt8 = 0
-        let cResult = grin_tx_retrieve(getWalletCfg().toJSONString(), password, txSlateId, &error)
-        return handleCResult(error:error, cResult:cResult!)
-            .flatMap {
-                if let jsonArray = JSON(parseJSON: $0).array,
-                    let refreshed = jsonArray.first?.bool,
-                    let dictionaryObject = jsonArray.last?.array?.first?.dictionaryObject,
-                    let txLogEntry = TxLogEntry(JSON: dictionaryObject) {
-                    return .success((refreshed, txLogEntry))
-                } else {
-                    return .failure(paresDataError)
-                }
-        }
-    }
-    
-    public func txCreate(amount: UInt64, selectionStrategy: String, message: String, target_slate_version: Int16) -> Result<Slate, GrinWalletError> {
-        var error: UInt8 = 0
-        let cResult = grin_init_tx(getWalletCfg().toJSONString(), password, amount, selectionStrategy, target_slate_version, message, &error)
-        return handleCResult(error:error, cResult:cResult!)
-            .flatMap {
-                if let slate = Slate(JSONString:$0) {
-                    return .success(slate)
-                } else {
-                    return .failure(paresDataError)
-                }
-        }
-    }
-    
-    public func txCancel(id: UInt32) -> Result<Void, GrinWalletError> {
-        var error: UInt8 = 0
-        let cResult = grin_cancel_tx(getWalletCfg().toJSONString(), password, id, &error)
-        return handleCResult(error:error, cResult:cResult!).map { _ in ()}
-    }
-    
-    public func txReceive(slateFilePath: String, message: String) -> Result<Slate, GrinWalletError> {
-        var error: UInt8 = 0
-        let cResult = grin_tx_file_receive(getWalletCfg().toJSONString(), password, slateFilePath, message, &error)
-        return handleCResult(error:error, cResult:cResult!)
-            .flatMap {
-                if let slate = Slate(JSONString:$0) {
-                    return .success(slate)
-                } else {
-                    return .failure(paresDataError)
-                }
-        }
-    }
-    
-    public func txFinalize(slateFilePath: String) -> Result<String, GrinWalletError> {
-        var error: UInt8 = 0
-        let cResult = grin_tx_file_finalize(getWalletCfg().toJSONString(), password, slateFilePath, &error)
-        return handleCResult(error:error, cResult:cResult!)
-    }
-    
-    public func txSend(amount: UInt64, selectionStrategy: String, message: String, dest:String, target_slate_version: Int16) -> Result<String, GrinWalletError> {
-        var error: UInt8 = 0
-        let cResult = grin_send_tx(getWalletCfg().toJSONString(), password, amount, dest, selectionStrategy, target_slate_version, message, &error)
-        return handleCResult(error:error, cResult:cResult!)
-    }
-    
-    public func txPost(txSlateId: String) -> Result<String, GrinWalletError> {
-        var error: UInt8 = 0
-        let cResult = grin_post_tx(getWalletCfg().toJSONString(), password, txSlateId, &error)
-        return handleCResult(error:error, cResult:cResult!)
-    }
-    
-    public func walletInit() -> Result<String, GrinWalletError> {
-        var error: UInt8 = 0
-        let cResult = grin_wallet_init(getWalletCfg().toJSONString(), password, &error)
-        return handleCResult(error:error, cResult:cResult!)
-    }
-    
-    public func walletPhrase() -> Result<String, GrinWalletError> {
-        var error: UInt8 = 0
-        let cResult = grin_get_wallet_mnemonic(getWalletCfg().toJSONString(), password, &error)
-        return handleCResult(error:error, cResult:cResult!)
+  
+    @objc public func walletRestore(_ state: String, start_index: UInt64, batch_size: UInt64, resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) -> Void {
+      var error: UInt8 = 0
+      let cResult = grin_wallet_restore(state, start_index, batch_size, &error)
+      handleCResult(error:error, cResult:cResult!, resolve: resolve, reject: reject)
     }
 
-    public func walletRecovery(_ phrase: String) -> Result<String, GrinWalletError> {
+    @objc public func walletRepair(_ state: String, start_index: UInt64, batch_size: UInt64, update_outputs: Bool, resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) -> Void {
+      var error: UInt8 = 0
+      let cResult = grin_wallet_check(state, start_index, batch_size, update_outputs, &error)
+      handleCResult(error:error, cResult:cResult!, resolve: resolve, reject: reject)
+    }
+  
+    @objc func checkPassword(_ state:String, password: String, resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) -> Void {
+      var error: UInt8 = 0
+      let cResult = grin_check_password(state, password, &error)
+      handleCResult(error:error, cResult:cResult!, resolve: resolve, reject: reject)
+    }
+  
+    @objc public func balance(_ state: String, resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) -> Void {
         var error: UInt8 = 0
-        let cResult = grin_wallet_init_recover(getWalletCfg().toJSONString(), phrase, self.password, &error)
-        return handleCResult(error:error, cResult:cResult!)
+        let cResult = grin_get_balance(state, &error)
+        handleCResult(error:error, cResult:cResult!, resolve: resolve, reject: reject)
+    }
+  
+    @objc public func height(_ state: String, resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) -> Void {
+      var error: UInt8 = 0
+      let cResult = grin_chain_height(state, &error)
+      handleCResult(error:error, cResult:cResult!, resolve: resolve, reject: reject)
     }
 
-    public func walletCheck(start_index: UInt64, batch_size: UInt64) -> Result<BatchProgress, GrinWalletError> {
+    @objc public func txsGet(_ state: String, resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) -> Void {
         var error: UInt8 = 0
-        let cResult = grin_wallet_check(getWalletCfg().toJSONString(), password, start_index, batch_size, &error)
-        return handleCResult(error:error, cResult:cResult!)
-            .flatMap {
-                if let progress = BatchProgress(JSONString: $0) {
-                    return .success(progress)
-                } else {
-                    return .failure(paresDataError)
-                }
-        }
+        let cResult = grin_txs_retrieve(state, &error)
+        handleCResult(error:error, cResult:cResult!, resolve: resolve, reject: reject)
     }
-
-    public func walletRestore(start_index: UInt64, batch_size: UInt64) -> Result<BatchProgress, GrinWalletError> {
+    
+    @objc public func txGet(_ state: String, txSlateId: String, resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) -> Void {
         var error: UInt8 = 0
-        let cResult = grin_wallet_restore(getWalletCfg().toJSONString(), password, start_index, batch_size, &error)
-        return handleCResult(error:error, cResult:cResult!)
-            .flatMap {
-                if let progress = BatchProgress(JSONString: $0) {
-                    return .success(progress)
-                } else {
-                    return .failure(paresDataError)
-                }
-        }
+        let cResult = grin_tx_retrieve(state, txSlateId, &error)
+        handleCResult(error:error, cResult:cResult!, resolve: resolve, reject: reject)
     }
     
-    public func height() -> Result<(Bool, Int), GrinWalletError> {
+    @objc public func txCreate(_ state: String, amount: UInt64, selectionStrategy: String, message: String, target_slate_version: Int16, resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) -> Void {
         var error: UInt8 = 0
-        let cResult = grin_chain_height(getWalletCfg().toJSONString(), password, &error)
-        return handleCResult(error:error, cResult:cResult!)
-            .flatMap {
-                guard let jsonArray = JSON(parseJSON: $0).array,
-                    let refreshed = jsonArray.last?.bool,
-                    let height =  jsonArray.first?.int else {
-                        return .failure(paresDataError)
-                }
-                return .success((refreshed, height))
-        }
+        let cResult = grin_init_tx(state, amount, selectionStrategy, target_slate_version, message, &error)
+        handleCResult(error:error, cResult:cResult!, resolve: resolve, reject: reject)
     }
     
-    public func outputsGet() -> Result<(refreshed:Bool, outputs:[(OutputData,[Int])]), GrinWalletError> {
+    @objc public func txCancel(_ state: String, id: UInt32, resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) -> Void {
         var error: UInt8 = 0
-        let cResult = grin_outputs_retrieve(getWalletCfg().toJSONString(), password, &error)
-        return handleCResult(error:error, cResult:cResult!)
-            .flatMap {
-                guard let jsonArray = JSON(parseJSON: $0).array,
-                    let refreshed = jsonArray.first?.bool,
-                    let infoArray = jsonArray.last?.arrayObject as? [[Any]]else {
-                        return .failure(paresDataError)
-                }
-                let infos = infoArray.compactMap { (data: [Any]) -> (OutputData,[Int])? in
-                    if let outputDict = data.first as? [String: Any],
-                        let commitment = data.last as? [Int],
-                        let output = OutputData(JSON: outputDict) {
-                        return (output, commitment)
-                    } else {
-                        return nil
-                    }
-                }
-                return .success((refreshed,infos))
-        }
+        let cResult = grin_cancel_tx(state, id, &error)
+        handleCResult(error:error, cResult:cResult!, resolve: resolve, reject: reject)
     }
     
-    public func outputGet(txId: UInt32) -> Result<(refreshed:Bool, outputs:[(OutputData,[Int])]), GrinWalletError> {
+    @objc public func txReceive(_ state: String, slateFilePath: String, message: String, resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) -> Void {
         var error: UInt8 = 0
-        let cResult = grin_output_retrieve(getWalletCfg().toJSONString(), password, txId, &error)
-        return handleCResult(error:error, cResult:cResult!)
-            .flatMap {
-                guard let jsonArray = JSON(parseJSON: $0).array,
-                    let refreshed = jsonArray.first?.bool,
-                    let infoArray = jsonArray.last?.arrayObject as? [[Any]]else {
-                        return .failure(paresDataError)
-                }
-                let infos = infoArray.compactMap { (data: [Any]) -> (OutputData,[Int])? in
-                    if let outputDict = data.first as? [String: Any],
-                        let commitment = data.last as? [Int],
-                        let output = OutputData(JSON: outputDict) {
-                        return (output, commitment)
-                    } else {
-                        return nil
-                    }
-                }
-                return .success((refreshed,infos))
-        }
+        let cResult = grin_tx_file_receive(state, slateFilePath, message, &error)
+        handleCResult(error:error, cResult:cResult!, resolve: resolve, reject: reject)
     }
     
-    public func isResponseSlate(slatePath: String) -> Bool {
-        return slatePath.components(separatedBy: ".").last == "response" || slatePath.contains("response")
+    @objc public func txFinalize(_ state: String, slateFilePath: String, resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) -> Void {
+        var error: UInt8 = 0
+        let cResult = grin_tx_file_finalize(state, slateFilePath, &error)
+        handleCResult(error:error, cResult:cResult!, resolve: resolve, reject: reject)
     }
     
-    public func getSlateUrl(slateId: String, isResponse: Bool) -> URL {
-        let path = "\(walletUrl!.path)/slates/\(slateId).grinslate\(isResponse ? ".response" : "")"
-        return URL(fileURLWithPath: path)
+    @objc public func txSend(_ state: String, amount: UInt64, selectionStrategy: String, message: String, target_slate_version: Int16, dest:String, resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) -> Void {
+        var error: UInt8 = 0
+        let cResult = grin_send_tx(state, amount, dest, selectionStrategy, target_slate_version, message, &error)
+        handleCResult(error:error, cResult:cResult!, resolve: resolve, reject: reject)
     }
     
-    public func checkApiSecret() {
-        let url =  walletUrl?.appendingPathComponent(".api_secret")
-        let exists = FileManager.default.fileExists(atPath: url!.path)
-        if !exists {
-            do {
-                try apiSecret.write(to: url!, atomically: true, encoding: .utf8)
-            } catch {
-                print(error)
-            }
-        }
+    @objc public func txPost(_ state: String, txSlateId: String, resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) -> Void {
+        var error: UInt8 = 0
+        let cResult = grin_post_tx(state, txSlateId, &error)
+        handleCResult(error:error, cResult:cResult!, resolve: resolve, reject: reject)
     }
     
-    public func checkDirectories() {
-        let walletDataUrl = walletUrl!.appendingPathComponent("wallet_data")
-        let slatesUrl = walletUrl!.appendingPathComponent("slates")
-        for url in [walletUrl, walletDataUrl, slatesUrl] {
-            if !FileManager.default.fileExists(atPath: url!.path) {
-                do {
-                    try FileManager.default.createDirectory(at: url!, withIntermediateDirectories: true, attributes: nil)
-                } catch {
-                    print(error)
-                }
-            }
-        }
+    @objc public func outputsGet(_ state: String, resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) -> Void {
+        var error: UInt8 = 0
+        let cResult = grin_outputs_retrieve(state, &error)
+        handleCResult(error:error, cResult:cResult!, resolve: resolve, reject: reject)
     }
+    
+    @objc public func outputGet(_ state: String, txId: UInt32, resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) -> Void {
+        var error: UInt8 = 0
+        let cResult = grin_output_retrieve(state, txId, &error)
+        handleCResult(error:error, cResult:cResult!, resolve: resolve, reject: reject)
+    }    
 }
