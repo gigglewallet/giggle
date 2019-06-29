@@ -7,7 +7,7 @@ target 'GrinCode' do
 
   # Pods for GrinCode
   # Stable 
-  pod 'cocoa_grinwallet', :git => 'https://github.com/gottstech/cocoa_grinwallet.git', :commit => '34a831edc76a2e4d752e3bbe4fefe3a266d5070e'
+  pod 'cocoa_grinwallet', :git => 'https://github.com/gottstech/cocoa_grinwallet.git', :commit => '0ff25fe6864db8a859a8e111d215d86bce4c1922'
   # Local development
   #pod 'cocoa_grinwallet', :path => '../../../../gottstech/cocoa_grinwallet'
 

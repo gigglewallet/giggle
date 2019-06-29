@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { type State as BalanceState } from 'common/balance'
-import { type State as SettingsState } from 'common/settings'
+import { type State as BalanceState } from '../components/home/balance'
+import { type State as SettingsState } from '../components/settings/settings'
 
 export type Balance = {
     amountAwaitingConfirmation: number,
@@ -37,6 +37,16 @@ export const mapRustBalance = (rB: RustBalance): Balance => {
         minimumConfirmations: rB.minimum_confirmations,
         total: rB.total,
     }
+}
+
+type SlateParticipantData = {
+    message: string,
+}
+export type Slate = {
+    id: string,
+    amount: number,
+    fee: number,
+    participant_data: Array<SlateParticipantData>,
 }
 
 export type State = {
@@ -66,6 +76,37 @@ export type RustBalance = {
     total: number,
 }
 
+export type RustTx = {
+    amount_credited: number,
+    amount_debited: number,
+    confirmation_ts: number,
+    confirmed: boolean,
+    creation_ts: string,
+    fee: number,
+    id: number,
+    num_inputs: number,
+    num_outputs: number,
+    parent_key_id: string,
+    tx_hex: string,
+    tx_slate_id: string,
+    tx_type: string,
+    stored_tx: string,
+}
+
+export type RustOutput = {
+    root_key_id: string,
+    key_id: string,
+    n_child: number,
+    commit: boolean,
+    mmr_index: number,
+    value: number,
+    status: string,
+    height: number,
+    lock_height: number,
+    is_coinbase: boolean,
+    tx_log_entry: number,
+    slate_id: string,
+}
 
 // ---
 

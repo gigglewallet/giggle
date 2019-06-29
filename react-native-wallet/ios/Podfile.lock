@@ -1,31 +1,16 @@
 PODS:
-  - cocoa_grinwallet (0.1.0):
-    - ObjectMapper (~> 3.5)
-    - Result (~> 4.1)
-    - SwiftyJSON (~> 5.0)
-  - ObjectMapper (3.5.1)
-  - Result (4.1.0)
-  - SwiftyJSON (5.0.0)
+  - cocoa_grinwallet (0.0.1)
 
 DEPENDENCIES:
   - cocoa_grinwallet (from `../../../../gottstech/cocoa_grinwallet`)
-
-SPEC REPOS:
-  https://github.com/cocoapods/specs.git:
-    - ObjectMapper
-    - Result
-    - SwiftyJSON
 
 EXTERNAL SOURCES:
   cocoa_grinwallet:
     :path: "../../../../gottstech/cocoa_grinwallet"
 
 SPEC CHECKSUMS:
-  cocoa_grinwallet: 48e6f0a161eb59376c99f793bd61e0d730deee57
-  ObjectMapper: 70187b8941977c62ccfb423caf6b50be405cabf0
-  Result: bd966fac789cc6c1563440b348ab2598cc24d5c7
-  SwiftyJSON: 36413e04c44ee145039d332b4f4e2d3e8d6c4db7
+  cocoa_grinwallet: 14cead88c58833710156f3ec2d53a316e449bd04
 
-PODFILE CHECKSUM: 005c830d6a444fac2d2ba1a0b11309ecaee542df
+PODFILE CHECKSUM: 8a8fdafb1b71a16f2ce0005de0890b920a554b1c
 
 COCOAPODS: 1.7.2

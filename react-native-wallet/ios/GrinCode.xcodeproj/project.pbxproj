@@ -43,8 +43,7 @@
 		870CFB0EB24046C4BE277366 /* libRNGestureHandler.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 413295B6458D44E199BB79CB /* libRNGestureHandler.a */; };
 		ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ADBDB9271DFEBF0700ED6528 /* libRCTBlob.a */; };
 		E70AB9FB22B515C10017C971 /* GrinBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = E70AB9F922B515C10017C971 /* GrinBridge.swift */; };
-		E70AB9FC22B515C10017C971 /* GrinTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = E70AB9FA22B515C10017C971 /* GrinTypes.swift */; };
-		E70ABA0A22B516820017C971 /* WalletBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = E70ABA0922B516820017C971 /* WalletBridge.m */; };
+		E7795EE222C4BBE3008A5002 /* GrinBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = E7795EE122C4BBE2008A5002 /* GrinBridge.m */; };
 		E7F9CA1822B879E100A8C1C6 /* libRNFetchBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E7F9CA1522B8793700A8C1C6 /* libRNFetchBlob.a */; };
 		ED297163215061F000B7C4FE /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED297162215061F000B7C4FE /* JavaScriptCore.framework */; };
 		ED2971652150620600B7C4FE /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED2971642150620600B7C4FE /* JavaScriptCore.framework */; };
@@ -386,8 +385,7 @@
 		E5DA1F1761995909CE4E89B7 /* Pods-GrinCodeTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GrinCodeTests.release.xcconfig"; path = "Target Support Files/Pods-GrinCodeTests/Pods-GrinCodeTests.release.xcconfig"; sourceTree = "<group>"; };
 		E70AB9CF22B515C00017C971 /* GrinCode-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "GrinCode-Bridging-Header.h"; sourceTree = "<group>"; };
 		E70AB9F922B515C10017C971 /* GrinBridge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GrinBridge.swift; path = GrinCode/GrinBridge.swift; sourceTree = "<group>"; };
-		E70AB9FA22B515C10017C971 /* GrinTypes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GrinTypes.swift; path = GrinCode/GrinTypes.swift; sourceTree = "<group>"; };
-		E70ABA0922B516820017C971 /* WalletBridge.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WalletBridge.m; sourceTree = "<group>"; };
+		E7795EE122C4BBE2008A5002 /* GrinBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GrinBridge.m; path = GrinCode/GrinBridge.m; sourceTree = "<group>"; };
 		E7F9C9EB22B8793700A8C1C6 /* RNFetchBlob.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNFetchBlob.xcodeproj; path = "../node_modules/rn-fetch-blob/ios/RNFetchBlob.xcodeproj"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
@@ -537,8 +535,8 @@
 		13B07FAE1A68108700A75B9A /* GrinCode */ = {
 			isa = PBXGroup;
 			children = (
+				E7795EE122C4BBE2008A5002 /* GrinBridge.m */,
 				E70AB9F922B515C10017C971 /* GrinBridge.swift */,
-				E70AB9FA22B515C10017C971 /* GrinTypes.swift */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -547,7 +545,6 @@
 				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
 				13B07FB71A68108700A75B9A /* main.m */,
 				E70AB9CF22B515C00017C971 /* GrinCode-Bridging-Header.h */,
-				E70ABA0922B516820017C971 /* WalletBridge.m */,
 			);
 			name = GrinCode;
 			sourceTree = "<group>";
@@ -1324,9 +1321,8 @@
 			files = (
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
+				E7795EE222C4BBE3008A5002 /* GrinBridge.m in Sources */,
 				E70AB9FB22B515C10017C971 /* GrinBridge.swift in Sources */,
-				E70AB9FC22B515C10017C971 /* GrinTypes.swift in Sources */,
-				E70ABA0A22B516820017C971 /* WalletBridge.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

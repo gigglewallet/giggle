@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import RNFetchBlob from 'rn-fetch-blob'
-import { type State, type RustState, } from 'common/types'
+import { type State, type RustState, } from 'types'
 
 export const getStateForRust = (state: State): string => {
     const result: RustState = {

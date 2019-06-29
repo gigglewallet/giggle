@@ -14,12 +14,13 @@
 
 import { NativeModules } from 'react-native'
 import moment from 'moment'
-import { getStateForRust, mapRustBalance } from 'common'
 import {
     type Balance,
     type RustBalance,
+    type getStateForRust,
+    type mapRustBalance,
     type Error,
-} from 'common/types'
+} from '../../common/types'
 
 const { GrinBridge } = NativeModules
 
