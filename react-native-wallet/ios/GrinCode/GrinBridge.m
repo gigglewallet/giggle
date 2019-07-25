@@ -19,7 +19,7 @@
 
 @interface RCT_EXTERN_MODULE(GrinBridge, NSObject)
 
-RCT_EXTERN_METHOD(walletInit:(NSString*)state password:(NSString*)password resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
+RCT_EXTERN_METHOD(walletInit:(NSString*)state password:(NSString*)password is_12_phrases:(BOOL)is_12_phrases resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
 
 RCT_EXTERN_METHOD(walletPhrase:(NSString*)state resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
 
@@ -40,6 +40,10 @@ RCT_EXTERN_METHOD(txsGet:(NSString*)state resolve:(RCTPromiseResolveBlock)resolv
 RCT_EXTERN_METHOD(txGet:(NSString*)state txSlateId:(NSString*)txSlateId resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
 
 RCT_EXTERN_METHOD(txPost:(NSString*)state txSlateId:(NSString*)txSlateId resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
+
+RCT_EXTERN_METHOD(listen:(NSString*)state resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
+
+RCT_EXTERN_METHOD(address:(NSString*)state resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
 
 RCT_EXTERN_METHOD(txCreate:(NSString*)state amount:(uint64_t)amount selectionStrategy:(NSString*)selectionStrategy message:(NSString*)message targetSlateVersion:(int64_t)targetSlateVersion resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
 

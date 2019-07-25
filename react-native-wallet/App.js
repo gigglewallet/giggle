@@ -34,22 +34,29 @@ export default class App extends Component {
       chain_type: 'floonet',
       data_dir: RNFetchBlob.fs.dirs.DocumentDir + '/wallet_1',
       node_api_addr: 'https://sga.grin.icu:13413',
-      password: 'my-wallet-password',
+      password: 'your-password',
       minimum_confirmations: 10,
     }
 
     let node_api_secret = 'ZbiQCN85Srih3f27PJXH'
 
-    //--- Demo 1: How to create a new wallet
-    // await NativeModules.GrinBridge.walletInit(JSON.stringify(walletState), result.password)
-    //
-    // console.debug( 'wallet_1 data directory: ' + walletState.data_dir )
-    //
-    // const wallet1Mnemonic = await NativeModules.GrinBridge.walletPhrase(JSON.stringify(walletState), 'abc')
-    //
-    // console.debug( 'wallet_1 mnemonic phrases: ' + wallet1Mnemonic )
-    //
-    // // clean-up
+    //--- Demo 1.1: How to create a new wallet
+    console.debug('--------- -------- demo 1.1 -------- --------')
+    await NativeModules.GrinBridge.walletInit(JSON.stringify(walletState), walletState.password, false)
+    console.debug( 'wallet_1 data directory: ' + walletState.data_dir )
+
+    const wallet1Mnemonic = await NativeModules.GrinBridge.walletPhrase(JSON.stringify(walletState))
+    console.debug( 'wallet_1 mnemonic phrases: ' + wallet1Mnemonic )
+
+    //--- Demo 1.2: How to listen on Grin Relay for receiving
+    console.debug('--------- -------- demo 1.2 -------- --------')
+    await NativeModules.GrinBridge.listen(JSON.stringify(walletState))
+
+    //--- Demo 1.3: How to query current Grin Relay address (bech32 address string)
+    const data = await NativeModules.GrinBridge.address(JSON.stringify(walletState))
+    console.debug( 'wallet_1 grin relay address: ' + data )
+
+    // clean-up
     // RNFetchBlob.fs.isDir(walletState.data_dir)
     //     .then((isDir) => {
     //       RNFetchBlob.fs.unlink(walletState.data_dir)
@@ -57,7 +64,7 @@ export default class App extends Component {
 
 
       console.debug('--------- -------- demo 2 -------- --------')
-    //--- Demo 2: How to recover a wallet from the backup mnemonic phrases
+      //--- Demo 2: How to recover a wallet from the backup mnemonic phrases
       {
           walletState.data_dir = RNFetchBlob.fs.dirs.DocumentDir + '/wallet_2'
           console.debug('wallet_2 data directory: ' + walletState.data_dir)
@@ -201,7 +208,7 @@ export default class App extends Component {
           }
 
           console.debug('--------- -------- demo 3.8 -------- --------')
-          //--- Demo 3.8: How to send a transaction by http/s, and How to post Tx.
+          //--- Demo 3.8: How to send a transaction by http/s, or send to a Grin Relay address
           {
               let isCreated = false
               const slate = await NativeModules.GrinBridge.txSend(JSON.stringify(walletState),
@@ -210,12 +217,14 @@ export default class App extends Component {
                   .then((slate: Slate) => {
                       slateId = slate.id
                       isCreated = true
-                      console.debug('wallet tx sent ok: slate=' + JSON.stringify(slate))
+                      console.debug('wallet http/s tx sent ok: slate=' + JSON.stringify(slate))
                   })
                   .catch(error => {
-                      console.debug('wallet tx send fail: ' + error)
+                      console.debug('wallet http/s tx send fail: ' + error)
                   })
 
+              // No need anymore! the new 'txSend' will call 'txPost' automatically!
+              /*
               if (isCreated) {
                   await NativeModules.GrinBridge.txPost(JSON.stringify(walletState), slateId)
                       .then( () => {
@@ -224,7 +233,19 @@ export default class App extends Component {
                       .catch(error => {
                           console.debug('Tx post fail: ' + error)
                       })
-              }
+              }*/
+
+              const slate2 = await NativeModules.GrinBridge.txSend(JSON.stringify(walletState),
+                  10000000, 'smallest', 'a user message', -1, 'tn1-qgfaqdqy-vm8ryd2k6zfp6cm-359cs4gnudxhljm-d0v38yut4u9r7rg-93d4jp')
+                  .then(JSON.parse)
+                  .then((slate: Slate) => {
+                      slateId = slate.id
+                      isCreated = true
+                      console.debug('wallet tx sent to relay ok: slate=' + JSON.stringify(slate))
+                  })
+                  .catch(error => {
+                      console.debug('wallet tx send to relay fail: ' + error)
+                  })
           }
 
           console.debug('--------- -------- demo 3.9 -------- --------')
@@ -256,7 +277,7 @@ export default class App extends Component {
               wallet3State.data_dir = RNFetchBlob.fs.dirs.DocumentDir + '/wallet_3'
 
               if (isCreated) {
-                  await NativeModules.GrinBridge.walletInit(JSON.stringify(wallet3State), wallet3State.password)
+                  await NativeModules.GrinBridge.walletInit(JSON.stringify(wallet3State), wallet3State.password, false)
                       .then(() => {
                           console.debug('wallet 3 created ok: ' + wallet3State.data_dir)
                       })

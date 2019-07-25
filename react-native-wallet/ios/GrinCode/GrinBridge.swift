@@ -43,9 +43,9 @@ class GrinBridge: NSObject {
       return false
     }
   
-    @objc func walletInit(_ state: String, password: String, resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) -> Void {
+  @objc func walletInit(_ state: String, password: String, is_12_phrases: Bool, resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) -> Void {
       var error: UInt8 = 0
-      let cResult = grin_wallet_init(state, password, &error)
+      let cResult = grin_wallet_init(state, password, is_12_phrases, &error)
       handleCResult(error:error, cResult:cResult!, resolve: resolve, reject: reject)
     }
   
@@ -102,7 +102,19 @@ class GrinBridge: NSObject {
         let cResult = grin_tx_retrieve(state, txSlateId, &error)
         handleCResult(error:error, cResult:cResult!, resolve: resolve, reject: reject)
     }
-    
+  
+    @objc func listen(_ state: String, resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) -> Void {
+      var error: UInt8 = 0
+      let cResult = grin_listen(state, &error)
+      handleCResult(error:error, cResult:cResult!, resolve: resolve, reject: reject)
+    }
+  
+    @objc func address(_ state: String, resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) -> Void {
+      var error: UInt8 = 0
+      let cResult = grin_relay_addr(state, &error)
+      handleCResult(error:error, cResult:cResult!, resolve: resolve, reject: reject)
+    }
+
     @objc func txCreate(_ state: String, amount: UInt64, selectionStrategy: String, message: String, targetSlateVersion: Int64, resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) -> Void {
         var error: UInt8 = 0
         let targetSlateVersionI16: Int16 = Int16(targetSlateVersion)
