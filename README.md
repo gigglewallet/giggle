@@ -31,7 +31,7 @@ Normally you will see something like:
 Installing OpenSSL (1.0.210)
 Installing cocoa_grinwallet (1.0.3)
 ...
-Pod installation complete! There is 1 dependency from the Podfile and 4 total pods installed.
+Pod installation complete!
 ```
 
 If no `pod` command, install it firstly by:
@@ -61,6 +61,9 @@ or
 - Open an emulator. 
 - Run the `react-native run-android` in the root of this project.
 
+## Document
+
+https://github.com/gigglewallet/giggle/wiki
 
 ## License
 
