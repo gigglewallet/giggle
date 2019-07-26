@@ -28,10 +28,8 @@ pod install
 
 Normally you will see something like:
 ```sh
-Installing ObjectMapper (3.4.2)
-Installing Result (4.1.0)
-Installing SwiftyJSON (5.0.0)
-Installing cocoa_grinwallet (0.1.0)
+Installing OpenSSL (1.0.210)
+Installing cocoa_grinwallet (1.0.3)
 ...
 Pod installation complete! There is 1 dependency from the Podfile and 4 total pods installed.
 ```
@@ -40,6 +38,13 @@ If no `pod` command, install it firstly by:
 ```sh
 sudo gem install cocoapods
 ``` 
+
+After pod installation, you have to manually download the cocoa_grinwallet libraries. Run this:
+```Bash
+cd giggle/react-native-wallet/ios
+./download_grinwallet_libs.sh
+```
+This script will download the libraries from https://github.com/gottstech/cocoa_grinwallet/releases to local folder `Pods/cocoa_grinwallet/cocoa_grinwallet/Library`.
 
 
 ## Build
