@@ -1,0 +1,22 @@
+PODS:
+  - cocoa_grinwallet (0.0.1)
+
+DEPENDENCIES:
+  - cocoa_grinwallet (from `https://github.com/gottstech/cocoa_grinwallet.git`, commit `0ff25fe6864db8a859a8e111d215d86bce4c1922`)
+
+EXTERNAL SOURCES:
+  cocoa_grinwallet:
+    :commit: 0ff25fe6864db8a859a8e111d215d86bce4c1922
+    :git: https://github.com/gottstech/cocoa_grinwallet.git
+
+CHECKOUT OPTIONS:
+  cocoa_grinwallet:
+    :commit: 0ff25fe6864db8a859a8e111d215d86bce4c1922
+    :git: https://github.com/gottstech/cocoa_grinwallet.git
+
+SPEC CHECKSUMS:
+  cocoa_grinwallet: 102ca1ae61885b9f646761574551a760cc975324
+
+PODFILE CHECKSUM: 50b1821df77fa0483a4e223119e219667aaab065
+
+COCOAPODS: 1.6.0.beta.2

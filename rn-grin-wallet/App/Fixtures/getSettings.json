@@ -1,0 +1,9 @@
+{ 
+  "status":true,
+  "settings":{
+    "unique_id":"xxxxxx",
+    "transaction_fee":0.0001,
+    "node_ip":"123.456.789.111",
+    "node_port":"12345"
+  }
+}
