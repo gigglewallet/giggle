@@ -1,0 +1,29 @@
+# Uncomment the next line to define a global platform for your project
+# platform :ios, '9.0'
+
+target 'GrinWallet' do
+  # Uncomment the next line if you're using Swift or would like to use dynamic frameworks
+  # use_frameworks!
+  pod 'cocoa_grinwallet', :git => 'https://github.com/gottstech/cocoa_grinwallet.git', :commit => '0ff25fe6864db8a859a8e111d215d86bce4c1922'
+  # Pods for GrinWallet
+
+  target 'GrinWallet-tvOSTests' do
+    inherit! :search_paths
+    # Pods for testing
+    #pod 'TouchID', :path => '../node_modules/react-native-touch-id'
+
+    #pod 'RNSVG', :path => '../node_modules/react-native-svg'
+
+    #pod 'RNKeychain', :path => '../node_modules/react-native-keychain'
+
+    #pod 'react-native-keep-awake', :path => '../node_modules/react-native-keep-awake'
+
+  end
+
+  target 'GrinWalletTests' do
+    inherit! :search_paths
+    # Pods for testing
+  end
+
+end
+
