@@ -1,1 +1,0 @@
-export const COPIED_SHOW_TIEM = 1 * 1000
