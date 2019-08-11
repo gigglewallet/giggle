@@ -4,7 +4,7 @@
 target 'GrinWallet' do
   # Uncomment the next line if you're using Swift or would like to use dynamic frameworks
   # use_frameworks!
-  pod 'cocoa_grinwallet', :git => 'https://github.com/gottstech/cocoa_grinwallet.git', :commit => '0ff25fe6864db8a859a8e111d215d86bce4c1922'
+  pod 'cocoa_grinwallet', :git => 'https://github.com/gottstech/archived-cocoa_grinwallet.git', :commit => '0ff25fe6864db8a859a8e111d215d86bce4c1922'
   # Pods for GrinWallet
 
   target 'GrinWallet-tvOSTests' do
