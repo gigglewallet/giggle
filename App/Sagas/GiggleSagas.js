@@ -4,6 +4,7 @@ import { NativeModules } from 'react-native'
 import RNFetchBlob from 'rn-fetch-blob'
 import { ERROR_TYPE } from '../Modules/CommonType'
 import GiggleActions from '../Redux/GiggleRedux'
+import { NavigationActions } from 'react-navigation'
 
 function* getState (name) {
   const result = yield select(state => state[name])
@@ -318,12 +319,30 @@ export function* updateGiggleRequestStatusAction (api, { actionType, isCalling, 
 }
 
 export function* restoreWallet (api, { avatarCode, password, mnemonic }) {
+  
+  let routeName = ''
+
   try {
     let result = yield walletRecovery(null, { avatarCode: avatarCode, password: password, mnemonic: mnemonic })
-    if (result) {
+  
+    const GiggleState = yield getState('giggle')
+
+    if (GiggleState.isSuccessWalletRecovery) {
       result = yield walletRestore(null, { avatarCode: avatarCode, password: password })
       result = yield getBalance(null, { avatarCode: avatarCode, password: password })
+      routeName = 'SignUpComplete'
+    }else{
+      routeName = 'Restore'
     }
+
+    let action = NavigationActions.navigate({
+      routeName: routeName, 
+      params:{}, 
+      action: NavigationActions.navigate({ routeName: routeName })
+    })
+    
+    yield put(action)
+
   } catch (e) {
     console.log(e)
   }
