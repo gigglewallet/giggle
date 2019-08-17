@@ -1,29 +1,22 @@
 PODS:
-  - cocoa_grinwallet (1.0.3)
-  - OpenSSL (1.0.210)
+  - cocoa_grinwallet (1.0.4)
 
 DEPENDENCIES:
-  - cocoa_grinwallet (from `https://github.com/gottstech/cocoa_grinwallet.git`, tag `v1.0.3`)
-  - OpenSSL (~> 1.0)
-
-SPEC REPOS:
-  https://github.com/cocoapods/specs.git:
-    - OpenSSL
+  - cocoa_grinwallet (from `https://github.com/gottstech/cocoa_grinwallet.git`, tag `v1.0.4`)
 
 EXTERNAL SOURCES:
   cocoa_grinwallet:
     :git: https://github.com/gottstech/cocoa_grinwallet.git
-    :tag: v1.0.3
+    :tag: v1.0.4
 
 CHECKOUT OPTIONS:
   cocoa_grinwallet:
     :git: https://github.com/gottstech/cocoa_grinwallet.git
-    :tag: v1.0.3
+    :tag: v1.0.4
 
 SPEC CHECKSUMS:
-  cocoa_grinwallet: 15322dabd4dc0702cb2aad94bdd442c5c7688252
-  OpenSSL: 7cff7fea0247b1aa79dbd6422b277465f6540732
+  cocoa_grinwallet: 845fac985d318f2882c48b73a31dcd76ef9451e2
 
-PODFILE CHECKSUM: 042c33ba27aa1e6e139b23e97f479f1428d68a42
+PODFILE CHECKSUM: 9bb76cb969a9e27ebe9938ca1cb5d8c0910f5402
 
 COCOAPODS: 1.7.5

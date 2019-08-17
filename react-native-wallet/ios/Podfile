@@ -6,10 +6,9 @@ target 'GrinCode' do
   # use_frameworks!
 
   # Pods for GrinCode
-  pod 'OpenSSL', '~> 1.0'
 
   # Stable Grinwallet Lib
-  pod 'cocoa_grinwallet', :git => 'https://github.com/gottstech/cocoa_grinwallet.git', :tag => 'v1.0.3'
+  pod 'cocoa_grinwallet', :git => 'https://github.com/gottstech/cocoa_grinwallet.git', :tag => 'v1.0.4'
   # Local development Grinwallet Lib
   #pod 'cocoa_grinwallet', :path => '../../../../gottstech/cocoa_grinwallet'
 

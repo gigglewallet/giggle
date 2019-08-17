@@ -19,6 +19,8 @@
 
 @interface RCT_EXTERN_MODULE(GrinBridge, NSObject)
 
+RCT_EXTERN_METHOD(selectNearestNode:(NSString*)nodeApiHttpAddr resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
+
 RCT_EXTERN_METHOD(walletInit:(NSString*)state password:(NSString*)password is_12_phrases:(BOOL)is_12_phrases resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
 
 RCT_EXTERN_METHOD(walletPhrase:(NSString*)state resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
@@ -30,6 +32,8 @@ RCT_EXTERN_METHOD(walletRestore:(NSString*)state startIndex:(uint64_t)startIndex
 RCT_EXTERN_METHOD(walletRepair:(NSString*)state startIndex:(uint64_t)startIndex batchSize:(uint64_t)batchSize updateOutputs:(BOOL)updateOutputs resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
 
 RCT_EXTERN_METHOD(checkPassword:(NSString*)state password:(NSString*)password resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
+
+RCT_EXTERN_METHOD(changePassword:(NSString*)state oldPassword:(NSString*)oldPassword  newPassword:(NSString*)newPassword resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
 
 RCT_EXTERN_METHOD(balance:(NSString*)state resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
 
@@ -43,7 +47,9 @@ RCT_EXTERN_METHOD(txPost:(NSString*)state txSlateId:(NSString*)txSlateId resolve
 
 RCT_EXTERN_METHOD(listen:(NSString*)state resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
 
-RCT_EXTERN_METHOD(address:(NSString*)state resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
+RCT_EXTERN_METHOD(myRelayAddress:(NSString*)state resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
+
+RCT_EXTERN_METHOD(relayAddressQuery:(NSString*)state sixCode:(NSString*)sixCode resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
 
 RCT_EXTERN_METHOD(txCreate:(NSString*)state amount:(uint64_t)amount selectionStrategy:(NSString*)selectionStrategy message:(NSString*)message targetSlateVersion:(int64_t)targetSlateVersion resolve:(RCTPromiseResolveBlock)resolve reject:(RCTPromiseRejectBlock)reject)
 

@@ -33,12 +33,46 @@ export default class App extends Component {
       account: 'default',
       chain_type: 'floonet',
       data_dir: RNFetchBlob.fs.dirs.DocumentDir + '/wallet_1',
-      node_api_addr: 'https://sga.grin.icu:13413',
+      node_api_addr: 'https://nodes.grin.icu:13413',
+      node_api_secret: 'ZbiQCN85Srih3f27PJXH',
       password: 'your-password',
       minimum_confirmations: 10,
     }
 
-    let node_api_secret = 'ZbiQCN85Srih3f27PJXH'
+    // wallet 1/2/3/4 clean-up if exist
+    const dir1 = RNFetchBlob.fs.dirs.DocumentDir + '/wallet_1';
+    await RNFetchBlob.fs.isDir(dir1)
+      .then((isDir) => {
+          RNFetchBlob.fs.unlink(dir1)
+      });
+
+    const dir2 = RNFetchBlob.fs.dirs.DocumentDir + '/wallet_2';
+    await RNFetchBlob.fs.isDir(dir2)
+      .then((isDir) => {
+          RNFetchBlob.fs.unlink(dir2)
+      });
+
+    const dir3 = RNFetchBlob.fs.dirs.DocumentDir + '/wallet_3';
+    await RNFetchBlob.fs.isDir(dir3)
+      .then((isDir) => {
+          RNFetchBlob.fs.unlink(dir3)
+      });
+
+    const dir4 = RNFetchBlob.fs.dirs.DocumentDir + '/wallet_4';
+    await RNFetchBlob.fs.isDir(dir4)
+      .then((isDir) => {
+          RNFetchBlob.fs.unlink(dir4)
+      });
+
+    //--- Preparation
+    await NativeModules.GrinBridge.selectNearestNode(walletState.node_api_addr)
+        .then(best_node_api_addr => {
+          walletState.node_api_addr = best_node_api_addr;
+          console.debug('selectNearestNode got: ' + best_node_api_addr);
+        })
+        .catch(error => {
+          console.debug('selectNearestNode fail: ' + error)
+        });
 
     //--- Demo 1.1: How to create a new wallet
     console.debug('--------- -------- demo 1.1 -------- --------')
@@ -53,15 +87,64 @@ export default class App extends Component {
     await NativeModules.GrinBridge.listen(JSON.stringify(walletState))
 
     //--- Demo 1.3: How to query current Grin Relay address (bech32 address string)
-    const data = await NativeModules.GrinBridge.address(JSON.stringify(walletState))
+    console.debug('--------- -------- demo 1.3 -------- --------')
+    const data = await NativeModules.GrinBridge.myRelayAddress(JSON.stringify(walletState))
     console.debug( 'wallet_1 grin relay address: ' + data )
 
-    // clean-up
-    // RNFetchBlob.fs.isDir(walletState.data_dir)
-    //     .then((isDir) => {
-    //       RNFetchBlob.fs.unlink(walletState.data_dir)
-    //     })
+    console.debug('--------- -------- demo 1.4 -------- --------')
+    //--- Demo 1.4 : How to get current chain height
+    {
+      await NativeModules.GrinBridge.height(JSON.stringify(walletState))
+          .then( height => {
+              console.debug('get height ok. height=' + height)
+          })
+          .catch(error => {
+              console.debug('get height fail: ' + error)
+          });
+    }
 
+    console.debug('--------- -------- demo 1.5 -------- --------');
+    //--- Demo 1.5: How to query the full relay address on a 6-code short address
+    {
+      await NativeModules.GrinBridge.relayAddressQuery(JSON.stringify(walletState), '5rq8yz')
+          .then( relayAddress => {
+              console.debug('relay address query ok. full address=' + relayAddress)
+          })
+          .catch(error => {
+              console.debug('relayAddressQueryt fail: ' + error)
+          });
+    }
+
+    console.debug('--------- -------- demo 1.6 -------- --------')
+    //--- Demo 1.6: How to checkPassword
+    {
+      // correct password
+      await NativeModules.GrinBridge.checkPassword(JSON.stringify(walletState), 'your-password')
+          .then( () => {
+              console.debug('checkPassword ok')
+          })
+          .catch(error => {
+              console.debug('checkPassword fail: ' + error)
+          })
+
+      // wrong password
+      await NativeModules.GrinBridge.checkPassword(JSON.stringify(walletState), '12345678')
+          .then( () => {
+              console.debug('checkPassword ok')
+          })
+          .catch(error => {
+              console.debug('checkPassword fail: ' + error)
+          })
+    }
+
+    //--- Demo 1.7: How to create a new wallet with 12-words mnemonic phrases
+    console.debug('--------- -------- demo 1.7 -------- --------')
+    walletState.data_dir = RNFetchBlob.fs.dirs.DocumentDir + '/wallet_4';
+    await NativeModules.GrinBridge.walletInit(JSON.stringify(walletState), walletState.password, true);
+    console.debug( 'wallet_4 data directory: ' + walletState.data_dir );
+
+    const wallet4Mnemonic = await NativeModules.GrinBridge.walletPhrase(JSON.stringify(walletState));
+    console.debug( 'wallet_4 mnemonic phrases: ' + wallet4Mnemonic );
 
       console.debug('--------- -------- demo 2 -------- --------')
       //--- Demo 2: How to recover a wallet from the backup mnemonic phrases
@@ -75,17 +158,6 @@ export default class App extends Component {
           const wallet2Mnemonic = await NativeModules.GrinBridge.walletPhrase(JSON.stringify(walletState))
 
           console.debug('wallet_2 mnemonic phrases: ' + wallet2Mnemonic)
-      }
-
-      // Write the node API secret as a file '.api_secret' in state.data_dir
-      {
-          let fileName = RNFetchBlob.fs.dirs.DocumentDir + '/wallet_2/.api_secret'
-          RNFetchBlob.fs.writeFile(fileName, node_api_secret, 'utf8')
-              .then(()=>{ console.debug('node api secret file saved: fileName=' + fileName) })
-              .catch(error => {
-                  console.error('node api secret file saving failed: ' + error)
-                  return
-              })
       }
 
       console.debug('--------- -------- demo 3 -------- --------')
@@ -235,8 +307,10 @@ export default class App extends Component {
                       })
               }*/
 
+              console.debug('--------- -------- demo relay send -------- --------')
+
               const slate2 = await NativeModules.GrinBridge.txSend(JSON.stringify(walletState),
-                  10000000, 'smallest', 'a user message', -1, 'tn1-qgfaqdqy-vm8ryd2k6zfp6cm-359cs4gnudxhljm-d0v38yut4u9r7rg-93d4jp')
+                  10000000, 'smallest', 'a user message', -1, 'tn1-q00k34d9-n2s6zy2snu24rrj-xdcram4dhp02kgm-5zrye7c9yxfxq2u-5rq8yz')
                   .then(JSON.parse)
                   .then((slate: Slate) => {
                       slateId = slate.id
@@ -285,18 +359,6 @@ export default class App extends Component {
                           isCreated = false
                           console.debug('wallet 3 created fail: ' + error)
                       })
-
-
-                  // Write the node API secret as a file '.api_secret' in state.data_dir
-                  {
-                      let fileName = RNFetchBlob.fs.dirs.DocumentDir + '/wallet_3/.api_secret'
-                      RNFetchBlob.fs.writeFile(fileName, node_api_secret, 'utf8')
-                          .then(()=>{ console.debug('node api secret file saved: fileName=' + fileName) })
-                          .catch(error => {
-                              isCreated = false
-                              console.error('node api secret file saving failed: ' + error)
-                          })
-                  }
               }
 
               // Step 2 - On Wallet_3 Receive above Slate (file)
@@ -323,12 +385,12 @@ export default class App extends Component {
 
               // Step 3 - On Wallet_2 Finalize above Slate (file)
               if (isCreated) {
-                  let fileName = RNFetchBlob.fs.dirs.DocumentDir + '/wallet_3/' + slateId + '.rx'
+                  let fileName = RNFetchBlob.fs.dirs.DocumentDir + '/wallet_3/' + slateId + '.rx';
                   await NativeModules.GrinBridge.txFinalize(JSON.stringify(walletState), fileName)
                       .then(JSON.parse)
                       .then((slate: Slate) => {
-                          console.debug('wallet2 tx finalized: slateId=' + slate.id)
-                          let fileName = RNFetchBlob.fs.dirs.DocumentDir + '/wallet_2/' + slateId + '.finalized'
+                          console.debug('wallet2 tx finalized: slateId=' + slate.id);
+                          let fileName = RNFetchBlob.fs.dirs.DocumentDir + '/wallet_2/' + slateId + '.finalized';
                           RNFetchBlob.fs.writeFile(fileName, JSON.stringify(slate), 'utf8')
                               .then(() => {
                                   console.debug('wallet2 slate saved: slateId=' + slate.id)
@@ -352,12 +414,6 @@ export default class App extends Component {
                           console.debug('wallet2 post fail: ' + error)
                       })
               }
-
-              // wallet3 clean-up
-              RNFetchBlob.fs.isDir(wallet3State.data_dir)
-                  .then((isDir) => {
-                      RNFetchBlob.fs.unlink(wallet3State.data_dir)
-                  })
           }
       }
 
@@ -386,47 +442,6 @@ export default class App extends Component {
     //               })
     //       }
     //   }
-
-      console.debug('--------- -------- demo 5 -------- --------')
-      //--- Demo 5: How to checkPassword
-      {
-          // correct password
-          await NativeModules.GrinBridge.checkPassword(JSON.stringify(walletState), 'my-wallet-password')
-              .then( () => {
-                  console.debug('checkPassword ok')
-              })
-              .catch(error => {
-                  console.debug('checkPassword fail: ' + error)
-              })
-
-          // wrong password
-          await NativeModules.GrinBridge.checkPassword(JSON.stringify(walletState), '12345678')
-              .then( () => {
-                  console.debug('checkPassword ok')
-              })
-              .catch(error => {
-                  console.debug('checkPassword fail: ' + error)
-              })
-      }
-
-      console.debug('--------- -------- demo 6 -------- --------')
-      //--- Demo 6: How to get current chain height
-      {
-          await NativeModules.GrinBridge.height(JSON.stringify(walletState))
-              .then(JSON.parse)
-              .then( ({height}) => {
-                  console.debug('get height ok. height=' + height)
-              })
-              .catch(error => {
-                  console.debug('get height fail: ' + error)
-              })
-      }
-
-      // clean-up
-      RNFetchBlob.fs.isDir(walletState.data_dir)
-        .then((isDir) => {
-          RNFetchBlob.fs.unlink(walletState.data_dir)
-        })
   }
   // Gary-
 
