@@ -43,9 +43,15 @@ class GrinBridge: NSObject {
       return false
     }
   
-    @objc func walletInit(_ state: String, password: String, resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) -> Void {
+    @objc func selectNearestNode(_ nodeApiHttpAddr: String, resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) -> Void {
       var error: UInt8 = 0
-      let cResult = grin_wallet_init(state, password, &error)
+      let cResult = select_nearest_node(nodeApiHttpAddr, &error)
+      handleCResult(error:error, cResult:cResult!, resolve: resolve, reject: reject)
+    }
+
+  @objc func walletInit(_ state: String, password: String, is_12_phrases: Bool, resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) -> Void {
+      var error: UInt8 = 0
+      let cResult = grin_wallet_init(state, password, is_12_phrases, &error)
       handleCResult(error:error, cResult:cResult!, resolve: resolve, reject: reject)
     }
   
@@ -79,6 +85,12 @@ class GrinBridge: NSObject {
       handleCResult(error:error, cResult:cResult!, resolve: resolve, reject: reject)
     }
   
+    @objc func changePassword(_ state:String, oldPassword: String, newPassword: String, resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) -> Void {
+      var error: UInt8 = 0
+      let cResult = grin_wallet_change_password(state, oldPassword, newPassword, &error)
+      handleCResult(error:error, cResult:cResult!, resolve: resolve, reject: reject)
+    }
+
     @objc func balance(_ state: String, resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) -> Void {
         var error: UInt8 = 0
         let cResult = grin_get_balance(state, &error)
@@ -100,6 +112,24 @@ class GrinBridge: NSObject {
     @objc func txGet(_ state: String, txSlateId: String, resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) -> Void {
         var error: UInt8 = 0
         let cResult = grin_tx_retrieve(state, txSlateId, &error)
+        handleCResult(error:error, cResult:cResult!, resolve: resolve, reject: reject)
+    }
+  
+    @objc func listen(_ state: String, resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) -> Void {
+      var error: UInt8 = 0
+      let cResult = grin_listen(state, &error)
+      handleCResult(error:error, cResult:cResult!, resolve: resolve, reject: reject)
+    }
+  
+    @objc func myRelayAddress(_ state: String, resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) -> Void {
+      var error: UInt8 = 0
+      let cResult = my_grin_relay_addr(state, &error)
+      handleCResult(error:error, cResult:cResult!, resolve: resolve, reject: reject)
+    }
+  
+    @objc func relayAddressQuery(_ state: String, sixCode: String, resolve: RCTPromiseResolveBlock, reject: RCTPromiseRejectBlock) -> Void {
+      var error: UInt8 = 0
+      let cResult = grin_relay_addr_query(state, sixCode, &error)
         handleCResult(error:error, cResult:cResult!, resolve: resolve, reject: reject)
     }
     
