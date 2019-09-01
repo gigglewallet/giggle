@@ -131,8 +131,16 @@ class SetSpendingPin extends Component {
     }
     await Keychain.resetGenericPassword()
         
+    //walletInit(TempData.avatarCode, password)
+    // await walletRecovery(wallet.avatarCode, wallet.password, restorePhraseString) 
+    // await walletRestore(wallet.avatarCode, wallet.password)
     restoreWallet(wallet.avatarCode, wallet.password, restorePhraseString)
-    
+
+    // if(isSuccessWalletRecovery){
+    //   navigation.navigate('SignUpComplete')
+    // }else{
+    //   navigation.navigate('Restore')
+    // }
   }
 
   render () {
@@ -325,6 +333,7 @@ const SpendingPin = ({ showImage, focus, onFocus, onBlur, onChange, inputRef, on
   let hidden = true
 
   if (showImage) {
+    console.log(showImage.key)
     if (showImage.key == false) {
       showMask = null
       hidden = false

@@ -103,6 +103,7 @@
    "searchAsks":"Search asks",
    "declineTheAskFrom":"Decline the ask from",
    "declineAsk":"Decline ask",
-   "backupRecoveryPhraseNow":"Back up Recovery Phrase now"
+   "backupRecoveryPhraseNow":"Back up Recovery Phrase now",
+   "theUserIsNotOnline":"The user is not online"
    
 }

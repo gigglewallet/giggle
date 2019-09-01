@@ -7,7 +7,8 @@ import ReduxPersist from '../Config/ReduxPersist'
 export const reducers = combineReducers({
   nav: require('./NavigationRedux').reducer,
   general: require('./GeneralRedux').reducer,
-  giggle: require('./GiggleRedux').reducer
+  giggle: require('./GiggleRedux').reducer,
+  walletStatus: require('./WalletStatusRedux').reducer
 })
 
 export default () => {

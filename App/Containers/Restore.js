@@ -11,13 +11,14 @@ import styles from './Styles/LaunchScreenStyles'
 import { connect } from 'react-redux'
 import GiggleActions from '../Redux/GiggleRedux'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-
 class Restore extends Component {
   state = {
     switchAmount: 24,
     containerHeight: 500,
     isAgree: false,
     phrases: ['', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '']
+    // phrases: 'index life scrub vast mixture early night gun genius fault silk couple curious dragon stuff mother task dynamic meat word convince park waste define'.split(' ')
+    // phrases: 'hundred copper milk actress sight seminar board lava unveil perfect reopen diagram desert hand history edge room midnight short beach auto finish social quote'.split(' ')
   }
 
   setPhrase = (idx, value) => {

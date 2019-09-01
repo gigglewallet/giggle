@@ -10,6 +10,10 @@ import { connect } from 'react-redux'
 import GiggleActions from '../Redux/GiggleRedux'
 import GeneralActions from '../Redux/GeneralRedux'
 class LaunchScreen extends Component {
+  componentWillMount = () => {
+    const { test } = this.props
+    test()
+  }
   render () {
     const { navigation, clearStorage, wallets, cleanWallet } = this.props
     return (
@@ -52,7 +56,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    walletInit: (avatarCode, password) => dispatch(GiggleActions.walletInit(avatarCode, password)),
+    test: () => dispatch(GiggleActions.test1()),
+    walletInit: (avatarCode, password, is12Phrase) => dispatch(GiggleActions.walletInit(avatarCode, password, is12Phrase)),
     walletRecovery: (avatarCode, password, mnemonic) => dispatch(GiggleActions.walletRecovery(avatarCode, password, mnemonic)),
     walletRestore: (avatarCode, password) => dispatch(GiggleActions.walletRestore(avatarCode, password)),
     getBalance: (avatarCode, password) => dispatch(GiggleActions.getBalance(avatarCode, password)),

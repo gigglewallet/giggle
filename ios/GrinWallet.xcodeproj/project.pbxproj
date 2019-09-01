@@ -46,6 +46,7 @@
 		3E45E63822DF88AC00CE9DB0 /* libTouchID.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E6F74D1D22DF6E25007AD443 /* libTouchID.a */; };
 		3E45E67222DF892C00CE9DB0 /* libRNKeychain.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E45E66F22DF891000CE9DB0 /* libRNKeychain.a */; };
 		3E45E67922DF897A00CE9DB0 /* libKCKeepAwake.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E45E67822DF896A00CE9DB0 /* libKCKeepAwake.a */; };
+		3E49EE5F231BFEDE00B6696E /* libresolv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E49EE2A231BFEDE00B6696E /* libresolv.tbd */; };
 		3ED1E4E122C906D300ED0ED2 /* libRNFetchBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3ED1E4E022C9069700ED0ED2 /* libRNFetchBlob.a */; };
 		3EE4395322CFC2C9009DABB5 /* libRNSVG.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3EE4395022CFC195009DABB5 /* libRNSVG.a */; };
 		4578AE80772A8F5D2712285A /* libPods-GrinWallet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B301EB668676A1975412CCA2 /* libPods-GrinWallet.a */; };
@@ -477,6 +478,7 @@
 		3E0DA79022C91CC20048AEA8 /* GrinBridge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GrinBridge.swift; path = GrinWallet/GrinBridge.swift; sourceTree = "<group>"; };
 		3E45E66922DF891000CE9DB0 /* RNKeychain.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNKeychain.xcodeproj; path = "../node_modules/react-native-keychain/RNKeychain.xcodeproj"; sourceTree = "<group>"; };
 		3E45E67322DF896A00CE9DB0 /* KCKeepAwake.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = KCKeepAwake.xcodeproj; path = "../node_modules/react-native-keep-awake/ios/KCKeepAwake.xcodeproj"; sourceTree = "<group>"; };
+		3E49EE2A231BFEDE00B6696E /* libresolv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libresolv.tbd; path = usr/lib/libresolv.tbd; sourceTree = SDKROOT; };
 		3ED1E4DB22C9069700ED0ED2 /* RNFetchBlob.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNFetchBlob.xcodeproj; path = "../node_modules/rn-fetch-blob/ios/RNFetchBlob.xcodeproj"; sourceTree = "<group>"; };
 		3EE4394A22CFC195009DABB5 /* RNSVG.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNSVG.xcodeproj; path = "../node_modules/react-native-svg/ios/RNSVG.xcodeproj"; sourceTree = "<group>"; };
 		43D436188BFB70BB6E991D98 /* libPods-GrinWallet-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-GrinWallet-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -526,6 +528,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3E49EE5F231BFEDE00B6696E /* libresolv.tbd in Frameworks */,
 				3E45E67922DF897A00CE9DB0 /* libKCKeepAwake.a in Frameworks */,
 				3E45E67222DF892C00CE9DB0 /* libRNKeychain.a in Frameworks */,
 				3E45E63822DF88AC00CE9DB0 /* libTouchID.a in Frameworks */,
@@ -706,6 +709,7 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				3E49EE2A231BFEDE00B6696E /* libresolv.tbd */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				ED2971642150620600B7C4FE /* JavaScriptCore.framework */,
 				2D16E6891FA4F8E400B85C8A /* libReact.a */,

@@ -8,18 +8,12 @@ import { Images, Colors, Fonts, Metrics } from '../Themes'
 import I18n from 'react-native-i18n'
 import moment from 'moment'
 import { SearchInput } from '../Components/TextFields'
-const TempData = [
-  { type: 1, amount: 25.17194374, date: 1502692997848, source: 'Noah。 6539QW', avatarCode: '6539QW', nickname: 'Noah', notes: 'this is notes 1' },
-  { type: 2, amount: 1.17194374, date: 1562002997848, source: 'Ryan。 6539QW', avatarCode: '52T98Z', nickname: 'Ryan', notes: 'this is notes 2' },
-  { type: 3, amount: 250.17194374, date: 1562202997848, source: 'Morphny。 6539QW', avatarCode: '9A131K', nickname: 'Morphy', notes: 'this is notes 3' },
-  { type: 4, amount: 28.17194374, date: 1562612907848, source: 'Gary。 6539QW', avatarCode: 'MB109E', nickname: 'Louisej', notes: 'this is notes 4' },
-  { type: 5, amount: 20.17194374, date: 1562693997848, source: 'Louise。 6539QW', avatarCode: '87009p', nickname: 'Nelson', notes: 'this is notes 5' },
-  { type: 6, amount: 215.17194374, date: 1562698997848, source: 'Noah。 6539QW', avatarCode: 'X83D83', nickname: 'Terrence', notes: 'this is notes 6' }
-]
-export default class Transactions extends Component {
+import { connect } from 'react-redux'
+
+class Transactions extends Component {
   state = {
     keyword: '',
-    hasHint: true
+    hasHint: false
   }
   gotoTransactionDetail = (item) => {
     const { navigation } = this.props
@@ -28,11 +22,11 @@ export default class Transactions extends Component {
   getSource = (datas) => {
     if (this.state.keyword.length === 0) return datas
     return datas.filter((item, index) => {
-      return (item.avatarCode.toLowerCase().indexOf(this.state.keyword.toLowerCase()) !== -1 || item.source.toLowerCase().indexOf(this.state.keyword.toLowerCase()) !== -1)
+      return (item.avatarCode.toLowerCase().indexOf(this.state.keyword.toLowerCase()) !== -1 || item.nicknname.toLowerCase().indexOf(this.state.keyword.toLowerCase()) !== -1 || item.avatarCode.toLowerCase().indexOf(this.state.keyword.toLowerCase()) !== -1)
     })
   }
   render () {
-    const { scrollToHome, navigation } = this.props
+    const { scrollToHome, navigation, transactionHistory } = this.props
     const { keyword, hasHint } = this.state
     return (
       <View style={styles.mainContainer} >
@@ -60,7 +54,7 @@ export default class Transactions extends Component {
           <Text style={{ ...Fonts.style.h7, color: Colors.text, marginTop: 24 }}>{I18n.t('history')}</Text>
           <ListView>
             <FlatList
-              data={this.getSource(TempData)}
+              data={this.getSource(transactionHistory)}
               renderItem={({ item }) => <RenderItem item={item} onPress={this.gotoTransactionDetail.bind(this, item)} />}
             />
           </ListView>
@@ -69,6 +63,16 @@ export default class Transactions extends Component {
     )
   }
 }
+const mapStateToProps = state => {
+  return {
+    transactionHistory: state.giggle.transactionHistory
+  }
+}
+const mapDispatchToProps = (dispatch) => {
+  return {
+  }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(Transactions)
 
 const ItemIcon = styled.Image`
   width:20
@@ -102,7 +106,7 @@ const RenderItem = ({ item, onPress }) => {
           <Text style={{ ...Fonts.style.h5, color: Colors.text }} >ツ{item.amount}</Text>
         </MiddleTopItemView>
         <MiddleBottomItemView>
-          <Text style={{ ...Fonts.style.h9, color: Colors.gary }} >Received from {item.source}</Text>
+          <Text style={{ ...Fonts.style.h9, color: Colors.gary }} >Received from {item.nickname + '。  ' + item.avatarCode}</Text>
         </MiddleBottomItemView>
       </MiddleItemView >
       <BottomItemView >

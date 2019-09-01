@@ -35,7 +35,8 @@ const colors = {
   blue: '#007aff',
   text2: '#232332',
   alertMessage: '#030303',
-  borderColor: '#343458'
+  borderColor: '#343458',
+  toast: '#0008'
 }
 
 export default colors

@@ -15,7 +15,7 @@ import GiggleActions from '../Redux/GiggleRedux'
 import GeneralActions from '../Redux/GeneralRedux'
 import * as Keychain from 'react-native-keychain';
 
-const TempData = { avatarCode: '6539QW', nickname: 'Noah' }
+//const TempData = { avatarCode: '6539QW', nickname: 'Noah' }
 
 class WalletPassword extends Component {
   constructor (props) {

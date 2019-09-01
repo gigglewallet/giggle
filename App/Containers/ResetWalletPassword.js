@@ -18,9 +18,9 @@ import * as Keychain from 'react-native-keychain';
 const TempData = { avatarCode: '6539QW', nickname: 'Noah' }
 
 class WalletPassword extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
-    this.state = { isAgree: false, confirmPassword: '', password: ''}
+    this.state = { isAgree: false, confirmPassword: '', password: '' }
     this.renderPasswordAccessory = this.renderPasswordAccessory.bind(this)
     this.onFocus = this.onFocus.bind(this)
     this.onChangeText = this.onChangeText.bind(this)
@@ -52,7 +52,7 @@ class WalletPassword extends Component {
 
   onChangeText (text) {
     let { password, confirmPassword, isAgree } = this.state
-    let errors = {};
+    let errors = {}
     let next = false;
 
     ['password', 'confirmPassword']
@@ -67,7 +67,7 @@ class WalletPassword extends Component {
             next = false;
           } else {
             delete errors['confirmPassword']
-            if(confirmPassword!="") next = true
+            if (confirmPassword != "") next = true
           }
 
           this.setState({ [name]: text, errors, isAgree: next })
@@ -75,7 +75,7 @@ class WalletPassword extends Component {
       })
   }
 
-  renderPasswordAccessory () {
+  renderPasswordAccessory() {
     const { isVisiblePassword } = this.props
 
     let image = '';
@@ -85,30 +85,30 @@ class WalletPassword extends Component {
     return (image)
   }
 
-  enableTouchId () {
+  enableTouchId() {
     const { enableTouchId, isEnableTouchId } = this.props
 
-    if(isEnableTouchId){
+    if (isEnableTouchId) {
       enableTouchId(false)
       return
     }
 
     TouchID.isSupported()
-    .then(authenticate(enableTouchId,isEnableTouchId))
-    .then(success => {
-      (success=='FaceID' || success=='TouchID') ? enableTouchId(true) : enableTouchId(false)
-    })
-    .catch(error => {
-      AlertIOS.alert(error.message)
-    })
+      .then(authenticate(enableTouchId, isEnableTouchId))
+      .then(success => {
+        (success === 'FaceID' || success === 'TouchID') ? enableTouchId(true) : enableTouchId(false)
+      })
+      .catch(error => {
+        AlertIOS.alert(error.message)
+      })
   }
 
-  async saveWalletPassword () {
+  async saveWalletPassword() {
     const { navigation, updateWalletPasswordByIndex } = this.props
     let { password } = this.state
-      // Store the credentials
+    // Store the credentials
     await Keychain.setGenericPassword(TempData.avatarCode, password);
-    
+
     try {
       const credentials = await Keychain.getGenericPassword();
       if (credentials) {
@@ -121,12 +121,12 @@ class WalletPassword extends Component {
       console.log('Keychain couldn\'t be accessed!', error);
     }
     await Keychain.resetGenericPassword();
-    
 
-    navigation.navigate('ResetSpendingPin')    
+
+    navigation.navigate('ResetSpendingPin')
   }
 
-  render () {
+  render() {
     const { isVisiblePassword, isEnableTouchId, updateVisiblePassword } = this.props
     let { isAgree, errors = {}, ...data } = this.state
 
@@ -190,7 +190,7 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch) => {
-  return {    
+  return {
     updateVisiblePassword: (state, value) => dispatch(GiggleActions.updateVisiblePassword(state, value)),
     enableTouchId: (state, value) => dispatch(GiggleActions.enableTouchId(state, value)),
     updateWalletPasswordByIndex: (state, idx, value) => dispatch(GiggleActions.updateWalletPasswordByIndex(state, idx, value))
@@ -199,7 +199,7 @@ const mapDispatchToProps = (dispatch) => {
 
 export default connect(mapStateToProps, mapDispatchToProps)(WalletPassword)
 
-function authenticate (enableTouchId,isEnableTouchId) {
+function authenticate(enableTouchId, isEnableTouchId) {
   return TouchID.authenticate()
     .then(success => {
       enableTouchId(true);

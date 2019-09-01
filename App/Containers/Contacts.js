@@ -8,8 +8,10 @@ import { ContactsHeader } from '../Components/Header'
 import Blockies from 'react-native-blockies'
 import { AskBtn, SendBtn } from '../Components/Buttons'
 import { SearchInput } from '../Components/TextFields'
+import { connect } from 'react-redux'
+import GiggleActions from '../Redux/GiggleRedux'
 const TempData = [
-  { avatarCode: '6539QW', nickname: 'Noah' },
+  { avatarCode: '85s8zd', nickname: 'terrence' },
   { avatarCode: 'S2T98Z', nickname: 'Ryan' },
   { avatarCode: '9A131K', nickname: 'Morphy' },
   { avatarCode: 'M8109E', nickname: 'Louise' },
@@ -35,16 +37,27 @@ const RenderItem = ({ item, onPress, onAskPress, onSendPress }) => {
         </MiddleBottomItemView>
       </MiddleItemView >
       <BottomItemView >
-        <AskBtn onPress={onAskPress} width={64} height={40} />
+        {/* <AskBtn onPress={onAskPress} width={64} height={40} /> */}
         <SendBtn onPress={onSendPress} width={64} height={40} />
       </BottomItemView >
     </ItemContainer>
   )
 }
 
-export default class Contacts extends Component {
+class Contacts extends Component {
   state = {
     keyword: ''
+  }
+  private = {
+    tempAvatarCode: null,
+    temiNickname: null,
+    isShowStep: false
+  }
+  componentWillReceiveProps (nextProps) {
+    if (nextProps.relayAddress && !this.props.relayAddress) {
+      const { navigation } = this.props
+      navigation.navigate('AskEnterAmountPage', { type: 'send', isContact: true, isShowStep: false, avatarCode: this.private.tempAvatarCode, nickname: this.private.tempNickname, relayAddress: nextProps.relayAddress })
+    }
   }
   onPressRightBtn = () => {
     const { navigation } = this.props
@@ -63,11 +76,15 @@ export default class Contacts extends Component {
   }
   onAskPress = (item) => {
     const { navigation } = this.props
+
     navigation.navigate('AskEnterAmountPage', { type: 'ask', isContact: true, avatarCode: item.avatarCode, nickname: item.nickname, isShowStep: false })
   }
   onSendPress = (item) => {
-    const { navigation } = this.props
-    navigation.navigate('AskEnterAmountPage', { type: 'send', isContact: true, avatarCode: item.avatarCode, nickname: item.nickname, isShowStep: false })
+    const { relayAddressQuery } = this.props
+    this.private.tempAvatarCode = item.avatarCode
+    this.private.tempNickname = item.nickname
+    this.private.isShowStep = false
+    relayAddressQuery(item.avatarCode)
   }
   render () {
     const { scrollToHome } = this.props
@@ -99,6 +116,21 @@ export default class Contacts extends Component {
   }
 }
 
+const mapStateToProps = (state) => {
+  return {
+    contacts: state.giggle.contacts,
+    relayAddress: state.giggle.relayAddress,
+    isFailRelayAddressQuery: state.giggle.isFailRelayAddressQuery
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    relayAddressQuery: (targetAvatarCode) => dispatch(GiggleActions.relayAddressQuery(targetAvatarCode))
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Contacts)
 const MiddleTopItemView = styled.View`
   flex:1
 `

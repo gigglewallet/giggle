@@ -10,7 +10,8 @@ export default {
     account: 'default',
     chain_type: 'floonet',
     data_dir: RNFetchBlob.fs.dirs.DocumentDir + '/',
-    node_api_addr: 'https://sga.grin.icu:13413',
+    node_api_addr: 'https://sga.grin.icu:13413',    
+    node_api_secret: 'ZbiQCN85Srih3f27PJXH',
     password: '123456',
     minimum_confirmations: 10
   },

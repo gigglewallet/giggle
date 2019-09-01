@@ -9,7 +9,11 @@ import I18n from 'react-native-i18n'
 import { connect } from 'react-redux'
 import { transferBalance } from '../Modules/Common'
 import GiggleActions from '../Redux/GiggleRedux'
+import WalletStatusActions from '../Redux/WalletStatusRedux'
 class Home extends Component {
+  private = {
+    timeoutId: 0
+  }
   componentWillReceiveProps = (nextProps) => {
     if (this.props.isEnableWallet && this.props.isEnableWallet !== nextProps.isEnableWallet) {
       if (this.props.wallets.length >= 1) {
@@ -21,6 +25,7 @@ class Home extends Component {
     if (this.props.wallets.length >= 1 && this.props.isEnableWallet) {
       this.props.getBalance(this.props.wallets[0].avatarCode, this.props.wallets[0].password)
     }
+    this.props.listen()
   }
   onPressHint = () => {
     const { navigation } = this.props
@@ -28,11 +33,11 @@ class Home extends Component {
   }
 
   render () {
-    const { scrollToTransactions, scrollToContracts, navigation, isBackupPhrase, wallets } = this.props
+    const { scrollToTransactions, scrollToContracts, navigation, isBackupPhrase, wallets, updateWalletStatusRedux, isOnline } = this.props
     const { firstNum, endNum } = transferBalance(wallets[0].balance)
     return (
       <View style={styles.mainContainer} >
-        <HomeHeader onPressLeftBtn={scrollToTransactions} onPressRightBtn={scrollToContracts} count={1} />
+        <HomeHeader onPressLeftBtn={scrollToTransactions} onPressRightBtn={scrollToContracts} count={0} />
 
         {isBackupPhrase ? null
           : <HintContainer onPress={this.onPressHint}>
@@ -50,10 +55,12 @@ class Home extends Component {
                 : <Text style={{ ...Fonts.style.h5, color: Colors.text, marginTop: 18 }}>{endNum}</Text>
             }
           </BalanceView>
+          {/*
           <DollarView>
             <Text style={{ ...Fonts.style.h9, color: Colors.gary, marginTop: 2 }}>$</Text>
             <Text style={{ ...Fonts.style.h5, color: Colors.gary, marginLeft: 4 }}>3,496.06</Text>
           </DollarView>
+          */}
         </TopContainer>
         <BottomContainer >
           <BottomTopView>
@@ -61,11 +68,20 @@ class Home extends Component {
             <SettingBtn onPress={() => { navigation.navigate('Settings') }} />
           </BottomTopView>
           <BottomMiddleView >
-            <AskBtn onPress={() => navigation.navigate('AskPickPage')} />
+            <AskBtn onPress={() => {
+              if (this.private.timeoutId === 0) {
+                updateWalletStatusRedux('isPressedAskBtn', true)
+                this.private.timeoutId = setTimeout(() => {
+                  this.private.timeoutId = 0
+                  updateWalletStatusRedux('isPressedAskBtn', false)
+                }, 2500)
+              }
+              // navigation.navigate('AskPickPage')}
+            }} />
             <SendBtn onPress={() => navigation.navigate('AskPickPage', { type: 'send' })} />
           </BottomMiddleView>
           <BottomDownView>
-            <OnlineStatus status={false} />
+            <OnlineStatus status={isOnline} />
           </BottomDownView>
         </BottomContainer>
       </View>
@@ -77,12 +93,15 @@ const mapStateToProps = state => {
   return {
     isBackupPhrase: state.giggle.isBackupPhrase,
     isEnableWallet: state.giggle.isEnableWallet,
-    wallets: state.giggle.wallets
+    wallets: state.giggle.wallets,
+    isOnline: state.giggle.isOnline
   }
 }
 const mapDispatchToProps = (dispatch) => {
   return {
-    getBalance: (avatarCode, password) => dispatch(GiggleActions.getBalance(avatarCode, password))
+    getBalance: (avatarCode, password) => dispatch(GiggleActions.getBalance(avatarCode, password)),
+    updateWalletStatusRedux: (key, value) => dispatch(WalletStatusActions.updateWalletStatusRedux(key, value)),
+    listen: () => dispatch(GiggleActions.listen())
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Home)

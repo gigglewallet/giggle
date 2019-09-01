@@ -9,8 +9,23 @@ import { ContactDetailsHeader } from '../Components/Header'
 import Blockies from 'react-native-blockies'
 import { AskBtn, SendBtn } from '../Components/Buttons'
 import AlertWithBtns from '../Components/AlertWithBtns'
-export default class ContactDetails extends Component {
+import GiggleActions from '../Redux/GiggleRedux'
+import { connect } from 'react-redux'
+import WalletStatusActions from '../Redux/WalletStatusRedux'
+class ContactDetails extends Component {
   state = { alertShow: false, alertTitle: '', alertMessage: '', alertBtns: [], alertInput: false }
+  private = {
+    timeoutId: 0,
+    tempAvatarCode: null,
+    temiNickname: null,
+    tempIsContact: false
+  }
+  componentWillReceiveProps (nextProps) {
+    if (nextProps.relayAddress && !this.props.relayAddress) {
+      const { navigation } = this.props
+      navigation.navigate('AskEnterAmountPage', { type: 'send', isContact: true, avatarCode: this.private.tempAvatarCode, nickname: this.private.tempNickname, isShowStep: false })
+    }
+  }
   closeAlert = () => {
     this.setState({
       alertShow: false,
@@ -56,16 +71,30 @@ export default class ContactDetails extends Component {
     navigation.goBack()
   }
   onAskPress = () => {
+    /*
     const { navigation } = this.props
     const avatarCode = navigation.getParam('avatarCode')
     const nickname = navigation.getParam('nickname')
     navigation.navigate('AskEnterAmountPage', { type: 'ask', isContact: true, avatarCode: avatarCode, nickname: nickname, isShowStep: false })
+    */
+    if (this.private.timeoutId === 0) {
+      const { updateWalletStatusRedux } = this.props
+      updateWalletStatusRedux('isPressedAskBtn', true)
+      this.private.timeoutId = setTimeout(() => {
+        this.private.timeoutId = 0
+        updateWalletStatusRedux('isPressedAskBtn', false)
+      }, 2500)
+    }
   }
   onSendPRess = () => {
     const { navigation } = this.props
-    const avatarCode = navigation.getParam('avatarCode')
-    const nickname = navigation.getParam('nickname')
-    navigation.navigate('AskEnterAmountPage', { type: 'send', isContact: true, avatarCode: avatarCode, nickname: nickname, isShowStep: false })
+    // const avatarCode = navigation.getParam('avatarCode')
+    // const nickname = navigation.getParam('nickname')
+    // navigation.navigate('AskEnterAmountPage', { type: 'send', isContact: true, avatarCode: avatarCode, nickname: nickname, isShowStep: false })
+    const { relayAddressQuery } = this.props
+    this.private.tempAvatarCode = navigation.getParam('avatarCode')
+    this.private.tempNickname = navigation.getParam('nickname')
+    relayAddressQuery(navigation.getParam('avatarCode'))
   }
   render () {
     const { navigation } = this.props
@@ -102,6 +131,22 @@ export default class ContactDetails extends Component {
     )
   }
 }
+
+const mapStateToProps = (state) => {
+  return {
+    relayAddress: state.giggle.relayAddress,
+    isFailRelayAddressQuery: state.giggle.isFailRelayAddressQuery
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    relayAddressQuery: (targetAvatarCode) => dispatch(GiggleActions.relayAddressQuery(targetAvatarCode)),
+    updateWalletStatusRedux: (key, value) => dispatch(WalletStatusActions.updateWalletStatusRedux(key, value))
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ContactDetails)
 
 const TopContainer = styled.View`
   width: ${Metrics.screenWidth - 48}

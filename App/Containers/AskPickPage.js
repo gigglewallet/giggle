@@ -11,27 +11,46 @@ import { SmallBtn } from '../Components/Buttons'
 import I18n from 'react-native-i18n'
 import { runSaga } from 'redux-saga'
 import { rgba } from 'polished'
-const TempData = [
-  { avatarCode: '6539QW', nickname: 'Noah' },
-  { avatarCode: 'S2T98Z', nickname: 'Ryan' },
-  { avatarCode: '9A131K', nickname: 'Morphy' },
-  { avatarCode: 'M8109E', nickname: 'Louise' },
-  { avatarCode: 'B7009P', nickname: 'Nelson' }
-]
+import GiggleActions from '../Redux/GiggleRedux'
+import { connect } from 'react-redux'
+import AlertWithBtns from '../Components/AlertWithBtns'
 
-export default class AskPickPage extends Component {
+class AskPickPage extends Component {
   state = {
     keyword: '',
-    avatarCode: ''
+    avatarCode: '',
+    alertShow: false,
+    alertTitle: '',
+    alertMessage: '',
+    alertBtns: [],
+    alertInput: false
+  }
+  private = {
+    tempAvatarCode: null,
+    temiNickname: null,
+    tempIsContact: false
+  }
+  componentWillReceiveProps (nextProps) {
+    if (nextProps.relayAddress && !this.props.relayAddress) {
+      const { navigation } = this.props
+      const type = navigation.getParam('type', '')
+      navigation.navigate('AskEnterAmountPage', { avatarCode: this.private.tempAvatarCode, nickname: this.private.tempNickname, isContact: this.private.tempIsContact, type, relayAddress: nextProps.relayAddress })
+    }
   }
   onPressRightBtn = () => {
     const { navigation } = this.props
     navigation.navigate('NewContact')
   }
-  gotoEnterAmountPage = (item) => {
-    const { navigation } = this.props
-    const type = navigation.getParam('type', '')
-    navigation.navigate('AskEnterAmountPage', { avatarCode: item.avatarCode, nickname: item.nickname, isContact: true, type })
+  gotoEnterAmountPage = async (item) => {
+    const { navigation, relayAddressQuery } = this.props
+    this.private.tempAvatarCode = item.avatarCode
+    this.private.tempNickname = item.nickname
+    this.private.isContact = true
+    relayAddressQuery(item.avatarCode)
+    /*
+     const type = navigation.getParam('type', '')
+     navigation.navigate('AskEnterAmountPage', { avatarCode: item.avatarCode, nickname: item.nickname, isContact: true, type })
+     */
   }
   getSource (datas) {
     if (this.state.keyword.length === 0) return datas
@@ -51,13 +70,20 @@ export default class AskPickPage extends Component {
     }
   }
   onPressNext = () => {
+    const { relayAddressQuery } = this.props
+    const { avatarCode } = this.state
+    relayAddressQuery(avatarCode)
+    this.private.tempAvatarCode = avatarCode
+    this.private.isContact = false
+    /*
     const { navigation } = this.props
     const { avatarCode } = this.state
     const type = navigation.getParam('type', '')
     navigation.navigate('AskEnterAmountPage', { avatarCode: avatarCode, isContact: false, type })
+    */
   }
   render () {
-    const { navigation } = this.props
+    const { navigation, contacts } = this.props
     const { avatarCode, keyword } = this.state
     const type = navigation.getParam('type', '')
 
@@ -87,7 +113,7 @@ export default class AskPickPage extends Component {
         <BottomContainer>
           <ListView>
             <FlatList
-              data={this.getSource(TempData)}
+              data={this.getSource(contacts)}
               renderItem={({ item }) => <RenderContactsItemNoBtn item={item} onPress={this.gotoEnterAmountPage.bind(this, item)} />}
             />
           </ListView>
@@ -112,10 +138,27 @@ export default class AskPickPage extends Component {
             </SmallBtn>
           }
         </StepContainer>
+
       </View>
     )
   }
 }
+
+const mapStateToProps = (state) => {
+  return {
+    contacts: state.giggle.contacts,
+    relayAddress: state.giggle.relayAddress,
+    isFailRelayAddressQuery: state.giggle.isFailRelayAddressQuery
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    relayAddressQuery: (targetAvatarCode) => dispatch(GiggleActions.relayAddressQuery(targetAvatarCode))
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(AskPickPage)
 const TopContainer = styled.View`
   width: ${Metrics.screenWidth - 48}
   margin-left:24

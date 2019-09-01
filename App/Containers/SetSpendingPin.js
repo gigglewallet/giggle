@@ -128,7 +128,7 @@ class SetSpendingPin extends Component {
     }
     await Keychain.resetGenericPassword();
 
-    walletInit(wallet.avatarCode, wallet.password)
+    walletInit(wallet.avatarCode, wallet.password, false)
     navigation.navigate('SignUpComplete')
   }
 
@@ -249,7 +249,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     enablePinTouchId: (state, value) => dispatch(GiggleActions.enablePinTouchId(state, value)),
-    walletInit: (avatarCode, password) => dispatch(GiggleActions.walletInit(avatarCode, password)),
+    walletInit: (avatarCode, password, is12Phrase) => dispatch(GiggleActions.walletInit(avatarCode, password, is12Phrase)),
     setPassword: (walletIdx, password) => dispatch(GiggleActions.setPassword(walletIdx, password))
   }
 }

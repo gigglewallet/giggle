@@ -10,7 +10,10 @@ import AlertWithBtns from '../Components/AlertWithBtns'
 import styles from './Styles/LaunchScreenStyles'
 import { StepUI } from '../Components/UI'
 import { AvatarIcon } from '../Components/AvatarIcon'
-export default class AskEnterAmountPage extends Component {
+import GiggleActions from '../Redux/GiggleRedux'
+import WalletStatusActions from '../Redux/WalletStatusRedux'
+import { connect } from 'react-redux'
+class AskEnterAmountPage extends Component {
   constructor (props) {
     super(props)
     this.state = { amount: 0, note: '', alertShow: false, alertTitle: '', alertMessage: '', alertBtns: [], alertInput: false }
@@ -24,13 +27,21 @@ export default class AskEnterAmountPage extends Component {
     }
   }
   gotoAskDonePage = () => {
-    const { navigation } = this.props
+    const { navigation, wallet, updateWalletStatusRedux, sendTransaction } = this.props
     const { amount, note } = this.state
+    console.log('balance', wallet.balance, amount)
+    /*
+    if (amount > wallet.balance) {
+      updateWalletStatusRedux('isEnoughBalance', false)
+      return
+    }
+    */
     const isContact = navigation.getParam('isContact', false)
     const avatarCode = navigation.getParam('avatarCode', '')
     const nickname = navigation.getParam('nickname', '')
     const type = navigation.getParam('type', '')
-    navigation.navigate('AskDone', { amount: amount, avarCode: avatarCode, nickname: nickname, isContact: isContact, note: note, type })
+    sendTransaction({ isContact, avatarCode, nickname, type, amount, note })
+    // navigation.navigate('AskDone', { amount: amount, avarCode: avatarCode, nickname: nickname, isContact: isContact, note: note, type })
   }
   onPressAskBtn = () => {
     const { navigation } = this.props
@@ -84,7 +95,6 @@ export default class AskEnterAmountPage extends Component {
             renderAccessory={this.renderAmountAccessory}
             onChange={(amount) => this.setState({ amount })}
             marginTop={24}
-            isNumber
           />
           <NormalInput
             labelText={I18n.t('notesOptional')}
@@ -138,6 +148,19 @@ export default class AskEnterAmountPage extends Component {
     )
   }
 }
+
+const mapStateToProps = state => {
+  return {
+    wallet: state.giggle.wallets[0]
+  }
+}
+const mapDispatchToProps = (dispatch) => {
+  return {
+    sendTransaction: (info) => dispatch(GiggleActions.sendTransaction(info)),
+    updateWalletStatusRedux: (key, value) => dispatch(WalletStatusActions.updateWalletStatusRedux(key, value))
+  }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(AskEnterAmountPage)
 
 const TopContainer = styled.View`
   width: ${Metrics.screenWidth - 48}
