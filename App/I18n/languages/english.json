@@ -36,7 +36,7 @@
    "offline": "offline",
    "history": "History",
    "next": "Next",
-   "enableTouchId": "Enable Touch ID",
+   "enableTouchId": "Enable Touch/Face ID",
    "walletPassword": "Wallet Password",
    "confirmWalletPassword": "Confirm Wallet Password",
    "confirm": "Confirm",
@@ -85,7 +85,7 @@
    "delete": "Delete",
    "deleteAvatar": "Delete this avatar?",
    "deleteAvatarMessage": "It won’t affect your balance. However, previous history related to this avatar will be removed, and no one will be able to interact with this avatar again.",
-   "myAvatarsMessage": "Avatars are your temporary usernames for people to find you. You can have as many as you want. Delete them at anytime, it wouldn’t affect your balance.",
+   "myAvatarsMessage": "Avatars are your temporary user names, you can change your avatar code to another random number anytime, it wouldn't affect your balance. However, you won't be able to receive funds with the old code anymore.",
    "deleteThisContact":"Delete this contact?",
    "youCanAddItBackAtAnyTime":"You can add it back at any time.",
    "editNickname":"Edit nickname",
@@ -104,6 +104,8 @@
    "declineTheAskFrom":"Decline the ask from",
    "declineAsk":"Decline ask",
    "backupRecoveryPhraseNow":"Back up Recovery Phrase now",
-   "theUserIsNotOnline":"The user is not online"
+   "theUserIsNotOnline":"The user is not online",
+   "avatarCodeOrOther":"Avatar code / Relay address / https",
+   "fee":"Fee"
    
 }

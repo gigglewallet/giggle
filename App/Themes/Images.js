@@ -27,6 +27,7 @@ const images = {
   icConfirmed: require('../Images/Assets/ic_confirmed_24px.png'),
   icError: require('../Images/Assets/ic_error_24px.png'),
   icDelete: require('../Images/Assets/ic_delete_16px.png'),
+  icReload: require('../Images/Assets/ic_reload_16px.png'),
   icEdit: require('../Images/Assets/ic_edit_16px.png'),
   icQrcode: require('../Images/Assets/ic_qrcode_24px.png'),
   icSuccessAsk: require('../Images/Assets/ic_success_ask_48px.png'),

@@ -12,13 +12,13 @@ import styles from './Styles/LaunchScreenStyles'
 
 import { connect } from 'react-redux'
 import GiggleActions from '../Redux/GiggleRedux'
-import GeneralActions from '../Redux/GeneralRedux'
-import * as Keychain from 'react-native-keychain';
+import WalletStatusActions from '../Redux/WalletStatusRedux'
+import * as Keychain from 'react-native-keychain'
 
 const TempData = { avatarCode: '6539QW', nickname: 'Noah' }
 
 class WalletPassword extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
     this.state = { isAgree: false, confirmPassword: '', password: '' }
     this.renderPasswordAccessory = this.renderPasswordAccessory.bind(this)
@@ -61,13 +61,13 @@ class WalletPassword extends Component {
         if (ref.isFocused()) {
           if (name == 'confirmPassword' && (password != text)) {
             errors['confirmPassword'] = 'Password doesn’t match. Please try again.'
-            next = false;
+            next = false
           } else if (name == 'password' && (confirmPassword != text) && confirmPassword != '') {
             errors['confirmPassword'] = 'Password doesn’t match. Please try again.'
-            next = false;
+            next = false
           } else {
             delete errors['confirmPassword']
-            if (confirmPassword != "") next = true
+            if (confirmPassword != '') next = true
           }
 
           this.setState({ [name]: text, errors, isAgree: next })
@@ -75,7 +75,7 @@ class WalletPassword extends Component {
       })
   }
 
-  renderPasswordAccessory() {
+  renderPasswordAccessory () {
     const { isVisiblePassword } = this.props
 
     let image = '';
@@ -85,7 +85,7 @@ class WalletPassword extends Component {
     return (image)
   }
 
-  enableTouchId() {
+  enableTouchId () {
     const { enableTouchId, isEnableTouchId } = this.props
 
     if (isEnableTouchId) {
@@ -103,30 +103,30 @@ class WalletPassword extends Component {
       })
   }
 
-  async saveWalletPassword() {
-    const { navigation, updateWalletPasswordByIndex } = this.props
+  async saveWalletPassword () {
+    const { navigation, updateWalletPasswordByIndex, updateWalletStatusRedux } = this.props
     let { password } = this.state
     // Store the credentials
-    await Keychain.setGenericPassword(TempData.avatarCode, password);
+    await Keychain.setGenericPassword(TempData.avatarCode, password)
 
     try {
-      const credentials = await Keychain.getGenericPassword();
+      const credentials = await Keychain.getGenericPassword()
       if (credentials) {
-        console.log('Credentials successfully loaded for user ' + credentials.username);
-        updateWalletPasswordByIndex(0, password)
+        console.log('Credentials successfully loaded for user ' + credentials.username)
+        // updateWalletPasswordByIndex(0, password)
+        await updateWalletStatusRedux('tempPassword', password)
       } else {
-        console.log('No credentials stored');
+        console.log('No credentials stored')
       }
     } catch (error) {
-      console.log('Keychain couldn\'t be accessed!', error);
+      console.log('Keychain couldn\'t be accessed!', error)
     }
-    await Keychain.resetGenericPassword();
-
+    await Keychain.resetGenericPassword()
 
     navigation.navigate('ResetSpendingPin')
   }
 
-  render() {
+  render () {
     const { isVisiblePassword, isEnableTouchId, updateVisiblePassword } = this.props
     let { isAgree, errors = {}, ...data } = this.state
 
@@ -159,7 +159,7 @@ class WalletPassword extends Component {
             onChangeText={this.onChangeText}
           />
 
-          <TouchIdSwitchBtn onPress={this.enableTouchId} switchText={I18n.t('enableTouchId')} switchOn={isEnableTouchId} />
+          {/* <TouchIdSwitchBtn onPress={this.enableTouchId} switchText={I18n.t('enableTouchId')} switchOn={isEnableTouchId} /> */}
 
         </TopContainer>
         <BottomContainer>
@@ -193,21 +193,22 @@ const mapDispatchToProps = (dispatch) => {
   return {
     updateVisiblePassword: (state, value) => dispatch(GiggleActions.updateVisiblePassword(state, value)),
     enableTouchId: (state, value) => dispatch(GiggleActions.enableTouchId(state, value)),
-    updateWalletPasswordByIndex: (state, idx, value) => dispatch(GiggleActions.updateWalletPasswordByIndex(state, idx, value))
+    updateWalletPasswordByIndex: (state, idx, value) => dispatch(GiggleActions.updateWalletPasswordByIndex(state, idx, value)),
+    updateWalletStatusRedux: (key, value) => dispatch(WalletStatusActions.updateWalletStatusRedux(key, value))
   }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(WalletPassword)
 
-function authenticate(enableTouchId, isEnableTouchId) {
+function authenticate (enableTouchId, isEnableTouchId) {
   return TouchID.authenticate()
     .then(success => {
-      enableTouchId(true);
+      enableTouchId(true)
       AlertIOS.alert('Authenticated Successfully')
     })
     .catch(error => {
       console.log(error)
-      enableTouchId(false);
+      enableTouchId(false)
       AlertIOS.alert(error.message)
     })
 }
@@ -221,7 +222,7 @@ const TopContainer = styled.View`
 `
 
 const BottomContainer = styled.View`
-  height: 120
+  height: 60
   width:100%
   align-items: flex-start
   padding-left:24  

@@ -50,7 +50,7 @@ export default class AlertWithBtns extends React.Component {
         <IndicatorContainer>
           <Text style={{ ...Fonts.style.h8, color: 'black', padding: 20, textAlign: 'center' }}>{title}</Text>
           {message ? <Text style={{ ...Fonts.style.h9, color: Colors.alertMessage, paddingBottom: 10, marginLeft:15, marginRight:15, marginBottom:15, textAlign:'center'}}>{message}</Text> : null}
-          {input ? <TextInput ref={input => this.textinput = input} keyboardType='numeric' /> : null}
+          {input ? <TextInput ref={input => this.textinput = input} keyboardType='default' /> : null}
           <View style={{ width: '100%', flexDirection: 'row', borderTopColor: Colors.gary2, borderTopWidth: 1 }}>
             {buttons.length < 1 ?
               <Item close={close} button={defaultButton} />

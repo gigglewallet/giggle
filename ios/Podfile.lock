@@ -1,13 +1,203 @@
 PODS:
+  - boost-for-react-native (1.63.0)
   - cocoa_grinwallet (1.0.4)
+  - Crashlytics (3.14.0):
+    - Fabric (~> 1.10.2)
+  - DoubleConversion (1.1.6)
+  - Fabric (1.10.2)
+  - Firebase/Core (6.10.0):
+    - Firebase/CoreOnly
+    - FirebaseAnalytics (= 6.1.3)
+  - Firebase/CoreOnly (6.10.0):
+    - FirebaseCore (= 6.3.1)
+  - FirebaseAnalytics (6.1.3):
+    - FirebaseCore (~> 6.3)
+    - FirebaseInstanceID (~> 4.2)
+    - GoogleAppMeasurement (= 6.1.3)
+    - GoogleUtilities/AppDelegateSwizzler (~> 6.0)
+    - GoogleUtilities/MethodSwizzler (~> 6.0)
+    - GoogleUtilities/Network (~> 6.0)
+    - "GoogleUtilities/NSData+zlib (~> 6.0)"
+    - nanopb (~> 0.3.901)
+  - FirebaseCore (6.3.1):
+    - FirebaseCoreDiagnostics (~> 1.0)
+    - FirebaseCoreDiagnosticsInterop (~> 1.0)
+    - GoogleUtilities/Environment (~> 6.2)
+    - GoogleUtilities/Logger (~> 6.2)
+  - FirebaseCoreDiagnostics (1.1.1):
+    - FirebaseCoreDiagnosticsInterop (~> 1.0)
+    - GoogleDataTransportCCTSupport (~> 1.0)
+    - GoogleUtilities/Environment (~> 6.2)
+    - GoogleUtilities/Logger (~> 6.2)
+    - nanopb (~> 0.3.901)
+  - FirebaseCoreDiagnosticsInterop (1.0.0)
+  - FirebaseInstanceID (4.2.5):
+    - FirebaseCore (~> 6.0)
+    - GoogleUtilities/Environment (~> 6.0)
+    - GoogleUtilities/UserDefaults (~> 6.0)
+  - Folly (2018.10.22.00):
+    - boost-for-react-native
+    - DoubleConversion
+    - glog
+  - glog (0.3.5)
+  - GoogleAppMeasurement (6.1.3):
+    - GoogleUtilities/AppDelegateSwizzler (~> 6.0)
+    - GoogleUtilities/MethodSwizzler (~> 6.0)
+    - GoogleUtilities/Network (~> 6.0)
+    - "GoogleUtilities/NSData+zlib (~> 6.0)"
+    - nanopb (~> 0.3.901)
+  - GoogleDataTransport (3.0.0)
+  - GoogleDataTransportCCTSupport (1.2.0):
+    - GoogleDataTransport (~> 3.0)
+    - nanopb (~> 0.3.901)
+  - GoogleUtilities/AppDelegateSwizzler (6.3.1):
+    - GoogleUtilities/Environment
+    - GoogleUtilities/Logger
+    - GoogleUtilities/Network
+  - GoogleUtilities/Environment (6.3.1)
+  - GoogleUtilities/Logger (6.3.1):
+    - GoogleUtilities/Environment
+  - GoogleUtilities/MethodSwizzler (6.3.1):
+    - GoogleUtilities/Logger
+  - GoogleUtilities/Network (6.3.1):
+    - GoogleUtilities/Logger
+    - "GoogleUtilities/NSData+zlib"
+    - GoogleUtilities/Reachability
+  - "GoogleUtilities/NSData+zlib (6.3.1)"
+  - GoogleUtilities/Reachability (6.3.1):
+    - GoogleUtilities/Logger
+  - GoogleUtilities/UserDefaults (6.3.1):
+    - GoogleUtilities/Logger
+  - nanopb (0.3.901):
+    - nanopb/decode (= 0.3.901)
+    - nanopb/encode (= 0.3.901)
+  - nanopb/decode (0.3.901)
+  - nanopb/encode (0.3.901)
+  - React (0.59.3):
+    - React/Core (= 0.59.3)
+  - React/Core (0.59.3):
+    - yoga (= 0.59.3.React)
+  - React/CxxBridge (0.59.3):
+    - Folly (= 2018.10.22.00)
+    - React/Core
+    - React/cxxreact
+    - React/jsiexecutor
+  - React/cxxreact (0.59.3):
+    - boost-for-react-native (= 1.63.0)
+    - DoubleConversion
+    - Folly (= 2018.10.22.00)
+    - glog
+    - React/jsinspector
+  - React/DevSupport (0.59.3):
+    - React/Core
+    - React/RCTWebSocket
+  - React/fishhook (0.59.3)
+  - React/jsi (0.59.3):
+    - DoubleConversion
+    - Folly (= 2018.10.22.00)
+    - glog
+  - React/jsiexecutor (0.59.3):
+    - DoubleConversion
+    - Folly (= 2018.10.22.00)
+    - glog
+    - React/cxxreact
+    - React/jsi
+  - React/jsinspector (0.59.3)
+  - React/RCTActionSheet (0.59.3):
+    - React/Core
+  - React/RCTAnimation (0.59.3):
+    - React/Core
+  - React/RCTBlob (0.59.3):
+    - React/Core
+  - React/RCTGeolocation (0.59.3):
+    - React/Core
+  - React/RCTImage (0.59.3):
+    - React/Core
+    - React/RCTNetwork
+  - React/RCTLinkingIOS (0.59.3):
+    - React/Core
+  - React/RCTNetwork (0.59.3):
+    - React/Core
+  - React/RCTPushNotification (0.59.3):
+    - React/Core
+  - React/RCTSettings (0.59.3):
+    - React/Core
+  - React/RCTText (0.59.3):
+    - React/Core
+  - React/RCTVibration (0.59.3):
+    - React/Core
+  - React/RCTWebSocket (0.59.3):
+    - React/Core
+    - React/fishhook
+    - React/RCTBlob
+  - RNFirebase (5.5.6):
+    - Firebase/Core
+    - React
+    - RNFirebase/Crashlytics (= 5.5.6)
+  - RNFirebase/Crashlytics (5.5.6):
+    - Crashlytics
+    - Fabric
+    - Firebase/Core
+    - React
+  - yoga (0.59.3.React)
 
 DEPENDENCIES:
   - cocoa_grinwallet (from `https://github.com/gottstech/cocoa_grinwallet.git`, tag `v1.0.4`)
+  - Crashlytics (~> 3.14.0)
+  - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
+  - Fabric (~> 1.10.2)
+  - Folly (from `../node_modules/react-native/third-party-podspecs/Folly.podspec`)
+  - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
+  - React/Core (from `../node_modules/react-native`)
+  - React/CxxBridge (from `../node_modules/react-native`)
+  - React/DevSupport (from `../node_modules/react-native`)
+  - React/RCTActionSheet (from `../node_modules/react-native`)
+  - React/RCTAnimation (from `../node_modules/react-native`)
+  - React/RCTGeolocation (from `../node_modules/react-native`)
+  - React/RCTImage (from `../node_modules/react-native`)
+  - React/RCTLinkingIOS (from `../node_modules/react-native`)
+  - React/RCTNetwork (from `../node_modules/react-native`)
+  - React/RCTPushNotification (from `../node_modules/react-native`)
+  - React/RCTSettings (from `../node_modules/react-native`)
+  - React/RCTText (from `../node_modules/react-native`)
+  - React/RCTVibration (from `../node_modules/react-native`)
+  - React/RCTWebSocket (from `../node_modules/react-native`)
+  - RNFirebase (from `../node_modules/react-native-firebase/ios`)
+  - yoga (from `../node_modules/react-native/ReactCommon/yoga`)
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - boost-for-react-native
+    - Crashlytics
+    - Fabric
+    - Firebase
+    - FirebaseAnalytics
+    - FirebaseCore
+    - FirebaseCoreDiagnostics
+    - FirebaseCoreDiagnosticsInterop
+    - FirebaseInstanceID
+    - GoogleAppMeasurement
+    - GoogleDataTransport
+    - GoogleDataTransportCCTSupport
+    - GoogleUtilities
+    - nanopb
 
 EXTERNAL SOURCES:
   cocoa_grinwallet:
     :git: https://github.com/gottstech/cocoa_grinwallet.git
     :tag: v1.0.4
+  DoubleConversion:
+    :podspec: "../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec"
+  Folly:
+    :podspec: "../node_modules/react-native/third-party-podspecs/Folly.podspec"
+  glog:
+    :podspec: "../node_modules/react-native/third-party-podspecs/glog.podspec"
+  React:
+    :path: "../node_modules/react-native"
+  RNFirebase:
+    :path: "../node_modules/react-native-firebase/ios"
+  yoga:
+    :path: "../node_modules/react-native/ReactCommon/yoga"
 
 CHECKOUT OPTIONS:
   cocoa_grinwallet:
@@ -15,8 +205,28 @@ CHECKOUT OPTIONS:
     :tag: v1.0.4
 
 SPEC CHECKSUMS:
+  boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   cocoa_grinwallet: 7563b6523b41b2e4190984f806a52166286d0358
+  Crashlytics: 540b7e5f5da5a042647227a5e3ac51d85eed06df
+  DoubleConversion: bb338842f62ab1d708ceb63ec3d999f0f3d98ecd
+  Fabric: 706c8b8098fff96c33c0db69cbf81f9c551d0d74
+  Firebase: 5e6b7b12bf9adb90986688edc06b156c37e109cd
+  FirebaseAnalytics: 0e3ecff2c5d86070f7d4325e21f1edabfbd558dc
+  FirebaseCore: 064c2dd92a8ca5974bbdcb080df9921e46bd34cd
+  FirebaseCoreDiagnostics: af29e43048607588c050889d19204f4d7b758c9f
+  FirebaseCoreDiagnosticsInterop: 6829da2b8d1fc795ff1bd99df751d3788035d2cb
+  FirebaseInstanceID: 550df9be1f99f751d8fcde3ac342a1e21a0e6c42
+  Folly: de497beb10f102453a1afa9edbf8cf8a251890de
+  glog: aefd1eb5dda2ab95ba0938556f34b98e2da3a60d
+  GoogleAppMeasurement: 434cc7be25e71dc04b8d0e3079125127b330e84a
+  GoogleDataTransport: f6fe28f43e3a300736854260961ad485b473edc5
+  GoogleDataTransportCCTSupport: 862418a8cdda520c4dd4af83a756d04efe4a6990
+  GoogleUtilities: f895fde57977df4e0233edda0dbeac490e3703b6
+  nanopb: 2901f78ea1b7b4015c860c2fdd1ea2fee1a18d48
+  React: b52fdb80565505b7e4592b313a38868f5df51641
+  RNFirebase: ac0de8b24c6f91ae9459575491ed6a77327619c6
+  yoga: 1a492113f66a35e9e583bb0434f4b8cc668dd839
 
-PODFILE CHECKSUM: 90221ee6fb75c49b4cf7a6e36b3cda3b8422799a
+PODFILE CHECKSUM: 992e90956abb95e03f3ddab5dc056e114073a878
 
 COCOAPODS: 1.6.0.beta.2

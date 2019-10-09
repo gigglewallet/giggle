@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, View, Image } from 'react-native'
+import { Text, View, Image, ScrollView, RefreshControl, Keyboard } from 'react-native'
 import { Colors, Fonts, Metrics, Images } from '../Themes'
 import styled from 'styled-components/native'
 import styles from './Styles/LaunchScreenStyles'
@@ -14,77 +14,91 @@ class Home extends Component {
   private = {
     timeoutId: 0
   }
-  componentWillReceiveProps = (nextProps) => {
-    if (this.props.isEnableWallet && this.props.isEnableWallet !== nextProps.isEnableWallet) {
-      if (this.props.wallets.length >= 1) {
-        this.props.getBalance(this.props.wallets[0].avatarCode, this.props.wallets[0].password)
-      }
-    }
-  }
+
   componentWillMount = () => {
-    if (this.props.wallets.length >= 1 && this.props.isEnableWallet) {
-      this.props.getBalance(this.props.wallets[0].avatarCode, this.props.wallets[0].password)
+    if (this.props.currentWallet) {
+      this.props.getBalance(this.props.currentWallet.avatarCode, this.props.currentWallet.password)
+      this.props.listen()
     }
-    this.props.listen()
+
+    
   }
   onPressHint = () => {
     const { navigation } = this.props
     navigation.navigate('BackUpReminder')
   }
 
-  render () {
-    const { scrollToTransactions, scrollToContracts, navigation, isBackupPhrase, wallets, updateWalletStatusRedux, isOnline } = this.props
-    const { firstNum, endNum } = transferBalance(wallets[0].balance)
-    return (
-      <View style={styles.mainContainer} >
-        <HomeHeader onPressLeftBtn={scrollToTransactions} onPressRightBtn={scrollToContracts} count={0} />
+  onRefresh = () => {
+    this.props.getBalance(this.props.currentWallet.avatarCode, this.props.currentWallet.password, false, true)
+  }
 
+  componentDidMount = () => {
+    Keyboard.dismiss()
+  }
+  render () {
+    const { scrollToTransactions, scrollToContracts, navigation, isBackupPhrase, currentWallet, updateWalletStatusRedux, isOnline } = this.props
+    const { firstNum, endNum } = transferBalance(currentWallet.balance)
+    return (
+      <View style={styles.mainContainer}>
+        <HomeHeader onPressLeftBtn={scrollToTransactions} onPressRightBtn={scrollToContracts} count={0} />
         {isBackupPhrase ? null
           : <HintContainer onPress={this.onPressHint}>
             <Text style={{ ...Fonts.style.h8, color: Colors.text }}>{I18n.t('backupRecoveryPhraseNow')}</Text>
             <Image source={Images.icReceiveConfirmed} />
           </HintContainer >
         }
-        <TopContainer>
-          <Text style={{ ...Fonts.style.h8, color: Colors.gary2 }}>Balance</Text>
-          <BalanceView>
-            <Text style={{ ...Fonts.style.h5, color: Colors.text, marginTop: 7 }}>ツ</Text>
-            <Text style={{ ...Fonts.style.h0, color: Colors.text, marginLeft: 5 }}>{firstNum}</Text>
-            {
-              endNum === -1 ? null
-                : <Text style={{ ...Fonts.style.h5, color: Colors.text, marginTop: 18 }}>{endNum}</Text>
-            }
-          </BalanceView>
-          {/*
+        <ScrollView
+          contentContainerStyle={styles.homeScrollView}
+          refreshControl={
+            <RefreshControl
+              refreshing={this.props.homeRefreshing}
+              onRefresh={this.onRefresh}
+            />
+          }
+        >
+          <TopContainer>
+            <Text style={{ ...Fonts.style.h8, color: Colors.gary2 }}>Balance</Text>
+            <BalanceView>
+              <Text style={{ ...Fonts.style.h5, color: Colors.text, marginTop: 7 }}>ツ</Text>
+              <Text style={{ ...Fonts.style.h0, color: Colors.text, marginLeft: 5 }}>{firstNum}</Text>
+              {
+                endNum === -1 ? null
+                  : <Text style={{ ...Fonts.style.h5, color: Colors.text, marginTop: 18 }}>{endNum}</Text>
+              }
+            </BalanceView>
+            {/*
           <DollarView>
             <Text style={{ ...Fonts.style.h9, color: Colors.gary, marginTop: 2 }}>$</Text>
             <Text style={{ ...Fonts.style.h5, color: Colors.gary, marginLeft: 4 }}>3,496.06</Text>
           </DollarView>
           */}
-        </TopContainer>
-        <BottomContainer >
-          <BottomTopView>
-            <MyAvatarsBtn onPress={() => { navigation.navigate('MyAvatars') }} />
-            <SettingBtn onPress={() => { navigation.navigate('Settings') }} />
-          </BottomTopView>
-          <BottomMiddleView >
-            <AskBtn onPress={() => {
-              if (this.private.timeoutId === 0) {
-                updateWalletStatusRedux('isPressedAskBtn', true)
-                this.private.timeoutId = setTimeout(() => {
-                  this.private.timeoutId = 0
-                  updateWalletStatusRedux('isPressedAskBtn', false)
-                }, 2500)
-              }
-              // navigation.navigate('AskPickPage')}
-            }} />
-            <SendBtn onPress={() => navigation.navigate('AskPickPage', { type: 'send' })} />
-          </BottomMiddleView>
-          <BottomDownView>
-            <OnlineStatus status={isOnline} />
-          </BottomDownView>
-        </BottomContainer>
-      </View>
+          </TopContainer>
+          <BottomContainer >
+            <BottomTopView>
+              <MyAvatarsBtn onPress={() => {
+                navigation.navigate('MyAvatars')
+              }} />
+              <SettingBtn onPress={() => { navigation.navigate('Settings') }} />
+            </BottomTopView>
+            <BottomMiddleView >
+              <AskBtn onPress={() => {
+                if (this.private.timeoutId === 0) {
+                  updateWalletStatusRedux('isPressedAskBtn', true)
+                  this.private.timeoutId = setTimeout(() => {
+                    this.private.timeoutId = 0
+                    updateWalletStatusRedux('isPressedAskBtn', false)
+                  }, 2500)
+                }
+                // navigation.navigate('AskPickPage')}
+              }} />
+              <SendBtn onPress={() => navigation.navigate('AskPickPage', { type: 'send' })} />
+            </BottomMiddleView>
+            <BottomDownView>
+              <OnlineStatus status={isOnline} />
+            </BottomDownView>
+          </BottomContainer>
+        </ScrollView >
+      </View >
     )
   }
 }
@@ -93,13 +107,14 @@ const mapStateToProps = state => {
   return {
     isBackupPhrase: state.giggle.isBackupPhrase,
     isEnableWallet: state.giggle.isEnableWallet,
-    wallets: state.giggle.wallets,
-    isOnline: state.giggle.isOnline
+    currentWallet: state.giggle.currentWallet,
+    isOnline: state.walletStatus.isOnline,
+    homeRefreshing: state.walletStatus.homeRefreshing
   }
 }
 const mapDispatchToProps = (dispatch) => {
   return {
-    getBalance: (avatarCode, password) => dispatch(GiggleActions.getBalance(avatarCode, password)),
+    getBalance: (avatarCode, password, isProcessLoading, isHomeRefresh) => dispatch(GiggleActions.getBalance(avatarCode, password, isProcessLoading, isHomeRefresh)),
     updateWalletStatusRedux: (key, value) => dispatch(WalletStatusActions.updateWalletStatusRedux(key, value)),
     listen: () => dispatch(GiggleActions.listen())
   }

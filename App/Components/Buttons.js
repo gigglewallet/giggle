@@ -1,10 +1,13 @@
-import React from 'react'
+import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import { Text, Image } from 'react-native'
 import { Images, Colors, Fonts, Metrics } from '../Themes'
 import styled from 'styled-components/native'
 import I18n from 'react-native-i18n'
 import SwitchToggle from 'react-native-switch-toggle'
+
+import checkbox from '../Images/Assets/Checkbox.png'
+import checkboxChecked from '../Images/Assets/Checkbox_checked.png'
 
 const MyAvatarsView = styled.TouchableOpacity`
   flex-direction:row
@@ -436,3 +439,60 @@ export const AddToContactsBtn = ({ children, onPress, marginLeft }) => {
     </AddToContactsView>
   )
 }
+
+export const PhraseItem = ({ item, CheckState, checkEvt }) => { 
+  const [img, setImg] = useState(checkbox)
+
+  return (
+    <ItemContainer>
+      <ItemIconContainer onPress={() => {                 
+          (CheckState) ? setImg(checkboxChecked) : setImg(checkbox)
+          checkEvt(!CheckState)
+        }}>
+        <Image source={img} />
+      </ItemIconContainer>
+      <ItemTextContainer>
+        <Text style={{ ...Fonts.style.h7, color: Colors.gary2 }}>
+          {item}
+        </Text>
+      </ItemTextContainer>
+    </ItemContainer>
+  )
+}
+
+export const RenderItem = ({ item, CheckState, checkEvt }) => { 
+  const [img, setImg] = useState(checkbox)
+
+  return (
+    <ItemContainer>
+      <ItemIconContainer onPress={() => {                 
+          (!CheckState) ? setImg(checkboxChecked) : setImg(checkbox)
+          checkEvt(!CheckState)
+        }}>
+        <Image source={img} />
+      </ItemIconContainer>
+      <ItemTextContainer>
+        <Text style={{ ...Fonts.style.h7, color: Colors.gary2 }}>
+          {item}
+        </Text>
+      </ItemTextContainer>
+    </ItemContainer>
+  )
+}
+
+const ItemContainer = styled.View`
+  flex-direction: row
+  width: ${Metrics.screenWidth - 48}
+  align-items: center  
+  align-content: center  
+  margin-top:24
+`
+
+const ItemIconContainer = styled.TouchableOpacity`  
+
+`
+
+const ItemTextContainer = styled.View`  
+  margin-left: 24
+  margin-right: 48
+`

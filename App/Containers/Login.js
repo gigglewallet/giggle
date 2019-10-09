@@ -1,7 +1,5 @@
 import React, { Component } from 'react'
 import { AppRegistry, AlertIOS, Text, Image, View, Keyboard } from 'react-native'
-import { TouchIdSwitchBtn, ConfirmBtn } from '../Components/Buttons'
-import { StepUI } from '../Components/UI'
 import { Images, Colors, Fonts } from '../Themes'
 import styled from 'styled-components/native'
 import I18n from 'react-native-i18n'
@@ -18,7 +16,6 @@ class SetSpendingPin extends Component {
   constructor (props) {
     super(props)
     this.state = { isFocused: [], giggleMask: [], pin: [] }
-    this.enablePinTouchId = this.enablePinTouchId.bind(this)
     this.saveSpendingPin = this.saveSpendingPin.bind(this)
     this.private = {}
     this.private.pin = []
@@ -57,7 +54,9 @@ class SetSpendingPin extends Component {
       this.setState({ isAgree: false })
     } else {
       this.private.pin[6].clearFocus
-      this.setState({ isAgree: true })
+      this.setState({ isAgree: true }, function () {
+        this.saveSpendingPin()
+      })
       Keyboard.dismiss()
     }
   }
@@ -86,60 +85,60 @@ class SetSpendingPin extends Component {
     }
   }
 
-  enablePinTouchId () {
-    const { enablePinTouchId, isEnablePinTouchId } = this.props
-
+  componentDidMount () {
+    const { isEnablePinTouchId, navigation, updateWalletStatusRedux } = this.props
     if (isEnablePinTouchId) {
-      enablePinTouchId(false)
-      return
+      TouchID.authenticate()
+        .then(success => {
+          if (success) navigation.navigate('SwiperHome')
+        })
+        .catch(error => {
+          console.log(error)
+          this.private.pin[1].focus()
+          AlertIOS.alert('Authenticated Failed')          
+        })
     }
 
-    TouchID.isSupported()
-      .then(authenticate(enablePinTouchId, isEnablePinTouchId))
-      .then(success => {
-        (success == 'FaceID' || success == 'TouchID') ? enablePinTouchId(true) : enablePinTouchId(false)
-      })
-      .catch(error => {
-        AlertIOS.alert(error.message)
-      })
+    updateWalletStatusRedux('isAvatarModalVisible', false)
+    this.props.updateWalletStatusRedux('isAvatarModalVisible', false)
+
+    //this.private.pin[1].focus()
   }
 
   async saveSpendingPin () {
-    const { navigation, currentWallet, walletInit, avatarCode, password, updateWalletStatusRedux } = this.props
+    const { navigation } = this.props
     const { pin } = this.state
+
     let pinPassword = ''
     pin.map((key, idx) => {
       pinPassword += pin[idx]['key'].toString()
     })
 
-    await updateWalletStatusRedux('tempPin', pinPassword)
-    // Store the credentials
-    //
-
     try {
       const credentials = await Keychain.getGenericPassword()
-      if (credentials) {
+
+      console.log(credentials)
+      if (credentials.password === pinPassword) {
         console.log('Credentials successfully loaded for user ' + credentials.username)
+        navigation.navigate('SwiperHome')
       } else {
         console.log('No credentials stored')
+        this.setState({ pin: ['', '', '', '', '', ''], giggleMask: [] })
+        this.private.pin[1].focus()
       }
     } catch (error) {
       console.log('Keychain couldn\'t be accessed!', error)
     }
-    await Keychain.resetGenericPassword()
 
-    await walletInit(avatarCode, password, false)
     
-    navigation.navigate('SignUpComplete')
   }
 
   render () {
-    const { isEnablePinTouchId } = this.props
-    let { isAgree, isFocused, giggleMask, pin } = this.state
+    let { isFocused, giggleMask, pin } = this.state
     return (
       <View style={styles.mainContainer} >
         <TopContainer>
-          <Text style={{ color: Colors.gary2, ...Fonts.style.description }}>Spending PIN ensures <Text style={{ color: Colors.text }}>only you</Text> can spend your funds.</Text>
+          <Text style={{ color: Colors.gary2, ...Fonts.style.description }}>Enter your PIN code.</Text>
           <SpendingPinContainer>
             <SpendingPin
               inputRef={ref => this.private.pin['1'] = ref}
@@ -215,19 +214,9 @@ class SetSpendingPin extends Component {
 
           </SpendingPinContainer>
           <View style={{ display: 'flex' }} />
-          <TouchIdSwitchBtn onPress={this.enablePinTouchId} switchText={I18n.t('enableTouchId')} switchOn={isEnablePinTouchId} />
         </TopContainer>
         <BottomContainer>
-          <View style={{ width: '100%', alignItems: 'flex-end', justifyContent: 'space-between', flexDirection: 'row' }}>
-            <View>
-              <StepUI nowStep={2} totalSteps={2} />
-            </View>
-            <View>
-              <ConfirmBtn disabled={!isAgree} onPress={this.saveSpendingPin}>
-                {I18n.t('confirm')}
-              </ConfirmBtn>
-            </View>
-          </View>
+          
         </BottomContainer>
 
       </View>
@@ -239,10 +228,10 @@ class SetSpendingPin extends Component {
 const mapStateToProps = (state) => {
   return {
     isEnablePinTouchId: state.giggle.isEnablePinTouchId,
-    // password: state.giggle.wallets[0].password,
     currentWallet: state.giggle.currentWallet,
     password: state.walletStatus.tempPassword,
-    avatarCode: state.walletStatus.tempAvatarCode
+    avatarCode: state.walletStatus.tempAvatarCode,
+    isAvatarModalVisible: state.walletStatus.isAvatarModalVisible
 
   }
 }
@@ -257,19 +246,6 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(SetSpendingPin)
-
-function authenticate (enablePinTouchId, isEnablePinTouchId) {
-  return TouchID.authenticate()
-    .then(success => {
-      enablePinTouchId(true)
-      AlertIOS.alert('Authenticated Successfully')
-    })
-    .catch(error => {
-      console.log(error)
-      enablePinTouchId(false)
-      AlertIOS.alert(error.message)
-    })
-}
 
 AppRegistry.registerComponent('SetSpendingPin', () => SetSpendingPin)
 

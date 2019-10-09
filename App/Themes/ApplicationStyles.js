@@ -12,6 +12,7 @@ const ApplicationStyles = {
   screen: {
     mainContainer: {
       flex: 1,
+      flexDirection: 'column',
       backgroundColor: Colors.background,
       justifyContent: 'flex-start',
       alignItems: 'center',

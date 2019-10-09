@@ -19,7 +19,7 @@ export default class BackUpFinish extends Component {
 
         <View style={styles.bottomContainer}>
           <LightBtn onPress={() => {
-            navigation.navigate('LaunchScreen')
+            navigation.navigate('SwiperHome')
           }}>
             {I18n.t('backToHome')}
           </LightBtn>

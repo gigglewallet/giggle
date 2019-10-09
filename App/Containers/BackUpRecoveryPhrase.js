@@ -3,7 +3,7 @@ import { Text, View, TouchableOpacity, ScrollView } from 'react-native'
 import { NextBtn } from '../Components/Buttons'
 import { PhraseItemText } from '../Components/TextFields'
 import { StepUI } from '../Components/UI'
-import { Colors, Fonts } from '../Themes'
+import { Colors, Fonts, Metrics } from '../Themes'
 import styled from 'styled-components/native'
 import I18n from 'react-native-i18n'
 import { Phrase } from '../Config/Wordlist_en'
@@ -11,7 +11,7 @@ import { connect } from 'react-redux'
 // Styles
 import styles from './Styles/LaunchScreenStyles'
 import GiggleActions from '../Redux/GiggleRedux'
-
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 class RecoveryPhrase extends Component {
   constructor (props) {
     super(props)
@@ -19,6 +19,18 @@ class RecoveryPhrase extends Component {
   }
 
   componentDidMount = () => {
+    const { restorePhrase } = this.props
+    if (restorePhrase.length === 12) {
+      this.setState({
+        switchAmount: 12,
+        containerHeight: 250
+      })
+    } else {
+      this.setState({
+        switchAmount: 24,
+        containerHeight: 500
+      })
+    }
   }
 
   switchKeywordsAmount = () => {
@@ -49,19 +61,16 @@ class RecoveryPhrase extends Component {
           <View>
             <Text style={{ justifyContent: 'center', color: Colors.gary2, ...Fonts.style.h8 }}>{I18n.t('writeDownEachWordInTheCorrectOrder')}</Text>
           </View>
-          <ScrollView style={{ flex: 1 }}>
-            <View>
-              <PhraseContainer height={containerHeight}>
-                <View style={{ backgroundColor: 'transparent' }} />
-                {PhraseLists}
-              </PhraseContainer>
-            </View>
-          </ScrollView>
-          <TouchableOpacity onPress={this.switchKeywordsAmount} style={{ marginLeft: 80 }}>
-            <Text style={{ marginTop: 16, marginLeft: 'auto', justifyContent: 'center', color: Colors.darkText, ...Fonts.style.h9 }}>
-              {I18n.t('switchTo12WordRecoveryPhrase')}
-            </Text>
-          </TouchableOpacity>
+          <KeyboardAwareScrollView keyboardShouldPersistTaps='handled'>
+            <PhraseContainer height={containerHeight}>
+              {Metrics.screenWidth > 320
+                ? PhraseLists
+                : <ScrollView>
+                  {PhraseLists}
+                </ScrollView>
+              }
+            </PhraseContainer>
+          </KeyboardAwareScrollView>
         </TopContainer>
         <BottomContainer>
           <View style={{ width: '100%', alignItems: 'flex-end', justifyContent: 'space-between', flexDirection: 'row' }}>
@@ -100,14 +109,18 @@ const PhraseContainer = styled.View`
   border-radius: 12
   background-color: #2b2b44
   flex-wrap: wrap
-  width: 327
+  width: ${Metrics.screenWidth > 320 ? 327 : 180}
+  flex-direction:row; 
   height: ${props => props.height || 256}
+  flex:1 
 `
 
 const TopContainer = styled.View`
   margin-left:24
   margin-right:24
   align-items:center  
+  height:100%
+  width: 100%
   flex: 1 
 `
 

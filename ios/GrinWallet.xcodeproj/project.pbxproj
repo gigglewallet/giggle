@@ -39,25 +39,28 @@
 		2D16E6881FA4F8E400B85C8A /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D16E6891FA4F8E400B85C8A /* libReact.a */; };
 		2DCD954D1E0B4F2C00145EB5 /* GrinWalletTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* GrinWalletTests.m */; };
 		2DF0FFEE2056DD460020B375 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DAD3EA31DF850E9000B6D8A /* libReact.a */; };
+		37B8F5216432707A33E52CF5 /* libPods-GrinWalletTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F1EF240429DFC5004375233 /* libPods-GrinWalletTests.a */; };
 		3ABB867631FD4A14826AF4C9 /* libReactNativeConfig-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 81BF38C97EE44DACB628AC85 /* libReactNativeConfig-tvOS.a */; };
 		3D9D945890054165B1B4AD18 /* libSplashScreen.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5485B6B95E964A56AE204CEB /* libSplashScreen.a */; };
-		3E0DA78E22C91CAA0048AEA8 /* GrinBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E0DA75F22C91CAA0048AEA8 /* GrinBridge.m */; };
-		3E0DA79122C91CC20048AEA8 /* GrinBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E0DA79022C91CC20048AEA8 /* GrinBridge.swift */; };
 		3E45E63822DF88AC00CE9DB0 /* libTouchID.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E6F74D1D22DF6E25007AD443 /* libTouchID.a */; };
 		3E45E67222DF892C00CE9DB0 /* libRNKeychain.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E45E66F22DF891000CE9DB0 /* libRNKeychain.a */; };
 		3E45E67922DF897A00CE9DB0 /* libKCKeepAwake.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E45E67822DF896A00CE9DB0 /* libKCKeepAwake.a */; };
-		3E49EE5F231BFEDE00B6696E /* libresolv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E49EE2A231BFEDE00B6696E /* libresolv.tbd */; };
+		3E533FB4230F0AE6004A66EC /* GrinBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E0DA79022C91CC20048AEA8 /* GrinBridge.swift */; };
+		3E533FB5230F0AEB004A66EC /* GrinBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E0DA75F22C91CAA0048AEA8 /* GrinBridge.m */; };
+		3E8777BB231064870096E457 /* libresolv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 3E8777BA231064870096E457 /* libresolv.tbd */; };
 		3ED1E4E122C906D300ED0ED2 /* libRNFetchBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3ED1E4E022C9069700ED0ED2 /* libRNFetchBlob.a */; };
+		3EDACC8D234E20040035BE99 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3EDACC8C234E20040035BE99 /* GoogleService-Info.plist */; };
 		3EE4395322CFC2C9009DABB5 /* libRNSVG.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3EE4395022CFC195009DABB5 /* libRNSVG.a */; };
-		4578AE80772A8F5D2712285A /* libPods-GrinWallet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B301EB668676A1975412CCA2 /* libPods-GrinWallet.a */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
-		9DB2C9FFE8D129C889FF1502 /* libPods-GrinWallet-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 43D436188BFB70BB6E991D98 /* libPods-GrinWallet-tvOSTests.a */; };
-		AAB764D958EA48662EFD1639 /* libPods-GrinWalletTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BA3AF5B09582B5AE0AB61CAA /* libPods-GrinWalletTests.a */; };
+		8ADA0307863312CD3AAB098E /* libPods-GrinWallet-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FDAA2EC8F02C8CF04A49BFE3 /* libPods-GrinWallet-tvOSTests.a */; };
+		9E9AF7E32F15852D9F64F7CC /* libPods-GrinWallet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FFBF4764BC6804F7DACB7FA3 /* libPods-GrinWallet.a */; };
 		ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ADBDB9271DFEBF0700ED6528 /* libRCTBlob.a */; };
 		ADC4E440F83D407E805A9E46 /* playRegular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 66D4D01743E04EFB8D42987D /* playRegular.ttf */; };
 		CDC71209F2E04DF6BA22326B /* libRNI18n-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2D8F453E31A443268A323F24 /* libRNI18n-tvOS.a */; };
 		D106FC2EDC3F4E789BAA2DB7 /* libRNGestureHandler.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 945DC26E68B7492CAB727235 /* libRNGestureHandler.a */; };
 		E38C73A7BF3D4DC8AAD07722 /* libRNDeviceInfo-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A326F6B0CB5341B3A088A6CE /* libRNDeviceInfo-tvOS.a */; };
+		E63756BD234D024E001183FC /* libRCTCameraRoll.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E637568B234CFDA0001183FC /* libRCTCameraRoll.a */; };
+		E67B5088654944639932D046 /* libRNFirebase.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 44E98DF75B654EEF905FFBF9 /* libRNFirebase.a */; };
 		E8C1AED6B277480C9A0661EB /* libReactNativeConfig.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C2B6E4DA4C841328EDF8509 /* libReactNativeConfig.a */; };
 		ED297163215061F000B7C4FE /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED297162215061F000B7C4FE /* JavaScriptCore.framework */; };
 		ED2971652150620600B7C4FE /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ED2971642150620600B7C4FE /* JavaScriptCore.framework */; };
@@ -316,6 +319,13 @@
 			remoteGlobalIDString = 94DDAC5C1F3D024300EED511;
 			remoteInfo = "RNSVG-tvOS";
 		};
+		3EFBD0D0234CCD2A000CAD2B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 23409199FA574CE99C2415A6 /* RNFirebase.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 134814201AA4EA6300B7C361;
+			remoteInfo = RNFirebase;
+		};
 		5E9157321DD0AC6500FF2AA8 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */;
@@ -350,6 +360,13 @@
 			proxyType = 2;
 			remoteGlobalIDString = 358F4ED71D1E81A9004DF814;
 			remoteInfo = RCTBlob;
+		};
+		E637568A234CFDA0001183FC /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E6375680234CFDA0001183FC /* RCTCameraRoll.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 58B5115D1A9E6B3D00147676;
+			remoteInfo = RCTCameraRoll;
 		};
 		E6D64E3C22C10389008E52C2 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -468,6 +485,7 @@
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = GrinWallet/main.m; sourceTree = "<group>"; };
 		146833FF1AC3E56700842450 /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "../node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
 		20925D8D8E0E41F2E642873D /* Pods-GrinWalletTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GrinWalletTests.debug.xcconfig"; path = "Target Support Files/Pods-GrinWalletTests/Pods-GrinWalletTests.debug.xcconfig"; sourceTree = "<group>"; };
+		23409199FA574CE99C2415A6 /* RNFirebase.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNFirebase.xcodeproj; path = "../node_modules/react-native-firebase/ios/RNFirebase.xcodeproj"; sourceTree = "<group>"; };
 		2D02E47B1E0B4A5D006451C7 /* GrinWallet-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "GrinWallet-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E4901E0B4A5D006451C7 /* GrinWallet-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "GrinWallet-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D16E6891FA4F8E400B85C8A /* libReact.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; path = libReact.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -478,13 +496,15 @@
 		3E0DA79022C91CC20048AEA8 /* GrinBridge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GrinBridge.swift; path = GrinWallet/GrinBridge.swift; sourceTree = "<group>"; };
 		3E45E66922DF891000CE9DB0 /* RNKeychain.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNKeychain.xcodeproj; path = "../node_modules/react-native-keychain/RNKeychain.xcodeproj"; sourceTree = "<group>"; };
 		3E45E67322DF896A00CE9DB0 /* KCKeepAwake.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = KCKeepAwake.xcodeproj; path = "../node_modules/react-native-keep-awake/ios/KCKeepAwake.xcodeproj"; sourceTree = "<group>"; };
-		3E49EE2A231BFEDE00B6696E /* libresolv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libresolv.tbd; path = usr/lib/libresolv.tbd; sourceTree = SDKROOT; };
+		3E8777BA231064870096E457 /* libresolv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libresolv.tbd; path = usr/lib/libresolv.tbd; sourceTree = SDKROOT; };
 		3ED1E4DB22C9069700ED0ED2 /* RNFetchBlob.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNFetchBlob.xcodeproj; path = "../node_modules/rn-fetch-blob/ios/RNFetchBlob.xcodeproj"; sourceTree = "<group>"; };
+		3EDACC8C234E20040035BE99 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		3EE4394A22CFC195009DABB5 /* RNSVG.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNSVG.xcodeproj; path = "../node_modules/react-native-svg/ios/RNSVG.xcodeproj"; sourceTree = "<group>"; };
-		43D436188BFB70BB6E991D98 /* libPods-GrinWallet-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-GrinWallet-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		44E98DF75B654EEF905FFBF9 /* libRNFirebase.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNFirebase.a; sourceTree = "<group>"; };
 		4BF2DE4DE32078DB5E6C5300 /* Pods-GrinWallet.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GrinWallet.debug.xcconfig"; path = "Pods/Target Support Files/Pods-GrinWallet/Pods-GrinWallet.debug.xcconfig"; sourceTree = "<group>"; };
 		5485B6B95E964A56AE204CEB /* libSplashScreen.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libSplashScreen.a; sourceTree = "<group>"; };
 		5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTAnimation.xcodeproj; path = "../node_modules/react-native/Libraries/NativeAnimation/RCTAnimation.xcodeproj"; sourceTree = "<group>"; };
+		5F1EF240429DFC5004375233 /* libPods-GrinWalletTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-GrinWalletTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		66D4D01743E04EFB8D42987D /* playRegular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = playRegular.ttf; path = ../assets/fonts/playRegular.ttf; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		81BF38C97EE44DACB628AC85 /* libReactNativeConfig-tvOS.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = "libReactNativeConfig-tvOS.a"; sourceTree = "<group>"; };
@@ -501,17 +521,18 @@
 		AC12A541BC0A2D87D3864571 /* Pods-GrinWallet.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GrinWallet.release.xcconfig"; path = "Target Support Files/Pods-GrinWallet/Pods-GrinWallet.release.xcconfig"; sourceTree = "<group>"; };
 		AC4B69CCE2BD4A0184890616 /* RNDeviceInfo.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNDeviceInfo.xcodeproj; path = "../node_modules/react-native-device-info/ios/RNDeviceInfo.xcodeproj"; sourceTree = "<group>"; };
 		ADBDB91F1DFEBF0600ED6528 /* RCTBlob.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTBlob.xcodeproj; path = "../node_modules/react-native/Libraries/Blob/RCTBlob.xcodeproj"; sourceTree = "<group>"; };
-		B301EB668676A1975412CCA2 /* libPods-GrinWallet.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-GrinWallet.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B46E52FE8BB248AA94D33277 /* SplashScreen.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = SplashScreen.xcodeproj; path = "../node_modules/react-native-splash-screen/ios/SplashScreen.xcodeproj"; sourceTree = "<group>"; };
-		BA3AF5B09582B5AE0AB61CAA /* libPods-GrinWalletTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-GrinWalletTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BF75E2D690494AD287A06E1C /* RNI18n.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNI18n.xcodeproj; path = "../node_modules/react-native-i18n/ios/RNI18n.xcodeproj"; sourceTree = "<group>"; };
 		CF212CE200234C5DA102C05D /* libRNI18n.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNI18n.a; sourceTree = "<group>"; };
 		E032F5E5B78E1E3990EFD55E /* Pods-GrinWalletTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GrinWalletTests.release.xcconfig"; path = "Target Support Files/Pods-GrinWalletTests/Pods-GrinWalletTests.release.xcconfig"; sourceTree = "<group>"; };
 		E2DD6D99B45E8FA373961143 /* Pods-GrinWalletTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GrinWalletTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-GrinWalletTests/Pods-GrinWalletTests.debug.xcconfig"; sourceTree = "<group>"; };
+		E6375680234CFDA0001183FC /* RCTCameraRoll.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTCameraRoll.xcodeproj; path = "../node_modules/react-native/Libraries/CameraRoll/RCTCameraRoll.xcodeproj"; sourceTree = "<group>"; };
 		E6F74D1822DF6E25007AD443 /* TouchID.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TouchID.xcodeproj; path = "../node_modules/react-native-touch-id/TouchID.xcodeproj"; sourceTree = "<group>"; };
 		E85A7919A0B044FEAA8D80E3 /* playBold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = playBold.ttf; path = ../assets/fonts/playBold.ttf; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
+		FDAA2EC8F02C8CF04A49BFE3 /* libPods-GrinWallet-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-GrinWallet-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		FFBF4764BC6804F7DACB7FA3 /* libPods-GrinWallet.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-GrinWallet.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -520,7 +541,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				140ED2AC1D01E1AD002B40FF /* libReact.a in Frameworks */,
-				AAB764D958EA48662EFD1639 /* libPods-GrinWalletTests.a in Frameworks */,
+				37B8F5216432707A33E52CF5 /* libPods-GrinWalletTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -528,7 +549,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3E49EE5F231BFEDE00B6696E /* libresolv.tbd in Frameworks */,
+				E63756BD234D024E001183FC /* libRCTCameraRoll.a in Frameworks */,
+				3E8777BB231064870096E457 /* libresolv.tbd in Frameworks */,
 				3E45E67922DF897A00CE9DB0 /* libKCKeepAwake.a in Frameworks */,
 				3E45E67222DF892C00CE9DB0 /* libRNKeychain.a in Frameworks */,
 				3E45E63822DF88AC00CE9DB0 /* libTouchID.a in Frameworks */,
@@ -552,7 +574,8 @@
 				E8C1AED6B277480C9A0661EB /* libReactNativeConfig.a in Frameworks */,
 				1581EBDA936E49508F784A10 /* libRNDeviceInfo.a in Frameworks */,
 				3D9D945890054165B1B4AD18 /* libSplashScreen.a in Frameworks */,
-				4578AE80772A8F5D2712285A /* libPods-GrinWallet.a in Frameworks */,
+				E67B5088654944639932D046 /* libRNFirebase.a in Frameworks */,
+				9E9AF7E32F15852D9F64F7CC /* libPods-GrinWallet.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -580,7 +603,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2DF0FFEE2056DD460020B375 /* libReact.a in Frameworks */,
-				9DB2C9FFE8D129C889FF1502 /* libPods-GrinWallet-tvOSTests.a in Frameworks */,
+				8ADA0307863312CD3AAB098E /* libPods-GrinWallet-tvOSTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -669,6 +692,7 @@
 		13B07FAE1A68108700A75B9A /* GrinWallet */ = {
 			isa = PBXGroup;
 			children = (
+				3EDACC8C234E20040035BE99 /* GoogleService-Info.plist */,
 				3E0DA79022C91CC20048AEA8 /* GrinBridge.swift */,
 				3E0DA75F22C91CAA0048AEA8 /* GrinBridge.m */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
@@ -709,13 +733,13 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				3E49EE2A231BFEDE00B6696E /* libresolv.tbd */,
+				3E8777BA231064870096E457 /* libresolv.tbd */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				ED2971642150620600B7C4FE /* JavaScriptCore.framework */,
 				2D16E6891FA4F8E400B85C8A /* libReact.a */,
-				B301EB668676A1975412CCA2 /* libPods-GrinWallet.a */,
-				43D436188BFB70BB6E991D98 /* libPods-GrinWallet-tvOSTests.a */,
-				BA3AF5B09582B5AE0AB61CAA /* libPods-GrinWalletTests.a */,
+				FFBF4764BC6804F7DACB7FA3 /* libPods-GrinWallet.a */,
+				FDAA2EC8F02C8CF04A49BFE3 /* libPods-GrinWallet-tvOSTests.a */,
+				5F1EF240429DFC5004375233 /* libPods-GrinWalletTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -754,6 +778,14 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		3EFBD0CD234CCD2A000CAD2B /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				3EFBD0D1234CCD2A000CAD2B /* libRNFirebase.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		5E91572E1DD0AC6500FF2AA8 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -775,6 +807,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				E6375680234CFDA0001183FC /* RCTCameraRoll.xcodeproj */,
 				3E45E67322DF896A00CE9DB0 /* KCKeepAwake.xcodeproj */,
 				3E45E66922DF891000CE9DB0 /* RNKeychain.xcodeproj */,
 				E6F74D1822DF6E25007AD443 /* TouchID.xcodeproj */,
@@ -797,6 +830,7 @@
 				34529F0B0AAF4C01962EB2A0 /* ReactNativeConfig.xcodeproj */,
 				AC4B69CCE2BD4A0184890616 /* RNDeviceInfo.xcodeproj */,
 				B46E52FE8BB248AA94D33277 /* SplashScreen.xcodeproj */,
+				23409199FA574CE99C2415A6 /* RNFirebase.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -875,6 +909,14 @@
 			name = Resources;
 			sourceTree = "<group>";
 		};
+		E6375681234CFDA0001183FC /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				E637568B234CFDA0001183FC /* libRCTCameraRoll.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		E6D64E1622C10388008E52C2 /* Recovered References */ = {
 			isa = PBXGroup;
 			children = (
@@ -886,6 +928,7 @@
 				81BF38C97EE44DACB628AC85 /* libReactNativeConfig-tvOS.a */,
 				A326F6B0CB5341B3A088A6CE /* libRNDeviceInfo-tvOS.a */,
 				5485B6B95E964A56AE204CEB /* libSplashScreen.a */,
+				44E98DF75B654EEF905FFBF9 /* libRNFirebase.a */,
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";
@@ -972,6 +1015,7 @@
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
+				3EFBD0D2234CDF9A000CAD2B /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -1078,6 +1122,10 @@
 					ProjectRef = ADBDB91F1DFEBF0600ED6528 /* RCTBlob.xcodeproj */;
 				},
 				{
+					ProductGroup = E6375681234CFDA0001183FC /* Products */;
+					ProjectRef = E6375680234CFDA0001183FC /* RCTCameraRoll.xcodeproj */;
+				},
+				{
 					ProductGroup = 00C302B61ABCB90400DB3ED1 /* Products */;
 					ProjectRef = 00C302B51ABCB90400DB3ED1 /* RCTGeolocation.xcodeproj */;
 				},
@@ -1124,6 +1172,10 @@
 				{
 					ProductGroup = 3ED1E4DC22C9069700ED0ED2 /* Products */;
 					ProjectRef = 3ED1E4DB22C9069700ED0ED2 /* RNFetchBlob.xcodeproj */;
+				},
+				{
+					ProductGroup = 3EFBD0CD234CCD2A000CAD2B /* Products */;
+					ProjectRef = 23409199FA574CE99C2415A6 /* RNFirebase.xcodeproj */;
 				},
 				{
 					ProductGroup = E6D64E4622C1038A008E52C2 /* Products */;
@@ -1399,6 +1451,13 @@
 			remoteRef = 3EE4395122CFC195009DABB5 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		3EFBD0D1234CCD2A000CAD2B /* libRNFirebase.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNFirebase.a;
+			remoteRef = 3EFBD0D0234CCD2A000CAD2B /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -1432,6 +1491,13 @@
 			fileType = archive.ar;
 			path = libRCTBlob.a;
 			remoteRef = ADBDB9261DFEBF0700ED6528 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		E637568B234CFDA0001183FC /* libRCTCameraRoll.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRCTCameraRoll.a;
+			remoteRef = E637568A234CFDA0001183FC /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		E6D64E3D22C10389008E52C2 /* libjsi.a */ = {
@@ -1541,6 +1607,7 @@
 			files = (
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
+				3EDACC8D234E20040035BE99 /* GoogleService-Info.plist in Resources */,
 				29440829647E4B90A9904749 /* playBold.ttf in Resources */,
 				ADC4E440F83D407E805A9E46 /* playRegular.ttf in Resources */,
 			);
@@ -1591,6 +1658,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
+		};
+		3EFBD0D2234CDF9A000CAD2B /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n\"${PODS_ROOT}/Fabric/run\"\n";
 		};
 		65C606356E7F2B322AEEFC5D /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1661,8 +1745,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3E0DA79122C91CC20048AEA8 /* GrinBridge.swift in Sources */,
-				3E0DA78E22C91CAA0048AEA8 /* GrinBridge.m in Sources */,
+				3E533FB5230F0AEB004A66EC /* GrinBridge.m in Sources */,
+				3E533FB4230F0AE6004A66EC /* GrinBridge.swift in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 			);
@@ -1732,12 +1816,14 @@
 					"$(SRCROOT)/../node_modules/react-native-device-info/ios/RNDeviceInfo",
 					"$(SRCROOT)/../node_modules/react-native-splash-screen/ios",
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
+					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
 				);
 				INFOPLIST_FILE = GrinWalletTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -1775,12 +1861,14 @@
 					"$(SRCROOT)/../node_modules/react-native-device-info/ios/RNDeviceInfo",
 					"$(SRCROOT)/../node_modules/react-native-splash-screen/ios",
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
+					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
 				);
 				INFOPLIST_FILE = GrinWalletTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -1808,7 +1896,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 22;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = 2KSA2J84PU;
 				ENABLE_BITCODE = NO;
@@ -1820,6 +1908,7 @@
 					"$(SRCROOT)/../node_modules/react-native-device-info/ios/RNDeviceInfo",
 					"$(SRCROOT)/../node_modules/react-native-splash-screen/ios",
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
+					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
 				);
 				INFOPLIST_FILE = GrinWallet/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1828,6 +1917,7 @@
 					"$(PROJECT_DIR)/Pods/cocoa_grinwallet/cocoa_grinwallet/Library",
 					"$(PROJECT_DIR)/build/GrinWallet/Build/Products/Debug-iphonesimulator",
 				);
+				MARKETING_VERSION = 1;
 				OTHER_CODE_SIGN_FLAGS = "--deep";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -1851,7 +1941,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 22;
 				DEVELOPMENT_TEAM = 2KSA2J84PU;
 				ENABLE_BITCODE = NO;
 				HEADER_SEARCH_PATHS = (
@@ -1862,6 +1952,7 @@
 					"$(SRCROOT)/../node_modules/react-native-device-info/ios/RNDeviceInfo",
 					"$(SRCROOT)/../node_modules/react-native-splash-screen/ios",
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
+					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
 				);
 				INFOPLIST_FILE = GrinWallet/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1870,6 +1961,7 @@
 					"$(PROJECT_DIR)/Pods/cocoa_grinwallet/cocoa_grinwallet/Library",
 					"$(PROJECT_DIR)/build/GrinWallet/Build/Products/Debug-iphonesimulator",
 				);
+				MARKETING_VERSION = 1;
 				OTHER_CODE_SIGN_FLAGS = "--deep";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
@@ -1906,11 +1998,13 @@
 					"$(SRCROOT)/../node_modules/react-native-device-info/ios/RNDeviceInfo",
 					"$(SRCROOT)/../node_modules/react-native-splash-screen/ios",
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
+					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
 				);
 				INFOPLIST_FILE = "GrinWallet-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -1954,11 +2048,13 @@
 					"$(SRCROOT)/../node_modules/react-native-device-info/ios/RNDeviceInfo",
 					"$(SRCROOT)/../node_modules/react-native-splash-screen/ios",
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
+					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
 				);
 				INFOPLIST_FILE = "GrinWallet-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -2002,11 +2098,13 @@
 					"$(SRCROOT)/../node_modules/react-native-device-info/ios/RNDeviceInfo",
 					"$(SRCROOT)/../node_modules/react-native-splash-screen/ios",
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
+					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
 				);
 				INFOPLIST_FILE = "GrinWallet-tvOSTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -2050,11 +2148,13 @@
 					"$(SRCROOT)/../node_modules/react-native-device-info/ios/RNDeviceInfo",
 					"$(SRCROOT)/../node_modules/react-native-splash-screen/ios",
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
+					"$(SRCROOT)/../node_modules/react-native-firebase/ios/RNFirebase/**",
 				);
 				INFOPLIST_FILE = "GrinWallet-tvOSTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -2124,6 +2224,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "\"$(SRCROOT)/Folly\"";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -2170,6 +2271,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "\"$(SRCROOT)/Folly\"";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;

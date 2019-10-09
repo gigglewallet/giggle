@@ -5,15 +5,27 @@ import { NormalInput } from '../Components/TextFields'
 import { Images, Metrics, Colors, Fonts } from '../Themes'
 import styled from 'styled-components/native'
 import I18n from 'react-native-i18n'
-
-// Styles
 import styles from './Styles/LaunchScreenStyles'
+import GiggleActions from '../Redux/GiggleRedux'
+import { connect } from 'react-redux'
+import { TRANSACTION_METHOD } from '../Modules/CommonType'
 
-export default class NewContact extends Component {
+class NewContact extends Component {
   constructor (props) {
     super(props)
     this.state = { text: 'Useless Placeholder', avatarCode: '', nickname: '' }
     this.renderPasswordAccessory = this.renderPasswordAccessory.bind(this)
+  }
+
+  componentDidMount = () => {
+    const { navigation } = this.props
+    const avatarCodeFromNavigation = navigation.getParam('avatarCode', '')
+    if (avatarCodeFromNavigation) {
+      this.setState({ avatarCode: avatarCodeFromNavigation })
+    }
+  }
+  componentWillUnmount () {
+    console.log('componentWillUnmount')
   }
 
   renderPasswordAccessory = () => {
@@ -29,13 +41,24 @@ export default class NewContact extends Component {
   }
 
   onPress = () => {
-    const { navigation } = this.props
+    const { navigation, setNewContact } = this.props
+    const { avatarCode, nickname } = this.state
     const avatarCodeFromNavigation = navigation.getParam('avatarCode', '')
-    if (!avatarCodeFromNavigation) {
-      navigation.navigate('AddContactDone', { afterDonePage: 'SwiperHome' })
+    const method = navigation.getParam('method', TRANSACTION_METHOD.AVATAR_CODE)
+
+    if (avatarCode.length >= 6 && nickname.length > 0) {
+      setNewContact(avatarCode, nickname, method)
     } else {
-      navigation.navigate('AddContactDone', { afterDonePage: 'AskDone' })
+      return
     }
+
+    if (!avatarCodeFromNavigation) {
+      navigation.replace('AddContactDone', { afterDonePage: 'SwiperHome', avatarCode: avatarCode, nickname: nickname })
+    } else {
+      navigation.replace('AddContactDone', { afterDonePage: 'SwiperHome', avatarCode: avatarCode, nickname: nickname })
+    }
+
+    this.setState({ avatarCode: '', nickname: '' })
   }
 
   render () {
@@ -73,6 +96,19 @@ export default class NewContact extends Component {
     )
   }
 }
+
+const mapStateToProps = (state) => {
+  return {
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setNewContact: (avatarCode, nickname, method) => dispatch(GiggleActions.setNewContact(avatarCode, nickname, method))
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(NewContact)
 
 const TopContainer = styled.View`
   width: ${Metrics.screenWidth - 48}

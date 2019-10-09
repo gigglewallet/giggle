@@ -31,6 +31,9 @@ import AskPickPage from '../Containers/AskPickPage'
 import AskEnterAmountPage from '../Containers/AskEnterAmountPage'
 import AskDone from '../Containers/AskDone'
 import AskList from '../Containers/AskList'
+import Login from '../Containers/Login'
+import Loading from '../Containers/Loading'
+import ShowMyAvatar from '../Containers/ShowMyAvatar'
 
 const PrimaryNav = createStackNavigator({
   LaunchScreen: {
@@ -39,12 +42,25 @@ const PrimaryNav = createStackNavigator({
       header: null
     }
   },
+  Login: {
+    screen: Login,
+    navigationOptions: ({ navigation }) => ({
+      title: 'Login',
+      headerStyle: styles.header,
+      headerTitleStyle: styles.header,
+      headerLeft: <TouchableOpacity onPress={() => {
+        navigation.goBack()
+      }}>
+      </TouchableOpacity>
+    })
+  },
   SwiperHome: {
     screen: SwiperHome,
     navigationOptions: {
       title: 'SwiperHome',
       headerStyle: styles.header,
-      header: null
+      header: null,
+      gesturesEnabled: false
     }
   },
   Home: {
@@ -251,14 +267,19 @@ const PrimaryNav = createStackNavigator({
       </TouchableOpacity>
     })
   },
-
+  ShowMyAvatar: {
+    screen: ShowMyAvatar,
+    navigationOptions: {
+      header: null
+    }
+  },
   TransactionDetails: {
     screen: TransactionDetails,
     navigationOptions: ({ navigation }) => ({
       headerStyle: styles.header,
       headerTitleStyle: styles.header,
       headerLeft: <TouchableOpacity onPress={() => {
-        navigation.goBack()
+        navigation.pop()
       }}>
         <Image style={styles.headerLeft} source={Images.ic_close} />
       </TouchableOpacity>
@@ -275,11 +296,11 @@ const PrimaryNav = createStackNavigator({
       }}>
         <Image style={styles.headerLeft} source={Images.ic_close} />
       </TouchableOpacity>,
-      headerRight: <TouchableOpacity onPress={() => {
-        navigation.navigate('NewMyAvatar')
-      }}>
-        <Image style={styles.headerRight} source={Images.icAdd} />
-      </TouchableOpacity>
+      // headerRight: <TouchableOpacity onPress={() => {
+      //   navigation.navigate('NewMyAvatar')
+      // }}>
+      //   <Image style={styles.headerRight} source={Images.icAdd} />
+      // </TouchableOpacity>
     })
   },
   AskPickPage: {
@@ -289,7 +310,7 @@ const PrimaryNav = createStackNavigator({
       headerStyle: styles.header,
       headerTitleStyle: styles.header,
       headerLeft: <TouchableOpacity onPress={() => {
-        navigation.goBack()
+        navigation.pop()
       }}>
         <Image style={styles.headerLeft} source={Images.ic_close} />
       </TouchableOpacity>
@@ -302,7 +323,7 @@ const PrimaryNav = createStackNavigator({
       headerStyle: styles.header,
       headerTitleStyle: styles.header,
       headerLeft: <TouchableOpacity onPress={() => {
-        navigation.goBack()
+        navigation.pop()
       }}>
         <Image style={styles.headerLeft} source={Images.icBackL} />
       </TouchableOpacity>
@@ -326,13 +347,19 @@ const PrimaryNav = createStackNavigator({
         <Image style={styles.headerLeft} source={Images.ic_close} />
       </TouchableOpacity>
     })
-  }
+  },
+  Loading: {
+    screen: Loading,
+    navigationOptions: {
+      header: null
+    }
+  },
 
 }, {
-    initialRouteName: 'LaunchScreen',
-    navigationOptions: {
-      headerStyle: styles.header
-    }
+  initialRouteName: 'Loading',
+  navigationOptions: {
+    headerStyle: styles.header
+  }
 
-  })
+})
 export default createAppContainer(PrimaryNav)

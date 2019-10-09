@@ -1,19 +1,14 @@
 import { takeLatest, all } from 'redux-saga/effects'
 /* ------------- Types ------------- */
 
-// import { StartupTypes } from '../Redux/StartupRedux'
-// import { GeneralTypes } from '../Redux/GeneralRedux'
+import { StartupTypes } from '../Redux/StartupRedux'
 import { GiggleTypes } from '../Redux/GiggleRedux'
+import { WalletStatusTypes } from '../Redux/WalletStatusRedux'
+import { GeneralTypes } from '../Redux/GeneralRedux'
+
 /* ------------- Sagas ------------- */
 
 import { startup } from './StartupSagas'
-/*
-import {
-  getGeneralInfo,
-  getLaunchInfo,
-  clearStorage
-} from './GeneralSagas'
-*/
 
 import {
   test,
@@ -32,18 +27,30 @@ import {
   getTransactionDetail,
   getAllOutputs,
   cleanWallet,
-  updateGiggleRequestStatusAction,
   restoreWallet,
   relayAddressQuery,
   sendTransaction,
-  listen
+  listen,
+  getNewAvatar,
+  setCurrentWallet,
+  setNewContact,
+  logout,
+  checkFaceId
 } from './GiggleSagas'
+
+import {
+  updateGiggleRequestStatusAction
+} from './WalletStatusSagas'
+
+import {
+  clearStorage
+} from './GeneralSagas'
+
+
 
 export default function * root () {
   yield all([
-    // takeLatest(GeneralTypes.GET_GENERAL_INFO, getGeneralInfo),
-    // takeLatest(GeneralTypes.GET_LAUNCH_INFO, getLaunchInfo),
-    // takeLatest(GeneralTypes.CLEAR_STORAGE, clearStorage),
+    takeLatest(StartupTypes.STARTUP, startup),
     takeLatest(GiggleTypes.WALLET_RECOVERY, walletRecovery),
     takeLatest(GiggleTypes.WALLET_INIT, walletInit),
     takeLatest(GiggleTypes.WALLET_PHRASE, walletPhrase),
@@ -59,11 +66,17 @@ export default function * root () {
     takeLatest(GiggleTypes.GET_TRANSACTION_DETAIL, getTransactionDetail),
     takeLatest(GiggleTypes.GET_ALL_OUTPUTS, getAllOutputs),
     takeLatest(GiggleTypes.CLEAN_WALLET, cleanWallet),
-    takeLatest(GiggleTypes.UPDATE_GIGGLE_REQUEST_STATUS_ACTION, updateGiggleRequestStatusAction),
     takeLatest(GiggleTypes.RESTORE_WALLET, restoreWallet),
     takeLatest(GiggleTypes.RELAY_ADDRESS_QUERY, relayAddressQuery),
     takeLatest(GiggleTypes.SEND_TRANSACTION, sendTransaction),
     takeLatest(GiggleTypes.LISTEN, listen),
-    takeLatest(GiggleTypes.TEST1, test)
+    takeLatest(GiggleTypes.TEST1, test),
+    takeLatest(GiggleTypes.GET_NEW_AVATAR, getNewAvatar),
+    takeLatest(GiggleTypes.SET_CURRENT_WALLET, setCurrentWallet),
+    takeLatest(GiggleTypes.SET_NEW_CONTACT, setNewContact),
+    takeLatest(GiggleTypes.LOGOUT, logout),
+    takeLatest(GiggleTypes.CHECK_FACE_ID, checkFaceId),
+    takeLatest(GeneralTypes.CLEAR_STORAGE, clearStorage),
+    takeLatest(WalletStatusTypes.UPDATE_GIGGLE_REQUEST_STATUS_ACTION, updateGiggleRequestStatusAction)
   ])
 }

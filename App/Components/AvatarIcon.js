@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Text } from 'react-native'
+import { Text, View } from 'react-native'
 import { Colors, Fonts } from '../Themes'
 import styled from 'styled-components/native'
 import Blockies from 'react-native-blockies'
@@ -22,12 +22,16 @@ export const AvatarIcon = ({ avatarCode, name, style }) => {
     <Container style={style}>
       <Blockies
         blockies={avatarCode} // string content to generate icon
-        size={24} // blocky icon size
-        style={{ width: 24, height: 24 }} // style of the view will wrap the icon
+        size={24}
+        style={{ width: 24, height: 24 }}
       />
-      <Text style={{ color: Colors.text2, ...Fonts.style.h8, marginLeft: 4 }}>{name}</Text>
-      <Text style={{ color: Colors.text2, ...Fonts.style.h8, marginLeft: 4 }}>・</Text>
-      <Text style={{ color: Colors.text2, ...Fonts.style.h8, marginLeft: 4 }}>{avatarCode}</Text>
+      {(name)
+        ? <Text style={{ color: Colors.text2, ...Fonts.style.h8, marginLeft: 4 }}>{name}<Text style={{ color: Colors.text2, ...Fonts.style.h8, marginLeft: 4 }}>・</Text></Text>
+        : null}
+      {(avatarCode.length < 30)
+        ? <Text style={{ color: Colors.text2, ...Fonts.style.h8, marginLeft: 4 }}>{avatarCode}</Text>
+        : <Text style={{ color: Colors.text2, ...Fonts.style.tiny, marginLeft: 4 }}>{avatarCode}</Text>
+      }
     </Container>
   )
 }

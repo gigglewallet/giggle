@@ -6,10 +6,29 @@ import styled from 'styled-components/native'
 import I18n from 'react-native-i18n'
 // Styles
 import styles from './Styles/SignUpStyles'
+import { StackActions, NavigationActions } from 'react-navigation'
+
+
+
+
 
 export default class SignUpComplete extends Component {
-  render () {
+
+  onPress = () => {
     const { navigation } = this.props
+    const resetAction = StackActions.reset({
+      index: 0,
+      actions: [NavigationActions.navigate({ routeName: 'SwiperHome' })]
+    })
+    navigation.dispatch(resetAction)
+  }
+
+  componentWillUnmount = () => {
+    const { navigation } = this.props
+    navigation.pop()
+  }
+
+  render () {
     return (
       <View style={styles.mainContainer} >
         <View style={styles.topContainer}>
@@ -25,9 +44,7 @@ export default class SignUpComplete extends Component {
             <Image source={Images.signInChecked} style={{ width: 20, height: 20, marginRight: 8 }} />
             <Text style={{ color: Colors.text, ...Fonts.style.h9 }}>{I18n.t('spendingPinSet')}</Text>
           </InfoContainer>
-          <LightBtn onPress={() => {
-            navigation.navigate('SwiperHome')
-          }}>
+          <LightBtn onPress={this.onPress}>
             {I18n.t('getStarted')}
           </LightBtn>
 

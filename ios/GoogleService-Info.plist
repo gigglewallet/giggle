@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>624991329707-hls883aeu7b21jlin45s78g1ndlolr7v.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.624991329707-hls883aeu7b21jlin45s78g1ndlolr7v</string>
+	<key>API_KEY</key>
+	<string>AIzaSyD3YjUxXUrn8ogBFdO9fS4RsKtwj10CybA</string>
+	<key>GCM_SENDER_ID</key>
+	<string>624991329707</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>org.grin.GrinWallet</string>
+	<key>PROJECT_ID</key>
+	<string>grinwallet-a7a69</string>
+	<key>STORAGE_BUCKET</key>
+	<string>grinwallet-a7a69.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:624991329707:ios:2879c6b816d9bce81f46ee</string>
+	<key>DATABASE_URL</key>
+	<string>https://grinwallet-a7a69.firebaseio.com</string>
+</dict>
+</plist>

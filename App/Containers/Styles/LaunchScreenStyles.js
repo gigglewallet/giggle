@@ -4,7 +4,13 @@ import { Metrics, ApplicationStyles } from '../../Themes/'
 export default StyleSheet.create({
   ...ApplicationStyles.screen,
   container: {
-    paddingBottom: Metrics.baseMargin
+    paddingBottom: Metrics.baseMargina
+  },
+  homeScrollView: {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+    alignItems: 'center'
   },
   logo: {
     marginTop: Metrics.doubleSection,
@@ -16,7 +22,7 @@ export default StyleSheet.create({
     alignItems: 'center'
   },
   TextInputStyle: {
-    flex:1,
+    flex: 1,
     color: '#424242'
   }
 })

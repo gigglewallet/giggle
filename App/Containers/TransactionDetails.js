@@ -5,13 +5,11 @@ import styled from 'styled-components/native'
 import I18n from 'react-native-i18n'
 import { AvatarIcon } from '../Components/AvatarIcon'
 import moment from 'moment'
-
 // Styles
 import styles from './Styles/LaunchScreenStyles'
 import { transferBalance } from '../Modules/Common'
-
+import { TRANSACTION_METHOD } from '../Modules/CommonType'
 const getTitle = (type) => {
-  console.log(this)
   if (type === 1 || type === 2 || type === 3) return 'Received'
   else return 'Send'
 }
@@ -97,11 +95,13 @@ export default class TransactionDetails extends Component {
 
   render () {
     const { navigation } = this.props
-    const avatarCode = navigation.getParam('avatarCode', '6539QW')
-    const nickname = navigation.getParam('nickname', 'Noah')
-    const notes = navigation.getParam('notes', 'Dinner at Kao')
-    const date = navigation.getParam('date', 1562692997848)
+    const avatarCode = navigation.getParam('avatarCode', '')
+    const nickname = navigation.getParam('nickname', '')
+    const note = navigation.getParam('note', '')
+    const date = navigation.getParam('date', 0)
     const amount = navigation.getParam('amount', 0)
+    const fee = navigation.getParam('fee', 0)
+    const method = navigation.getParam('method', TRANSACTION_METHOD.AVATAR_CODE)
     const { firstNum, endNum } = transferBalance(amount)
     return (
       <View style={styles.mainLeftContainer} >
@@ -114,11 +114,17 @@ export default class TransactionDetails extends Component {
           </BalanceView>
 
           <Text style={{ ...Fonts.style.h9, color: Colors.gary, marginTop: 24 }} >{I18n.t('to')}</Text>
+          {method === TRANSACTION_METHOD.AVATAR_CODE ?
+            <AvatarIcon avatarCode={avatarCode} name={nickname} style={{ marginTop: 4 }} />
+            :
+            <Text style={{ ...Fonts.style.h8, color: Colors.text, marginTop: 4 }} >{avatarCode}</Text>
+          }
 
-          <AvatarIcon avatarCode={avatarCode} name={nickname} style={{ marginTop: 4 }} />
+          <Text style={{ ...Fonts.style.h9, color: Colors.gary, marginTop: 24 }} >{I18n.t('fee')}</Text>
+          <Text style={{ ...Fonts.style.h8, color: Colors.text, marginTop: 4 }} >{fee}</Text>
 
           <Text style={{ ...Fonts.style.h9, color: Colors.gary, marginTop: 24 }} >{I18n.t('notes')}</Text>
-          <Text style={{ ...Fonts.style.h8, color: Colors.text, marginTop: 4 }} >{notes}</Text>
+          <Text style={{ ...Fonts.style.h8, color: Colors.text, marginTop: 4 }} >{note}</Text>
 
           <Text style={{ ...Fonts.style.h9, color: Colors.gary, marginTop: 24 }} >{I18n.t('date')}</Text>
           <Text style={{ ...Fonts.style.h8, color: Colors.text, marginTop: 4 }} >{moment(date).format('MMM DD, YYYY h:mm:ss A')}</Text>

@@ -9,7 +9,7 @@ const { Types, Creators } = createActions({
   walletPhrase: ['avatarCode', 'password'],
   walletRecovery: ['avatarCode', 'password', 'mnemonic'],
   walletRestore: ['avatarCode', 'password'],
-  getBalance: ['avatarCode', 'password'],
+  getBalance: ['avatarCode', 'password', 'isProcessLoading'],
   getHeight: ['avatarCode', 'password'],
   txCreateByFile: ['avatarCode', 'password', 'amount', 'strategy', 'message', 'version'],
   txReceiveByFile: ['avatarCode', 'password', 'filePath', 'message'],
@@ -23,17 +23,13 @@ const { Types, Creators } = createActions({
   // txGet
   getAllOutputs: ['avatarCode', 'password'],
   cleanWallet: ['avatarCode', 'password', 'path'],
-  updateGiggleRequestStatus: ['actionType', 'isCalling', 'isSuccess', 'isFail'],
-  updateGiggleRequestStatusAction: ['actionType', 'isCalling', 'isSuccess', 'isFail'],
-  updateWalletRestorePercentage: ['percentage'],
+  checkFaceId: null,
+  logout: null,
   test1: null,
   test2: null,
   test3: null,
   test4: null,
-  restoreWallet: ['avatarCode', 'password', 'mnemonic'],
-  updateCreateWalletTermOne: ['checked'],
-  updateCreateWalletTermTwo: ['checked'],
-  agreeCreateWalletTerms: ['isAgree'],
+  restoreWallet: [],
   updateVisiblePassword: ['enable'],
   enableTouchId: ['enable'],
   enablePinTouchId: ['enable'],
@@ -43,9 +39,20 @@ const { Types, Creators } = createActions({
   updateWalletBalanceByIndex: ['index', 'balance'],
   updateGiggleRedux: ['key', 'value'],
   updateRestorePhrase: ['phrase'],
-  relayAddressQuery: ['targetAvatarCode'],
+  relayAddressQuery: ['targetAvatarCode', 'callback'],
+  addContact: ['avatarCode', 'nickname', 'method'],
+  setNewContact: ['avatarCode', 'nickname', 'method'],
+  delContact: ['avatarCode'],
+  updateContact: ['avatarCode', 'nickname'],
   sendTransaction: ['info'],
-  addTransactionHistory: ['info']
+  addTransactionHistory: ['info'],
+  updateGrinrelayAddressIndex: ['index'],
+  getNewAvatar: null,
+  setCurrentWallet: ['wallet'],
+  addNewWallet: ['wallet'],
+  updateCurrentWallet: ['wallet'],
+  initGiggleRedux: null,
+  addErrorLog: ['error']
 })
 
 export const GiggleTypes = Types
@@ -54,114 +61,27 @@ export default Creators
 /* ------------- Initial State ------------- */
 
 export const INITIAL_STATE = Immutable({
-  // wallets: [{ avatarCode: 'xxxxxx', walletName: 'wallet_1', password: '1111', balance: 0 }],
-  // wallets: [{ avatarCode: 'ydgs9l', walletName: 'wallet_1', password: '1111', balance: 0 }],
-  wallets: [{ avatarCode: 'ydgs9l', walletName: 'wallet_1', password: '11', balance: 0 }],
-  contacts: [{ avatarCode: '85s8zd', nickname: 'Terrence' },
-  { avatarCode: 'S2T98Z', nickname: 'Ryan' },
-  { avatarCode: '9A131K', nickname: 'Morphy' },
-  { avatarCode: 'M8109E', nickname: 'Louise' },
-  { avatarCode: 'B7009P', nickname: 'Nelson' }],
-  transactionHistory: [
-    { type: TRANSACTION_TYPE.Sending, amount: 25.17194374, date: 1502692997848, source: 'Noah。 6539QW', avatarCode: '6539QW', nickname: 'Noah', notes: 'this is notes 1' },
-    { type: TRANSACTION_TYPE.SendSuccess, amount: 1.17194374, date: 1562002997848, source: 'Ryan。 6539QW', avatarCode: '52T98Z', nickname: 'Ryan', notes: 'this is notes 2' },
-    { type: TRANSACTION_TYPE.SendFail, amount: 250.17194374, date: 1562202997848, source: 'Morphny。 6539QW', avatarCode: '9A131K', nickname: 'Morphy', notes: 'this is notes 3' },
-    { type: TRANSACTION_TYPE.Asking, amount: 28.17194374, date: 1562612907848, source: 'Gary。 6539QW', avatarCode: 'MB109E', nickname: 'Louisej', notes: 'this is notes 4' },
-    { type: TRANSACTION_TYPE.AskSuccess, amount: 20.17194374, date: 1562693997848, source: 'Louise。 6539QW', avatarCode: '87009p', nickname: 'Nelson', notes: 'this is notes 5' },
-    { type: TRANSACTION_TYPE.AskFail, amount: 215.17194374, date: 1562698997848, source: 'Noah。 6539QW', avatarCode: 'X83D83', nickname: 'Terrence', notes: 'this is notes 6' }
-  ],
+  wallets: [],
+  currentWallet: {},
+  contacts: [],
+  isEnableWallet: false,
+  transactionHistory: [],
+  grinrelayReceivingAddressIndex: 0,
+  bestNodeApiAddress: null,
+  relayAddressIndex: 0,
   restorePhrase: '',
-  isEnableWallet: true,
   isBackupPhrase: false,
-  isOnline: false,
-  callingWalletRestore: false,
-  successWalletRestore: false,
-  failWalletRestore: false,
   highestIndex: 1,
-  lastRetrievedIndex: 0,
   height: null,
-  txCreateFilePath: null,
-
-  walletRestorePercentage: 0,
-  relayAddress: null,
-
-  isCallingWalletInit: false,
-  isSuccessWalletInit: false,
-  isFailWalletInit: false,
-
-  isCallingWalletPhrase: false,
-  isSuccessWalletPhrase: false,
-  isFailWalletPhrase: false,
-
-  isCallingWalletRecovery: false,
-  isSuccessWalletRecovery: false,
-  isFailWalletRecovery: false,
-
-  isCallingWalletRestore: false,
-  isSuccessWalletRestore: false,
-  isFailWalletRestore: false,
-
-  isCallingGetBalance: false,
-  isSuccessGetBalance: false,
-  isFailGetBalance: false,
-
-  isCallingGetHeight: false,
-  isSuccessGetHeight: false,
-  isFailGetHeight: false,
-
-  isCallingTxCreateByFile: false,
-  isSuccessTxCreateByFile: false,
-  isFailTxCreateByFile: false,
-
-  isCallingTxReceiveByFile: false,
-  isSuccessTxReceiveByFile: false,
-  isFailTxReceiveByFile: false,
-
-  isCallingTxFinalize: false,
-  isSuccessTxFinalize: false,
-  isFailTxFinalize: false,
-
-  isCallingTxPost: false,
-  isSuccessTxPost: false,
-  isFailTxPost: false,
-
-  isCallingTxCancel: false,
-  isSuccessTxCancel: false,
-  isFailTxCancel: false,
-
-  isCallingGetAllTransactions: false,
-  isSuccessGetAllTransactions: false,
-  isFailGetAllTransactions: false,
-
-  isCallingGetTransactionDetail: false,
-  isSuccessGetTransactionDetail: false,
-  isFailGetTransactionDetail: false,
-
-  isCallingGetAllOutputs: false,
-  isSuccessGetAllOutputs: false,
-  isFailGetAllOutputs: false,
-
-  isCallingCleanWallet: false,
-  isSuccessCleanWallet: false,
-  isFailCleanWallet: false,
-
-  isCallingRelayAddressQuery: false,
-  isSuccessRelayAddressQuery: false,
-  isFailRelayAddressQuery: false,
-
-  isCallingTxSend: false,
-  isSuccessTxSend: false,
-  isFailTxSend: false,
-
-  isCreateWalletTermOne: false,
-  isCreateWalletTermTwo: false,
-  isAgree: false,
-  isVisiblePassword: false,
+  isVisiblePassword: true,
   isEnableTouchId: false,
-  isEnablePinTouchId: false
+  isEnablePinTouchId: false,
+  errorList: []
 })
 
 /* ------------- Reducers ------------- */
+export const initGiggleRedux = (state) =>
+  INITIAL_STATE
 
 export const generalInfoRequest = (state) =>
   state.merge({ fetchingGeneralInfo: true })
@@ -184,66 +104,6 @@ export const launchInfoSuccess = (state, action) => {
 
 export const launchInfoFailure = (state) =>
   state.merge({ fetchingLaunchInfo: false, errorLaunfhInfo: true })
-
-export const updateWalletRestorePercentage = (state, { percentage }) => {
-  return state.merge({ walletRestorePercentage: parseInt(percentage) })
-}
-
-export const updateGiggleRequestStatus = (state, action) => {
-  const { actionType, isCalling, isSuccess, isFail } = action
-  switch (actionType) {
-    case 'walletInit':
-      return state.merge({ isCallingWalletInit: isCalling, isSuccessWalletInit: isSuccess, isFailWalletInit: isFail })
-    case 'walletPhrase':
-      return state.merge({ isCallingWalletPhrase: isCalling, isSuccessWalletPhrase: isSuccess, isFailWalletPhrase: isFail })
-    case 'walletRecovery':
-      return state.merge({ isCallingWalletRecovery: isCalling, isSuccessWalletRecovery: isSuccess, isFailWalletRecovery: isFail })
-    case 'walletRestore':
-      return state.merge({ isCallingWalletRestore: isCalling, isSuccessWalletRestore: isSuccess, isFailWalletRestore: isFail })
-    case 'getBalance':
-      return state.merge({ isCallingGetBalance: isCalling, isSuccessGetBalance: isSuccess, isFailGetBalance: isFail })
-    case 'getHeight':
-      return state.merge({ isCallingGetHeight: isCalling, isSuccessGetHeight: isSuccess, isFailGetHeight: isFail })
-    case 'txCreateByFile':
-      return state.merge({ isCallingTxCreateByFile: isCalling, isSuccessTxCreateByFile: isSuccess, isFailTxCreateByFile: isFail })
-    case 'txReceiveByFile':
-      return state.merge({ isCallingTxReceiveByFile: isCalling, isSuccessTxReceiveByFile: isSuccess, isFailTxReceiveByFile: isFail })
-    case 'txFinalize':
-      return state.merge({ isCallingTxFinalize: isCalling, isSuccessTxFinalize: isSuccess, isFailTxFinalize: isFail })
-    case 'txPost':
-      return state.merge({ isCallingTxPost: isCalling, isSuccessTxPost: isSuccess, isFailTxPost: isFail })
-    case 'txCancel':
-      return state.merge({ isCallingTxCancel: isCalling, isSuccessTxCancel: isSuccess, isFailTxCancel: isFail })
-    case 'getAllTransactions':
-      return state.merge({ isCallingGetAllTransactions: isCalling, isSuccessGetAllTransactions: isSuccess, isFailGetAllTransactions: isFail })
-    case 'getTransactionDetail':
-      return state.merge({ isCallingGetTransactionDetail: isCalling, isSuccessGetTransactionDetail: isSuccess, isFailGetTransactionDetail: isFail })
-    case 'getAllOutputs':
-      return state.merge({ isCallingGetAllOutputs: isCalling, isSuccessGetAllOutputs: isSuccess, isFailGetAllOutputs: isFail })
-    case 'cleanWallet':
-      return state.merge({ isCallingCleanWallet: isCalling, isSuccessCleanWallet: isSuccess, isFailCleanWallet: isFail })
-    case 'relayAddressQuery':
-      return state.merge({ isCallingRelayAddressQuery: isCalling, isSuccessRelayAddressQuery: isSuccess, isFailRelayAddressQuery: isFail })
-    case 'txSend':
-      return state.merge({ isCallingTxSend: isCalling, isSuccessTxSend: isSuccess, isFailTxSend: isFail })
-  }
-}
-
-/* sign up & create wallet */
-export const updateCreateWalletTermOne = (state, action) => {
-  const { checked } = action
-  return state.merge({ isCreateWalletTermOne: checked })
-}
-
-export const updateCreateWalletTermTwo = (state, action) => {
-  const { checked } = action
-  return state.merge({ isCreateWalletTermTwo: checked })
-}
-
-export const agreeCreateWalletTerms = (state, action) => {
-  const { isAgree } = action
-  return state.merge({ isAgree: isAgree })
-}
 
 export const updateVisiblePassword = (state, action) => {
   const { enable } = action
@@ -269,6 +129,21 @@ export const updateWalletPasswordByIndex = (state, { index, password }) => {
   return state.merge({ wallets })
 }
 
+export const addNewWallet = (state, { wallet }) => {
+  const wallets = Immutable.asMutable(state.wallets)
+  wallets.push(wallet)
+  return state.merge({ wallets })
+}
+
+export const updateCurrentWallet = (state, { wallet }) => {
+  const currentWallet = Immutable.asMutable(state.currentWallet)
+  if (wallet.walletName) currentWallet.walletName = wallet.walletName
+  if (wallet.avatarCode) currentWallet.avatarCode = wallet.avatarCode
+  if (wallet.password) currentWallet.password = wallet.password
+  if (wallet.balance) currentWallet.balance = wallet.balance
+  return state.merge({ currentWallet: currentWallet })
+}
+
 export const updateWalletAvatarCodeByIndex = (state, { index, avatarCode }) => {
   const wallets = Immutable.asMutable(state.wallets)
   const wallet = Immutable.asMutable(wallets[index])
@@ -290,13 +165,39 @@ export const updateWalletBalanceByIndex = (state, { index, balance }) => {
 export const updateGiggleRedux = (state, { key, value }) => {
   let data = {}
   data[key] = value
-  console.log(data)
+  console.log(data, 'key=', key, 'value=', value)
   return state.merge(data)
 }
 
 export const updateRestorePhrase = (state, { phrase }) => {
   const phrases = phrase.split(' ')
   return state.merge({ restorePhrase: phrases })
+}
+
+export const addContact = (state, { avatarCode, nickname, method }) => {
+  const newContact = { avatarCode: avatarCode, nickname: nickname, method: method }
+  const contacts = Immutable.asMutable(state.contacts)
+  const nextState = [...contacts, newContact]
+
+  return state.merge({ contacts: nextState })
+}
+
+export const delContact = (state, { avatarCode }) => {
+  const contacts = Immutable.asMutable(state.contacts)
+  const filtered = contacts.filter(function (avatar) {
+    return avatar.avatarCode !== avatarCode
+  })
+  return state.merge({ contacts: filtered })
+}
+
+export const updateContact = (state, { avatarCode, nickname }) => {
+  const contacts = Immutable.asMutable(state.contacts)
+  const idx = contacts.findIndex(avatar => avatar.avatarCode === avatarCode)
+  const contact = Immutable.asMutable(contacts[idx])
+  contact.nickname = nickname
+  contacts[idx] = contact
+
+  return state.merge({ contacts })
 }
 
 export const addTransactionHistory = (state, { info }) => {
@@ -306,13 +207,22 @@ export const addTransactionHistory = (state, { info }) => {
   return state.merge({ transactionHistory })
 }
 
+export const updateGrinrelayAddressIndex = (state, { index }) => {
+  // grinrelay_receiving_address_index
+
+  return state.merge({ relayAddressIndex: index.index })
+}
+
+export const addErrorLog = (state, { error }) => {
+  console.log('call addErrorLog', error)
+  let errorList = Immutable.asMutable((state.errorList) ? state.errorList : [])
+  errorList.unshift(error)
+  return state.merge({ errorList })
+}
+
 /* ------------- Hookup Reducers To Types ------------- */
 export const reducer = createReducer(INITIAL_STATE, {
-  [Types.UPDATE_GIGGLE_REQUEST_STATUS]: updateGiggleRequestStatus,
-  [Types.UPDATE_WALLET_RESTORE_PERCENTAGE]: updateWalletRestorePercentage,
-  [Types.UPDATE_CREATE_WALLET_TERM_ONE]: updateCreateWalletTermOne,
-  [Types.UPDATE_CREATE_WALLET_TERM_TWO]: updateCreateWalletTermTwo,
-  [Types.AGREE_CREATE_WALLET_TERMS]: agreeCreateWalletTerms,
+
   [Types.UPDATE_VISIBLE_PASSWORD]: updateVisiblePassword,
   [Types.ENABLE_TOUCH_ID]: enableTouchId,
   [Types.ENABLE_PIN_TOUCH_ID]: enablePinTouchId,
@@ -321,5 +231,13 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.UPDATE_WALLET_BALANCE_BY_INDEX]: updateWalletBalanceByIndex,
   [Types.UPDATE_GIGGLE_REDUX]: updateGiggleRedux,
   [Types.UPDATE_RESTORE_PHRASE]: updateRestorePhrase,
-  [Types.ADD_TRANSACTION_HISTORY]: addTransactionHistory
+  [Types.ADD_CONTACT]: addContact,
+  [Types.DEL_CONTACT]: delContact,
+  [Types.UPDATE_CONTACT]: updateContact,
+  [Types.ADD_TRANSACTION_HISTORY]: addTransactionHistory,
+  [Types.UPDATE_GRINRELAY_ADDRESS_INDEX]: updateGrinrelayAddressIndex,
+  [Types.ADD_NEW_WALLET]: addNewWallet,
+  [Types.UPDATE_CURRENT_WALLET]: updateCurrentWallet,
+  [Types.INIT_GIGGLE_REDUX]: initGiggleRedux,
+  [Types.ADD_ERROR_LOG]: addErrorLog
 })

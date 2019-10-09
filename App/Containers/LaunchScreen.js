@@ -9,13 +9,32 @@ import styles from './Styles/LaunchScreenStyles'
 import { connect } from 'react-redux'
 import GiggleActions from '../Redux/GiggleRedux'
 import GeneralActions from '../Redux/GeneralRedux'
+
+
 class LaunchScreen extends Component {
   componentWillMount = () => {
-    const { test } = this.props
+    const { wallets, navigation, test, index, currentWallet } = this.props
     test()
+
   }
+
+  componentDidUpdate = () => {
+    const { wallets, navigation, test, index, currentWallet } = this.props
+    console.log(wallets)
+  }
+  componentDidMount = () => {
+    const { wallets, navigation, test, index, currentWallet } = this.props
+
+    console.log(wallets)
+  }
+
   render () {
-    const { navigation, clearStorage, wallets, cleanWallet } = this.props
+    const { navigation, clearStorage, wallets, cleanWallet, currentWallet } = this.props
+    // if(currentWallet.avatarCode){
+    //   navigation.navigate('SwiperHome')
+    // } else{  
+    //   navigation.navigate('SignUp')
+    // }
     return (
       <View style={styles.mainContainer}>
         <Button
@@ -34,12 +53,13 @@ class LaunchScreen extends Component {
         <Button onPress={function () {
           navigation.navigate('Restore')
         }}>Restore</Button>
-
         <Button onPress={function () {
           clearStorage()
         }}>Clear Storage</Button>
         <Button onPress={function () {
+          console.log('clear wallet')
           wallets.forEach((value, key) => {
+            console.log(value)
             cleanWallet(value.avatarCode)
           })
         }}>Remove all wallet</Button>
@@ -50,7 +70,8 @@ class LaunchScreen extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    wallets: state.giggle.wallets
+    wallets: state.giggle.wallets,
+    currentWallet: state.giggle.currentWallet
   }
 }
 
@@ -72,7 +93,8 @@ const mapDispatchToProps = (dispatch) => {
     getAllOutputs: (avatarCode) => dispatch(GiggleActions.getAllOutputs(avatarCode)),
     cleanWallet: (avatarCode) => dispatch(GiggleActions.cleanWallet(avatarCode)),
     clearStorage: () => dispatch(GeneralActions.clearStorage()),
-    restoreWallet: (avatarCode, password, mnemonic) => dispatch(GiggleActions.restoreWallet(avatarCode, password, mnemonic))
+    restoreWallet: (avatarCode, password, mnemonic) => dispatch(GiggleActions.restoreWallet(avatarCode, password, mnemonic)),
+    setCurrentWallet: (wallet) => dispatch(GiggleActions.setCurrentWallet(wallet))
   }
 }
 

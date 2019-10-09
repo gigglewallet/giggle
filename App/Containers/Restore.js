@@ -11,25 +11,48 @@ import styles from './Styles/LaunchScreenStyles'
 import { connect } from 'react-redux'
 import GiggleActions from '../Redux/GiggleRedux'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import { is } from 'immutable'
 class Restore extends Component {
   state = {
     switchAmount: 24,
     containerHeight: 500,
     isAgree: false,
     phrases: ['', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '']
+    // phrases: 'appear caution owner absorb judge orange speed sleep worth design debris into ivory oven pulp paper saddle simple mom canyon price bike inflict style'.split(' ')
+    // phrases: ['index', 'life', 'scrub', 'vast', 'mixture', 'early', 'night', 'gun', 'genius', 'fault', 'silk', 'couple', 'curious', 'dragon', 'stuff', 'mother', 'task', 'dynamic', 'meat', 'word', 'convince', 'park', 'waste', 'define']
+    // simulator
     // phrases: 'index life scrub vast mixture early night gun genius fault silk couple curious dragon stuff mother task dynamic meat word convince park waste define'.split(' ')
+
+    // real phone
     // phrases: 'hundred copper milk actress sight seminar board lava unveil perfect reopen diagram desert hand history edge room midnight short beach auto finish social quote'.split(' ')
   }
 
+  componentDidMount = () => {
+    const { is12Phrase } = this.props
+
+    if (is12Phrase) {
+      this.setState({
+        switchAmount: 12,
+        containerHeight: 250
+      })
+    } else {
+      this.setState({
+        switchAmount: 24,
+        containerHeight: 500
+      })
+    }
+  }
+
   setPhrase = (idx, value) => {
-    let { phrases } = this.state
+    let { phrases, switchAmount } = this.state
     let flag = true
     phrases[idx] = value.toLowerCase()
-    phrases.map((val) => {
-      if (val.trim() == '') {
+
+    for (let i = 0; i < switchAmount; i++) {
+      if (phrases[i].trim() === '') {
         flag = false
       }
-    })
+    }
 
     this.setState({ phrases: phrases, isAgree: flag })
   }
@@ -45,6 +68,7 @@ class Restore extends Component {
   render () {
     let { phrases, isAgree, switchAmount, containerHeight } = this.state
     let PhraseLists = []
+
     for (let i = 0; i < switchAmount; i++) {
       PhraseLists.push(<PhraseItem key={i} number={i + 1} phrase={phrases[i]} idx={i} setState={this.setPhrase} />)
     }
@@ -81,7 +105,8 @@ class Restore extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    restorePhrase: state.giggle.restorePhrase
+    restorePhrase: state.giggle.restorePhrase,
+    is12Phrase: state.walletStatus.is12Phrase
   }
 }
 

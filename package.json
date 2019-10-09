@@ -26,7 +26,6 @@
   },
   "dependencies": {
     "apisauce": "^1.0.2",
-    "autosuggest": "^0.0.2",
     "format-json": "^1.0.3",
     "identity-obj-proxy": "^3.0.0",
     "lodash": "^4.17.11",
@@ -45,6 +44,7 @@
     "react-native-device-info": "^1.6.1",
     "react-native-easy-loading": "^1.0.6",
     "react-native-easy-toast": "^1.2.0",
+    "react-native-firebase": "^5.5.6",
     "react-native-gesture-handler": "1.0.9",
     "react-native-i18n": "2.0.14",
     "react-native-iphone-x-helper": "^1.2.1",

@@ -1,29 +1,29 @@
-import React, { Component, useState, useEffect } from 'react'
-import { ScrollView, Text, Image, View, Button, TextInput } from 'react-native'
-import { NextBtn, LightBtn, TouchIdSwitchBtn, AddBtn, FullWidthBtn } from '../Components/Buttons'
-import { NormalInput } from '../Components/TextFields'
-import { StepUI } from '../Components/UI'
+import React, { Component } from 'react'
+import { Text, Image, View } from 'react-native'
+import { FullWidthBtn, AddToContactsBtn } from '../Components/Buttons'
 import { Images, Colors, Fonts, Metrics } from '../Themes'
 import { AvatarIcon } from '../Components/AvatarIcon'
 import styled from 'styled-components/native'
 import I18n from 'react-native-i18n'
 import { transferBalance } from '../Modules/Common'
-import { AddToContactsBtn } from '../Components/Buttons'
-
-// Styles
+import { StackActions, NavigationActions } from 'react-navigation'
 import styles from './Styles/LaunchScreenStyles'
 
 export default class AskDone extends Component {
   onPressAddContacts = () => {
-    console.log('aaa')
     const { navigation } = this.props
     const avatarCode = navigation.getParam('avatarCode', '6539QW')
-    navigation.navigate('NewContact', { avatarCode: avatarCode })
+    const method = navigation.getParam('method', '')
+    navigation.navigate('NewContact', { avatarCode: avatarCode, method: method })
   }
   onPress = () => {
     const { navigation } = this.props
     const afterDonePage = navigation.getParam('afterDonePage', 'SwiperHome')
-    navigation.navigate(afterDonePage)
+    const resetAction = StackActions.reset({
+      index: 0,
+      actions: [NavigationActions.navigate({ routeName: afterDonePage })]
+    })
+    this.props.navigation.dispatch(resetAction)
   }
 
   render () {
@@ -56,23 +56,18 @@ export default class AskDone extends Component {
             </RecipientGroup>
             : <AvatarIcon avatarCode={avatarCode} name={nickname} style={{ marginTop: 5 }} />
           }
-
           <Text style={{ color: Colors.gary, ...Fonts.style.h9, marginTop: 28 }}>{I18n.t('amount')}</Text>
           <BalanceView style={{ borderLeftColor: (type === 'send') ? Colors.btnColor3 : Colors.btnColor2 }}>
             <Text style={{ ...Fonts.style.h8, color: Colors.text, marginTop: 3 }}>ツ</Text>
             <Text style={{ ...Fonts.style.h3, color: Colors.text, marginLeft: 5 }}>{firstNum}</Text>
             <Text style={{ ...Fonts.style.h8, color: Colors.text, marginTop: 14 }}>{(endNum === -1) ? null : endNum}</Text>
           </BalanceView>
-
           <Text style={{ color: Colors.gary, ...Fonts.style.h9, marginTop: 28 }}>{I18n.t('notes')}</Text>
           <Text style={{ color: Colors.text, ...Fonts.style.h8 }}>{note}</Text>
-
         </MiddleContainer>
-
         <BottomContainer>
           <FullWidthBtn onPress={this.onPress} >{I18n.t('done')}</FullWidthBtn>
         </BottomContainer>
-
       </View >
 
     )

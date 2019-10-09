@@ -12,20 +12,23 @@ import AlertWithBtns from '../Components/AlertWithBtns'
 import GiggleActions from '../Redux/GiggleRedux'
 import { connect } from 'react-redux'
 import WalletStatusActions from '../Redux/WalletStatusRedux'
+import { TRANSACTION_METHOD } from '../Modules/CommonType'
 class ContactDetails extends Component {
   state = { alertShow: false, alertTitle: '', alertMessage: '', alertBtns: [], alertInput: false }
   private = {
-    timeoutId: 0,
-    tempAvatarCode: null,
-    temiNickname: null,
-    tempIsContact: false
+    timeoutId: 0
+    // tempAvatarCode: null,
+    // temiNickname: null,
+    // tempIsContact: false
   }
+  /*
   componentWillReceiveProps (nextProps) {
     if (nextProps.relayAddress && !this.props.relayAddress) {
       const { navigation } = this.props
       navigation.navigate('AskEnterAmountPage', { type: 'send', isContact: true, avatarCode: this.private.tempAvatarCode, nickname: this.private.tempNickname, isShowStep: false })
     }
   }
+  */
   closeAlert = () => {
     this.setState({
       alertShow: false,
@@ -35,11 +38,24 @@ class ContactDetails extends Component {
       alertInput: false
     })
   }
-  deleteContact = () => {
 
+  componentDidMount = () => {
+    const { navigation } = this.props
+    const nickname = navigation.getParam('nickname')
+    this.setState({ nickname: nickname })
+  }
+  deleteContact = () => {
+    const { delContact, navigation } = this.props
+    const avatarCode = navigation.getParam('avatarCode')
+
+    delContact(avatarCode)
+    navigation.navigate('SwiperHome')
   }
   updateNickname = (n) => {
-    console.log(n)
+    const { updateContact, navigation } = this.props
+    const avatarCode = navigation.getParam('avatarCode')
+    this.setState({ nickname: n })
+    updateContact(avatarCode, n)
   }
   editeNickname = () => {
     this.setState({
@@ -71,12 +87,6 @@ class ContactDetails extends Component {
     navigation.goBack()
   }
   onAskPress = () => {
-    /*
-    const { navigation } = this.props
-    const avatarCode = navigation.getParam('avatarCode')
-    const nickname = navigation.getParam('nickname')
-    navigation.navigate('AskEnterAmountPage', { type: 'ask', isContact: true, avatarCode: avatarCode, nickname: nickname, isShowStep: false })
-    */
     if (this.private.timeoutId === 0) {
       const { updateWalletStatusRedux } = this.props
       updateWalletStatusRedux('isPressedAskBtn', true)
@@ -88,19 +98,40 @@ class ContactDetails extends Component {
   }
   onSendPRess = () => {
     const { navigation } = this.props
-    // const avatarCode = navigation.getParam('avatarCode')
-    // const nickname = navigation.getParam('nickname')
-    // navigation.navigate('AskEnterAmountPage', { type: 'send', isContact: true, avatarCode: avatarCode, nickname: nickname, isShowStep: false })
     const { relayAddressQuery } = this.props
-    this.private.tempAvatarCode = navigation.getParam('avatarCode')
-    this.private.tempNickname = navigation.getParam('nickname')
-    relayAddressQuery(navigation.getParam('avatarCode'))
+    const tempAvatarCode = navigation.getParam('avatarCode')
+    const tempNickname = navigation.getParam('nickname')
+    const method = navigation.getParam('method', TRANSACTION_METHOD.AVATAR_CODE)
+    if (method === TRANSACTION_METHOD.AVATAR_CODE) {
+      relayAddressQuery(tempAvatarCode.toLowerCase(), (relayAddress) => {
+        const { navigation } = this.props
+        navigation.navigate('AskEnterAmountPage', {
+          type: 'send',
+          isContact: true,
+          avatarCode: tempAvatarCode,
+          nickname: tempNickname,
+          isShowStep: false,
+          method: method,
+          relayAddress
+        })
+      })
+      return
+    }
+
+    navigation.navigate('AskEnterAmountPage', {
+      avatarCode: tempAvatarCode,
+      isContact: true,
+      isShowStep: false,
+      type: 'send',
+      method: method,
+      nickname: tempNickname
+    })
+
   }
   render () {
     const { navigation } = this.props
     const avatarCode = navigation.getParam('avatarCode')
-    const nickname = navigation.getParam('nickname')
-    const { alertShow, alertTitle, alertMessage, alertBtns, alertInput } = this.state
+    const { alertShow, alertTitle, alertMessage, alertBtns, alertInput, nickname } = this.state
     return (
       <View style={styles.mainContainer} >
         <ContactDetailsHeader onPressLeftBtn={this.onPressLeftBtn} onPressRightBtn={this.onPressRightBtn} />
@@ -134,14 +165,17 @@ class ContactDetails extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    relayAddress: state.giggle.relayAddress,
-    isFailRelayAddressQuery: state.giggle.isFailRelayAddressQuery
+    contacts: state.giggle.contacts,
+    relayAddress: state.walletStatus.relayAddress,
+    isFailRelayAddressQuery: state.walletStatus.isFailRelayAddressQuery
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    relayAddressQuery: (targetAvatarCode) => dispatch(GiggleActions.relayAddressQuery(targetAvatarCode)),
+    delContact: (avatarCode) => dispatch(GiggleActions.delContact(avatarCode)),
+    updateContact: (avatarCode, nickname) => dispatch(GiggleActions.updateContact(avatarCode, nickname)),
+    relayAddressQuery: (targetAvatarCode, callback) => dispatch(GiggleActions.relayAddressQuery(targetAvatarCode, callback)),
     updateWalletStatusRedux: (key, value) => dispatch(WalletStatusActions.updateWalletStatusRedux(key, value))
   }
 }

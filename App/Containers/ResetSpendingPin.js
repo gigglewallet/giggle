@@ -11,10 +11,8 @@ import TouchID from 'react-native-touch-id'
 import styles from './Styles/LaunchScreenStyles'
 import { connect } from 'react-redux'
 import GiggleActions from '../Redux/GiggleRedux'
-import GeneralActions from '../Redux/GeneralRedux'
-import * as Keychain from 'react-native-keychain';
-
-
+import WalletStatusActions from '../Redux/WalletStatusRedux'
+import * as Keychain from 'react-native-keychain'
 
 class SetSpendingPin extends Component {
   constructor (props) {
@@ -22,6 +20,8 @@ class SetSpendingPin extends Component {
     this.state = { isFocused: [], giggleMask: [], pin: [] }
     this.enablePinTouchId = this.enablePinTouchId.bind(this)
     this.saveSpendingPin = this.saveSpendingPin.bind(this)
+    this.private = {}
+    this.private.pin = []
   }
 
   onFocusChange = (nativeEvent, idx) => {
@@ -52,89 +52,90 @@ class SetSpendingPin extends Component {
 
     this.setState({ pin: markers, giggleMask: giggleMasks })
 
-    console.log(nextField);
+    console.log(nextField)
 
     if (nextField <= 6) {
-      this[nextField].focus()
-      this.setState({isAgree: false})
+      this.private.pin[nextField].focus()
+      this.setState({ isAgree: false })
     } else {
-      this[6].clearFocus
-      this.setState({isAgree: true})
+      this.private.pin[6].clearFocus
+      this.setState({ isAgree: true })
       Keyboard.dismiss()
     }
   }
 
   _foucsPrevField = (nativeEvent, idx) => {
-    
     let { isAgree } = this.state
 
     if (nativeEvent.key === 'Backspace') {
       let prevIdx = idx - 1
       let markers = [...this.state.pin]
       let giggleMasks = [...this.state.giggleMask]
-      
-      if(isAgree){
-        prevIdx++;
+
+      if (isAgree) {
+        prevIdx++
         idx = 6
-        this.setState({isAgree:false})
+        this.setState({ isAgree: false })
       }
 
       markers[prevIdx] = { ...markers[prevIdx], key: ' ' }
       giggleMasks[prevIdx] = { ...giggleMasks[prevIdx], key: false }
 
       this.setState({ pin: markers, giggleMask: giggleMasks })
-      this[idx].clear()
-      this[idx].focus()
+      this.private.pin[idx].clear()
+      this.private.pin[idx].focus()
     }
   }
 
   enablePinTouchId () {
     const { enablePinTouchId, isEnablePinTouchId } = this.props
 
-    if(isEnablePinTouchId){
+    if (isEnablePinTouchId) {
       enablePinTouchId(false)
       return
     }
 
     TouchID.isSupported()
-    .then(authenticate(enablePinTouchId,isEnablePinTouchId))
-    .then(success => {
-      (success=='FaceID' || success=='TouchID') ? enablePinTouchId(true) : enablePinTouchId(false)
-    })
-    .catch(error => {
-      AlertIOS.alert(error.message)
-    })
+      .then(authenticate(enablePinTouchId, isEnablePinTouchId))
+      .then(success => {
+        (success == 'FaceID' || success == 'TouchID') ? enablePinTouchId(true) : enablePinTouchId(false)
+      })
+      .catch(error => {
+        AlertIOS.alert(error.message)
+      })
   }
 
   async saveSpendingPin () {
-    const { navigation, walletRecovery, wallet, restorePhrase, restoreWallet, isSuccessWalletRecovery } = this.props
+    const { restorePhrase, restoreWallet, updateWalletStatusRedux } = this.props
     const { pin } = this.state
-    const restorePhraseString = restorePhrase.join(' ').trim()
     let pinPassword = ''
-    
+
     pin.map((key, idx) => {
       pinPassword += pin[idx]['key'].toString()
     })
 
     // Store the credentials
-    await Keychain.setGenericPassword(wallet.avatarCode, wallet.password);
-    
+    /*
+    await Keychain.setGenericPassword(wallet.avatarCode, wallet.password)
+
     try {
-      const credentials = await Keychain.getGenericPassword();
+      const credentials = await Keychain.getGenericPassword()
       if (credentials) {
-        console.log('Credentials successfully loaded for user ' + credentials.username);
+        console.log('Credentials successfully loaded for user ' + credentials.username)
       } else {
-        console.log('No credentials stored');
+        console.log('No credentials stored')
       }
     } catch (error) {
-      console.log('Keychain couldn\'t be accessed!', error);
+      console.log('Keychain couldn\'t be accessed!', error)
     }
     await Keychain.resetGenericPassword()
-        
-    //walletInit(TempData.avatarCode, password)
-    // await walletRecovery(wallet.avatarCode, wallet.password, restorePhraseString) 
+    */
+
+    // walletInit(TempData.avatarCode, password)
+    // await walletRecovery(wallet.avatarCode, wallet.password, restorePhraseString)
     // await walletRestore(wallet.avatarCode, wallet.password)
-    restoreWallet(wallet.avatarCode, wallet.password, restorePhraseString)
+    await updateWalletStatusRedux('tempPin', pinPassword)
+    await restoreWallet()
 
     // if(isSuccessWalletRecovery){
     //   navigation.navigate('SignUpComplete')
@@ -152,7 +153,7 @@ class SetSpendingPin extends Component {
           <Text style={{ color: Colors.gary2, ...Fonts.style.description }}>Spending PIN ensures <Text style={{ color: Colors.text }}>only you</Text> can spend your funds.</Text>
           <SpendingPinContainer>
             <SpendingPin
-              inputRef={ref => this['1'] = ref}
+              inputRef={ref => this.private.pin['1'] = ref}
               onChange={({ nativeEvent }) => this._focusNextField(nativeEvent, '2')}
               focus={isFocused[0]}
               showImage={giggleMask[0]}
@@ -162,7 +163,7 @@ class SetSpendingPin extends Component {
             />
 
             <SpendingPin
-              inputRef={ref => this['2'] = ref}
+              inputRef={ref => this.private.pin['2'] = ref}
               onChange={({ nativeEvent }) => this._focusNextField(nativeEvent, '3')}
               onKeyPress={({ nativeEvent }) => {
                 this._foucsPrevField(nativeEvent, '1')
@@ -175,7 +176,7 @@ class SetSpendingPin extends Component {
             />
 
             <SpendingPin
-              inputRef={ref => this['3'] = ref}
+              inputRef={ref => this.private.pin['3'] = ref}
               onChange={({ nativeEvent }) => this._focusNextField(nativeEvent, '4')}
               onKeyPress={({ nativeEvent }) => {
                 this._foucsPrevField(nativeEvent, '2')
@@ -187,7 +188,7 @@ class SetSpendingPin extends Component {
               onFocus={this.onFocusChange}
             />
             <SpendingPin
-              inputRef={ref => this['4'] = ref}
+              inputRef={ref => this.private.pin['4'] = ref}
               onChange={({ nativeEvent }) => this._focusNextField(nativeEvent, '5')}
               onKeyPress={({ nativeEvent }) => {
                 this._foucsPrevField(nativeEvent, '3')
@@ -199,7 +200,7 @@ class SetSpendingPin extends Component {
               onFocus={this.onFocusChange}
             />
             <SpendingPin
-              inputRef={ref => this['5'] = ref}
+              inputRef={ref => this.private.pin['5'] = ref}
               onChange={({ nativeEvent }) => this._focusNextField(nativeEvent, '6')}
               onKeyPress={({ nativeEvent }) => {
                 this._foucsPrevField(nativeEvent, '4')
@@ -211,7 +212,7 @@ class SetSpendingPin extends Component {
               onFocus={this.onFocusChange}
             />
             <SpendingPin
-              inputRef={ref => this['6'] = ref}
+              inputRef={ref => this.private.pin['6'] = ref}
               onChange={({ nativeEvent }) => this._focusNextField(nativeEvent, '7')}
               onKeyPress={({ nativeEvent }) => {
                 this._foucsPrevField(nativeEvent, '5')
@@ -247,9 +248,9 @@ class SetSpendingPin extends Component {
 }
 
 const mapStateToProps = (state) => {
-  return {    
+  return {
     isEnablePinTouchId: state.giggle.isEnablePinTouchId,
-    wallet: state.giggle.wallets[0],
+    // wallet: state.giggle.wallets[0],
     restorePhrase: state.giggle.restorePhrase,
     isSuccessWalletRecovery: state.giggle.isSuccessWalletRecovery
   }
@@ -260,7 +261,8 @@ const mapDispatchToProps = (dispatch) => {
     enablePinTouchId: (state, value) => dispatch(GiggleActions.enablePinTouchId(state, value)),
     walletRecovery: (avatarCode, password, mnemonic) => dispatch(GiggleActions.walletRecovery(avatarCode, password, mnemonic)),
     walletRestore: (avatarCode, password) => dispatch(GiggleActions.walletRestore(avatarCode, password)),
-    restoreWallet: (avatarCode, password, mnemonic) => dispatch(GiggleActions.restoreWallet(avatarCode, password, mnemonic))
+    restoreWallet: () => dispatch(GiggleActions.restoreWallet()),
+    updateWalletStatusRedux: (key, value) => dispatch(WalletStatusActions.updateWalletStatusRedux(key, value))
   }
 }
 
@@ -269,12 +271,12 @@ export default connect(mapStateToProps, mapDispatchToProps)(SetSpendingPin)
 function authenticate (enablePinTouchId, isEnablePinTouchId) {
   return TouchID.authenticate()
     .then(success => {
-      enablePinTouchId(true);
+      enablePinTouchId(true)
       AlertIOS.alert('Authenticated Successfully')
     })
     .catch(error => {
       console.log(error)
-      enablePinTouchId(false);
+      enablePinTouchId(false)
       AlertIOS.alert(error.message)
     })
 }
@@ -298,7 +300,7 @@ const TopContainer = styled.View`
 `
 
 const BottomContainer = styled.View`
-  height: 120
+  height: 60
   width:100%
   align-items: flex-start
   padding-left:24  

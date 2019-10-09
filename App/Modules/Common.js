@@ -1,9 +1,13 @@
 import { hex_md5 } from '../Lib/md5'
 import DeviceInfo from 'react-native-device-info'
+function toTrunc (value, n) {
+  return Math.floor(value * Math.pow(10, n)) / (Math.pow(10, n))
+}
 export function transferBalance (num) {
+  if (!num) return { firstNum: 0, endNum: -1 }
   let sNum = (typeof num === 'number') ? num.toString() : num
   let iNum = (typeof num === 'number') ? num : parseFloat(num)
-  let firstNum = iNum.toFixed(2).toString()
+  let firstNum = toTrunc(iNum, 2).toString()
   let endNum = -1
   if (sNum.length > firstNum.length) endNum = sNum.substring(firstNum.length)
   return { firstNum, endNum }

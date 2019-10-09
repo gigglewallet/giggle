@@ -49,6 +49,9 @@ class VerifyRecoveryPhrase extends Component {
   }
   componentWillMount () {
     const { restorePhrase } = this.props
+
+    if (restorePhrase.length === 12) this.private.keys = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].sort(() => Math.random() - 0.5)
+
     for (let i = 0; i < 12; i++) {
       this.private.phraseLists.push(restorePhrase[[this.private.keys[i]]])
     }

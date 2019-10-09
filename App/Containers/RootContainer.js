@@ -28,7 +28,22 @@ class RootContainer extends Component {
     AppState.removeEventListener('change', this._handleAppStateChange)
   }
   _handleAppStateChange = (nextAppState) => {
+
+    const { checkFaceId, currentWallet, isAvatarModalVisible } = this.props
+
+
+    console.log(this.state.appState)
+    console.log(nextAppState)
+    console.log(isAvatarModalVisible)
+
+    if (this.state.appState.match(/background/) && currentWallet.avatarCode) {
+      console.log('check faceid')
+      if (!isAvatarModalVisible) checkFaceId()
+      //this.props.updateWalletStatusRedux('isVerify', false)
+    }
+
     if (this.state.appState.match(/inactive|background/) && nextAppState === 'active') {
+      
       console.log('App has come to the foreground!')
       this.props.listen()
     }
@@ -207,52 +222,57 @@ class RootContainer extends Component {
 
 const mapStateToProps = state => {
   return {
-    isCallingWalletInit: state.giggle.isCallingWalletInit,
-    isCallingWalletPhrase: state.giggle.isCallingWalletPhrase,
-    isCallingWalletRecovery: state.giggle.isCallingWalletRecovery,
-    isCallingWalletRestore: state.giggle.isCallingWalletRestore,
-    isCallingGetBalance: state.giggle.isCallingGetBalance,
-    isCallingGetHeight: state.giggle.isCallingGetHeight,
-    isCallingTxCreateByFile: state.giggle.isCallingTxCreateByFile,
-    isCallingTxReceiveByFile: state.giggle.isCallingTxReceiveByFile,
-    isCallingTxFinalize: state.giggle.isCallingTxFinalize,
-    isCallingTxPost: state.giggle.isCallingTxPost,
-    isCallingTxCancel: state.giggle.isCallingTxCancel,
-    isCallingGetAllTransactions: state.giggle.isCallingGetAllTransactions,
-    isCallingGetTransactionDetail: state.giggle.isCallingGetTransactionDetail,
-    isCallingGetAllOutputs: state.giggle.isCallingGetAllOutputs,
-    isCallingCleanWallet: state.giggle.isCallingCleanWallet,
+    isCallingWalletInit: state.walletStatus.isCallingWalletInit,
+    isCallingWalletPhrase: state.walletStatus.isCallingWalletPhrase,
+    isCallingWalletRecovery: state.walletStatus.isCallingWalletRecovery,
+    isCallingWalletRestore: state.walletStatus.isCallingWalletRestore,
+    isCallingGetBalance: state.walletStatus.isCallingGetBalance,
+    isCallingGetHeight: state.walletStatus.isCallingGetHeight,
+    isCallingTxCreateByFile: state.walletStatus.isCallingTxCreateByFile,
+    isCallingTxReceiveByFile: state.walletStatus.isCallingTxReceiveByFile,
+    isCallingTxFinalize: state.walletStatus.isCallingTxFinalize,
+    isCallingTxPost: state.walletStatus.isCallingTxPost,
+    isCallingTxCancel: state.walletStatus.isCallingTxCancel,
+    isCallingGetAllTransactions: state.walletStatus.isCallingGetAllTransactions,
+    isCallingGetTransactionDetail: state.walletStatus.isCallingGetTransactionDetail,
+    isCallingGetAllOutputs: state.walletStatus.isCallingGetAllOutputs,
+    isCallingCleanWallet: state.walletStatus.isCallingCleanWallet,
 
-    isFailWalletInit: state.giggle.isFailWalletInit,
-    isFailWalletPhrase: state.giggle.isFailWalletPhrase,
-    isFailWalletRecovery: state.giggle.isFailWalletRecovery,
-    isFailWalletRestore: state.giggle.isFailWalletRestore,
-    isFailGetBalance: state.giggle.isFailGetBalance,
-    isFailGetHeight: state.giggle.isFailGetHeight,
-    isFailTxCreateByFile: state.giggle.isFailTxCreateByFile,
-    isFailTxReceiveByFile: state.giggle.isFailTxReceiveByFile,
-    isFailTxFinalize: state.giggle.isFailTxFinalize,
-    isFailTxPost: state.giggle.isFailTxPost,
-    isFailTxCancel: state.giggle.isFailTxCancel,
-    isFailGetAllTransactions: state.giggle.isFailGetAllTransactions,
-    isFailGetTransactionDetail: state.giggle.isFailGetTransactionDetail,
-    isFailGetAllOutputs: state.giggle.isFailGetAllOutputs,
-    isFailCleanWallet: state.giggle.isFailCleanWallet,
+    isFailWalletInit: state.walletStatus.isFailWalletInit,
+    isFailWalletPhrase: state.walletStatus.isFailWalletPhrase,
+    isFailWalletRecovery: state.walletStatus.isFailWalletRecovery,
+    isFailWalletRestore: state.walletStatus.isFailWalletRestore,
+    isFailGetBalance: state.walletStatus.isFailGetBalance,
+    isFailGetHeight: state.walletStatus.isFailGetHeight,
+    isFailTxCreateByFile: state.walletStatus.isFailTxCreateByFile,
+    isFailTxReceiveByFile: state.walletStatus.isFailTxReceiveByFile,
+    isFailTxFinalize: state.walletStatus.isFailTxFinalize,
+    isFailTxPost: state.walletStatus.isFailTxPost,
+    isFailTxCancel: state.walletStatus.isFailTxCancel,
+    isFailGetAllTransactions: state.walletStatus.isFailGetAllTransactions,
+    isFailGetTransactionDetail: state.walletStatus.isFailGetTransactionDetail,
+    isFailGetAllOutputs: state.walletStatus.isFailGetAllOutputs,
+    isFailCleanWallet: state.walletStatus.isFailCleanWallet,
 
-    walletRestorePercentage: state.giggle.walletRestorePercentage,
-    isFailRelayAddressQuery: state.giggle.isFailRelayAddressQuery,
-    isCallingRelayAddressQuery: state.giggle.isCallingRelayAddressQuery,
+    walletRestorePercentage: state.walletStatus.walletRestorePercentage,
+    isFailRelayAddressQuery: state.walletStatus.isFailRelayAddressQuery,
+    isCallingRelayAddressQuery: state.walletStatus.isCallingRelayAddressQuery,
     isPressedAskBtn: state.walletStatus.isPressedAskBtn,
     isEnoughBalance: state.walletStatus.isEnoughBalance,
     isSendTransactionFail: state.walletStatus.isSendTransactionFail,
-    isCallingTxSend: state.giggle.isCallingTxSend
+    isCallingTxSend: state.walletStatus.isCallingTxSend,
+
+    isAvatarModalVisible: state.walletStatus.isAvatarModalVisible,
+
+    currentWallet: state.giggle.currentWallet
   }
 }
 // wraps dispatch to create nicer functions to call within our component
 const mapDispatchToProps = (dispatch) => ({
   startup: () => dispatch(StartupActions.startup()),
-  updateGiggleRequestStatusAction: (actionType, isCalling, isSuccess, isFail) => dispatch(GiggleActions.updateGiggleRequestStatusAction(actionType, isCalling, isSuccess, isFail)),
+  updateGiggleRequestStatusAction: (actionType, isCalling, isSuccess, isFail) => dispatch(WalletStatusActions.updateGiggleRequestStatusAction(actionType, isCalling, isSuccess, isFail)),
   updateWalletStatusRedux: (key, value) => dispatch(WalletStatusActions.updateWalletStatusRedux(key, value)),
+  checkFaceId: () => dispatch(GiggleActions.checkFaceId()),
   listen: () => dispatch(GiggleActions.listen())
 })
 

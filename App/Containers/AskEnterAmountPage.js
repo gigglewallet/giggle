@@ -6,13 +6,14 @@ import styled from 'styled-components/native'
 import I18n from 'react-native-i18n'
 import { SmallBtn } from '../Components/Buttons'
 import AlertWithBtns from '../Components/AlertWithBtns'
-// Styles
 import styles from './Styles/LaunchScreenStyles'
 import { StepUI } from '../Components/UI'
 import { AvatarIcon } from '../Components/AvatarIcon'
 import GiggleActions from '../Redux/GiggleRedux'
 import WalletStatusActions from '../Redux/WalletStatusRedux'
 import { connect } from 'react-redux'
+import { TRANSACTION_METHOD } from '../Modules/CommonType'
+
 class AskEnterAmountPage extends Component {
   constructor (props) {
     super(props)
@@ -27,33 +28,31 @@ class AskEnterAmountPage extends Component {
     }
   }
   gotoAskDonePage = () => {
-    const { navigation, wallet, updateWalletStatusRedux, sendTransaction } = this.props
+    const { navigation, currentWallet, updateWalletStatusRedux, sendTransaction } = this.props
     const { amount, note } = this.state
-    console.log('balance', wallet.balance, amount)
-    /*
-    if (amount > wallet.balance) {
+    if (amount > currentWallet.balance) {
       updateWalletStatusRedux('isEnoughBalance', false)
       return
     }
-    */
     const isContact = navigation.getParam('isContact', false)
     const avatarCode = navigation.getParam('avatarCode', '')
     const nickname = navigation.getParam('nickname', '')
     const type = navigation.getParam('type', '')
-    sendTransaction({ isContact, avatarCode, nickname, type, amount, note })
-    // navigation.navigate('AskDone', { amount: amount, avarCode: avatarCode, nickname: nickname, isContact: isContact, note: note, type })
+    const method = navigation.getParam('method', '')
+    sendTransaction({ isContact, avatarCode, nickname, type, amount, note, method })
   }
   onPressAskBtn = () => {
-    const { navigation } = this.props
+    const { navigation, relayAddress } = this.props
     const { amount, note } = this.state
     const avatarCode = navigation.getParam('avatarCode', '')
-    const nickname = navigation.getParam('nickname', '')
     const type = navigation.getParam('type', '')
     const tempNote = (note) ? `(${note})` : ''
+    const method = navigation.getParam('method', '')
+    const message = (method === TRANSACTION_METHOD.AVATAR_CODE) ? (type === 'send') ? `Send ${relayAddress} for \n ツ${amount} ${tempNote}?` : `Ask ${relayAddress} for \n ツ${amount} ${tempNote}?` : (type === 'send') ? `Send ${avatarCode} for \n ツ${amount} ${tempNote}?` : `Ask ${avatarCode} for \n ツ${amount} ${tempNote}?`
     this.setState({
       alertShow: true,
       alertTitle: I18n.t('confirmDetails'),
-      alertMessage: (type === 'send') ? `Send ${nickname}・${avatarCode} for \n ツ${amount} ${tempNote}?` : `Ask ${nickname}・${avatarCode} for \n ツ${amount} ${tempNote}?`,
+      alertMessage: message,
       alertBtns: [
         { text: I18n.t('cancel'), outerStyle: ApplicationStyles.alert.buttonRightBorder },
         { text: I18n.t('confirm'), onPress: this.gotoAskDonePage }
@@ -78,14 +77,16 @@ class AskEnterAmountPage extends Component {
     const avatarCode = navigation.getParam('avatarCode', '')
     const nickname = navigation.getParam('nickname', '')
     const type = navigation.getParam('type', '')
+    const method = navigation.getParam('method', TRANSACTION_METHOD.AVATAR_CODE)
+
     const isShowStep = navigation.getParam('isShowStep', true)
     return (
       <View style={styles.mainContainer} >
         <TopContainer>
           <TextGrout>
             <Text style={{ color: Colors.gary, ...Fonts.style.h9, marginLeft: 10 }}>{I18n.t('recipient')}</Text>
-            {(!isContact)
-              ? <Text style={{ color: Colors.text, ...Fonts.style.h5, marginLeft: 10 }}>{avatarCode}</Text>
+            {(method !== TRANSACTION_METHOD.AVATAR_CODE)
+              ? <Text style={{ color: Colors.text, ...Fonts.style.h5, marginLeft: 10 }}>{!nickname ? '' : nickname + '・'}{avatarCode}</Text>
               : <AvatarIcon avatarCode={avatarCode} name={nickname} style={{ marginTop: 10 }} />
             }
           </TextGrout>
@@ -110,7 +111,7 @@ class AskEnterAmountPage extends Component {
           {(!isShowStep) ? null
             : <StepUI totalSteps={2} nowStep={2} color={(type === 'send') ? Colors.btnColor3 : Colors.btnColor2} />
           }
-          {(this.state.amount === 0)
+          {(parseFloat(this.state.amount) <= 0)
             ? <SmallBtn
               borderColor={type === 'send' ? 'rgba(240,30,120,0.1)' : 'rgba(60,180,180,0.1)'}
               fontColor='rgba(255,255,255,0.5)'
@@ -151,7 +152,8 @@ class AskEnterAmountPage extends Component {
 
 const mapStateToProps = state => {
   return {
-    wallet: state.giggle.wallets[0]
+    currentWallet: state.giggle.currentWallet,
+    relayAddress: state.walletStatus.relayAddress
   }
 }
 const mapDispatchToProps = (dispatch) => {

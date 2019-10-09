@@ -2,55 +2,37 @@ import React, { Component } from 'react'
 import { Text, View, FlatList, Image } from 'react-native'
 import { Images, Colors, Fonts, Metrics } from '../Themes'
 import styled from 'styled-components/native'
-// Styles
 import styles from './Styles/LaunchScreenStyles'
-import { ContactsHeader } from '../Components/Header'
 import { SearchInput, NormalInput } from '../Components/TextFields'
 import { RenderContactsItemNoBtn, StepUI } from '../Components/UI'
 import { SmallBtn } from '../Components/Buttons'
 import I18n from 'react-native-i18n'
-import { runSaga } from 'redux-saga'
-import { rgba } from 'polished'
 import GiggleActions from '../Redux/GiggleRedux'
 import { connect } from 'react-redux'
-import AlertWithBtns from '../Components/AlertWithBtns'
+import { TRANSACTION_METHOD } from '../Modules/CommonType'
 
 class AskPickPage extends Component {
   state = {
     keyword: '',
-    avatarCode: '',
-    alertShow: false,
-    alertTitle: '',
-    alertMessage: '',
-    alertBtns: [],
-    alertInput: false
-  }
-  private = {
-    tempAvatarCode: null,
-    temiNickname: null,
-    tempIsContact: false
-  }
-  componentWillReceiveProps (nextProps) {
-    if (nextProps.relayAddress && !this.props.relayAddress) {
-      const { navigation } = this.props
-      const type = navigation.getParam('type', '')
-      navigation.navigate('AskEnterAmountPage', { avatarCode: this.private.tempAvatarCode, nickname: this.private.tempNickname, isContact: this.private.tempIsContact, type, relayAddress: nextProps.relayAddress })
-    }
-  }
-  onPressRightBtn = () => {
-    const { navigation } = this.props
-    navigation.navigate('NewContact')
+    avatarCode: ''
   }
   gotoEnterAmountPage = async (item) => {
     const { navigation, relayAddressQuery } = this.props
-    this.private.tempAvatarCode = item.avatarCode
-    this.private.tempNickname = item.nickname
-    this.private.isContact = true
-    relayAddressQuery(item.avatarCode)
-    /*
-     const type = navigation.getParam('type', '')
-     navigation.navigate('AskEnterAmountPage', { avatarCode: item.avatarCode, nickname: item.nickname, isContact: true, type })
-     */
+    const type = navigation.getParam('type', '')
+    if (item.method === TRANSACTION_METHOD.AVATAR_CODE) {
+      relayAddressQuery(item.avatarCode.toLowerCase(), (relayAddress) => {
+        navigation.push('AskEnterAmountPage', {
+          avatarCode: item.avatarCode,
+          nickname: item.nickname,
+          isContact: true,
+          type,
+          relayAddress: relayAddress,
+          method: item.method
+        })
+      })
+    } else {
+      navigation.push('AskEnterAmountPage', { avatarCode: item.avatarCode, nickname: item.nickname, isContact: true, type, method: item.method })
+    }
   }
   getSource (datas) {
     if (this.state.keyword.length === 0) return datas
@@ -59,43 +41,57 @@ class AskPickPage extends Component {
     })
   }
   onAvatarCodeChange = (avatarCode) => {
-    if (avatarCode.length <= 6) this.setState({ avatarCode })
-    else if (avatarCode.length > 6) this.setState({ avatarCode: avatarCode.slice(0, 6) })
+    this.setState({ avatarCode })
   }
   renderPasswordAccessory = () => {
-    if (this.state.avatarCode.length === 6) {
+    if (this.verifyAddress(this.state.avatarCode).result) {
       return (
         <Image source={Images.icConfirmed} />
       )
     }
   }
+  verifyAddress = (s) => {
+    if (this.state.avatarCode.length > 6 && (this.state.avatarCode.indexOf('https') > -1 || this.state.avatarCode.indexOf('http') > -1)) return { method: TRANSACTION_METHOD.HTTPS, result: true }
+    if (this.state.avatarCode.length > 6 && (this.state.avatarCode.indexOf('tn1-') > -1 || this.state.avatarCode.indexOf('gn1-') > -1)) return { method: TRANSACTION_METHOD.RELAY_ADDRESS, result: true }
+    if (this.state.avatarCode.length >= 6) return { method: TRANSACTION_METHOD.AVATAR_CODE, result: true }
+    return { result: false }
+    // https://hk.grin.icu:13415
+    // tn1-q05y5n9x-67cec43ngu3ppfa-448sj75u36przms-zw6elmauj7q4dl7-xsfvx9
+    // Avatar Code:  xsfvx9
+  }
   onPressNext = () => {
-    const { relayAddressQuery } = this.props
+    const { relayAddressQuery, navigation } = this.props
     const { avatarCode } = this.state
-    relayAddressQuery(avatarCode)
-    this.private.tempAvatarCode = avatarCode
-    this.private.isContact = false
-    /*
-    const { navigation } = this.props
-    const { avatarCode } = this.state
+    const result = this.verifyAddress(this.state.avatarCode)
     const type = navigation.getParam('type', '')
-    navigation.navigate('AskEnterAmountPage', { avatarCode: avatarCode, isContact: false, type })
-    */
+    if (result.method === TRANSACTION_METHOD.AVATAR_CODE) {
+      relayAddressQuery(avatarCode.toLowerCase(), (relayAddress) => {
+        const { navigation } = this.props
+        navigation.navigate('AskEnterAmountPage', {
+          avatarCode: avatarCode,
+          nickname: '',
+          isContact: false,
+          type,
+          relayAddress: relayAddress,
+          method: result.method
+        })
+      })
+      return
+    }
+    navigation.navigate('AskEnterAmountPage', { avatarCode: avatarCode, isContact: false, type, method: result.method })
   }
   render () {
     const { navigation, contacts } = this.props
     const { avatarCode, keyword } = this.state
     const type = navigation.getParam('type', '')
-
     return (
       <View style={styles.mainContainer}>
         <TopContainer>
           <NormalInput
-            labelText={I18n.t('avatarCode')}
+            labelText={I18n.t('avatarCodeOrOther')}
             value={avatarCode}
             renderAccessory={this.renderPasswordAccessory}
             onChange={this.onAvatarCodeChange}
-
           />
           <Text style={{ color: Colors.gary, ...Fonts.style.h8, marginTop: 40 }}>{I18n.t('orChooseFromContacts')}</Text>
         </TopContainer>
@@ -120,7 +116,7 @@ class AskPickPage extends Component {
         </BottomContainer>
         <StepContainer >
           <StepUI totalSteps={2} nowStep={1} color={(type === 'send') ? Colors.btnColor3 : Colors.btnColor2} />
-          {(this.state.avatarCode.length !== 6)
+          {(!this.verifyAddress(this.state.avatarCode).result)
             ? <SmallBtn
               borderColor={type === 'send' ? 'rgba(240,30,120,0.5)' : 'rgba(60,180,180,0.5)'}
               fontColor={type === 'send' ? 'rgba(240,30,120,0.5)' : 'rgba(60,180,180,0.5)'}
@@ -147,14 +143,14 @@ class AskPickPage extends Component {
 const mapStateToProps = (state) => {
   return {
     contacts: state.giggle.contacts,
-    relayAddress: state.giggle.relayAddress,
-    isFailRelayAddressQuery: state.giggle.isFailRelayAddressQuery
+    relayAddress: state.walletStatus.relayAddress,
+    isFailRelayAddressQuery: state.walletStatus.isFailRelayAddressQuery
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    relayAddressQuery: (targetAvatarCode) => dispatch(GiggleActions.relayAddressQuery(targetAvatarCode))
+    relayAddressQuery: (targetAvatarCode, callback) => dispatch(GiggleActions.relayAddressQuery(targetAvatarCode, callback))
   }
 }
 

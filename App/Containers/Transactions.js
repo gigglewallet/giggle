@@ -9,7 +9,7 @@ import I18n from 'react-native-i18n'
 import moment from 'moment'
 import { SearchInput } from '../Components/TextFields'
 import { connect } from 'react-redux'
-
+import { TRANSACTION_METHOD } from '../Modules/CommonType'
 class Transactions extends Component {
   state = {
     keyword: '',
@@ -17,7 +17,7 @@ class Transactions extends Component {
   }
   gotoTransactionDetail = (item) => {
     const { navigation } = this.props
-    navigation.navigate('TransactionDetails', { type: item.type, avatarCode: item.avatarCode, nickname: item.nickname, date: item.date, notes: item.notes, amount: item.amount })
+    navigation.navigate('TransactionDetails', { type: item.type, avatarCode: item.avatarCode, nickname: item.nickname, date: item.date, note: item.note, amount: item.amount, fee: item.fee, method: item.method })
   }
   getSource = (datas) => {
     if (this.state.keyword.length === 0) return datas
@@ -95,38 +95,46 @@ const RenderItemIcon = ({ type }) => {
   }
   return (null)
 }
+
 const RenderItem = ({ item, onPress }) => {
   return (
     <ItemContainer onPress={onPress}>
-      <TopItemView >
-        <RenderItemIcon type={item.type} />
-      </TopItemView >
-      <MiddleItemView >
-        <MiddleTopItemView>
+      <MiddleTopItemView>
+        <TopItemView >
+          <RenderItemIcon type={item.type} />
+        </TopItemView >
+        <MiddleItemView >
           <Text style={{ ...Fonts.style.h5, color: Colors.text }} >ツ{item.amount}</Text>
-        </MiddleTopItemView>
-        <MiddleBottomItemView>
-          <Text style={{ ...Fonts.style.h9, color: Colors.gary }} >Received from {item.nickname + '。  ' + item.avatarCode}</Text>
-        </MiddleBottomItemView>
-      </MiddleItemView >
-      <BottomItemView >
-        <Text style={{ ...Fonts.style.h9, color: Colors.text }} > {moment(item.date).fromNow()}</Text>
-      </BottomItemView >
+        </MiddleItemView >
+        <BottomItemView >
+          <Text style={{ ...Fonts.style.h9, color: Colors.text }} > {moment(item.date).fromNow()}</Text>
+        </BottomItemView >
+      </MiddleTopItemView>
+      <MiddleBottomItemView>
+        <Text style={{ ...Fonts.style.h9, color: Colors.gary }} >Fee: {item.fee}</Text>
+        {(item.method === TRANSACTION_METHOD.AVATAR_CODE)
+          ? <Text style={{ ...Fonts.style.h9, color: Colors.gary }} numberOfLines={1} >Received from {(item.nickname) ? item.nickname + '。  ' + item.avatarCode : item.avatarCode}</Text>
+          : <Text style={{ ...Fonts.style.h9, color: Colors.gary }} >Received from {item.avatarCode}</Text>
+        }
+      </MiddleBottomItemView>
     </ItemContainer>
   )
 }
 
 const MiddleTopItemView = styled.View`
-  flex:2
+  flex:1
+  flex-direction:row
 `
 const MiddleBottomItemView = styled.View`
   flex:1
+  padding-bottom:5
+  padding-left:36
 `
 
 const ItemContainer = styled.TouchableOpacity`
-  flex-direction:row
+  flex-direction:column
   width: ${Metrics.screenWidth - 48}
-  height:85
+  height:90
   padding-top:16
   padding-bottom:16
   border-bottom-color: #343458
@@ -134,12 +142,14 @@ const ItemContainer = styled.TouchableOpacity`
 `
 const TopItemView = styled.View`
   width:20
+  padding-top:5
 `
 const MiddleItemView = styled.View`
   flex:1
   padding-left:16
 `
 const BottomItemView = styled.View`
+  padding-top:5
 `
 const PinkCycle = styled.View`
   width: 20

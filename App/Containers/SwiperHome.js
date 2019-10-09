@@ -42,14 +42,14 @@ class SwiperHome extends Component {
   }
 }
 
-const mapStateToProps = (state) => {  
-  return { 
+const mapStateToProps = (state) => {
+  return {
+    currentWallet: state.giggle.currentWallet
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
-  return {    
-    getbalance: (avatarCode, password) => dispatch(GiggleActions.walletPhrase(avatarCode, password)),
+  return {
     walletRecovery: (avatarCode, password, mnemonic) => dispatch(GiggleActions.walletRecovery(avatarCode, password, mnemonic)),
     updateRestorePhrase: (phrase) => dispatch(GiggleActions.updateRestorePhrase(phrase))
   }

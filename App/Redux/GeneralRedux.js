@@ -12,7 +12,8 @@ const { Types, Creators } = createActions({
   launchInfoRequest: null,
   launchInfoSuccess: ['launchInfo'],
   launchInfoFail: null,
-  clearStorage: null
+  clearStorage: null,
+  logout: null
 })
 
 export const GeneralTypes = Types

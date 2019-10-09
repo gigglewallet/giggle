@@ -10,22 +10,15 @@ import { AskBtn, SendBtn } from '../Components/Buttons'
 import { SearchInput } from '../Components/TextFields'
 import { connect } from 'react-redux'
 import GiggleActions from '../Redux/GiggleRedux'
-const TempData = [
-  { avatarCode: '85s8zd', nickname: 'terrence' },
-  { avatarCode: 'S2T98Z', nickname: 'Ryan' },
-  { avatarCode: '9A131K', nickname: 'Morphy' },
-  { avatarCode: 'M8109E', nickname: 'Louise' },
-  { avatarCode: 'B7009P', nickname: 'Nelson' }
-]
-
+import { TRANSACTION_METHOD } from '../Modules/CommonType'
 const RenderItem = ({ item, onPress, onAskPress, onSendPress }) => {
   return (
     <ItemContainer onPress={onPress}>
       <TopItemView >
         <Blockies
-          blockies={item.avatarCode} // string content to generate icon
-          size={40} // blocky icon size
-          style={{ width: 40, height: 40 }} // style of the view will wrap the icon
+          blockies={item.avatarCode}
+          size={40}
+          style={{ width: 40, height: 40 }}
         />
       </TopItemView >
       <MiddleItemView >
@@ -48,25 +41,13 @@ class Contacts extends Component {
   state = {
     keyword: ''
   }
-  private = {
-    tempAvatarCode: null,
-    temiNickname: null,
-    isShowStep: false
-  }
-  componentWillReceiveProps (nextProps) {
-    if (nextProps.relayAddress && !this.props.relayAddress) {
-      const { navigation } = this.props
-      navigation.navigate('AskEnterAmountPage', { type: 'send', isContact: true, isShowStep: false, avatarCode: this.private.tempAvatarCode, nickname: this.private.tempNickname, relayAddress: nextProps.relayAddress })
-    }
-  }
   onPressRightBtn = () => {
     const { navigation } = this.props
     navigation.navigate('NewContact')
   }
   gotoContactDetail = (item) => {
-    console.log('avatarCode=', item)
     const { navigation } = this.props
-    navigation.navigate('ContactDetails', { avatarCode: item.avatarCode, nickname: item.nickname })
+    navigation.navigate('ContactDetails', { avatarCode: item.avatarCode, nickname: item.nickname, method: item.method })
   }
   getSource (datas) {
     if (this.state.keyword.length === 0) return datas
@@ -76,18 +57,28 @@ class Contacts extends Component {
   }
   onAskPress = (item) => {
     const { navigation } = this.props
-
     navigation.navigate('AskEnterAmountPage', { type: 'ask', isContact: true, avatarCode: item.avatarCode, nickname: item.nickname, isShowStep: false })
   }
   onSendPress = (item) => {
-    const { relayAddressQuery } = this.props
-    this.private.tempAvatarCode = item.avatarCode
-    this.private.tempNickname = item.nickname
-    this.private.isShowStep = false
-    relayAddressQuery(item.avatarCode)
+    const { relayAddressQuery, navigation } = this.props
+    if (item.method === TRANSACTION_METHOD.AVATAR_CODE) {
+      relayAddressQuery(item.avatarCode, (relayAddress) => {
+        navigation.push('AskEnterAmountPage', {
+          avatarCode: item.avatarCode,
+          nickname: item.nickname,
+          isContact: true,
+          type: 'send',
+          relayAddress: relayAddress,
+          method: item.method,
+          isShowStep: false
+        })
+      })
+    } else {
+      navigation.navigate('AskEnterAmountPage', { type: 'send', isContact: true, avatarCode: item.avatarCode, nickname: item.nickname, isShowStep: false, method: item.method })
+    }
   }
   render () {
-    const { scrollToHome } = this.props
+    const { scrollToHome, contacts } = this.props
     const { keyword } = this.state
     return (
       <View style={styles.mainContainer}>
@@ -106,7 +97,7 @@ class Contacts extends Component {
         <BottomContainer>
           <ListView>
             <FlatList
-              data={this.getSource(TempData)}
+              data={this.getSource(contacts)}
               renderItem={({ item }) => <RenderItem item={item} onPress={this.gotoContactDetail.bind(this, item)} onAskPress={this.onAskPress.bind(this, item)} onSendPress={this.onSendPress.bind(this, item)} />}
             />
           </ListView>
@@ -119,18 +110,19 @@ class Contacts extends Component {
 const mapStateToProps = (state) => {
   return {
     contacts: state.giggle.contacts,
-    relayAddress: state.giggle.relayAddress,
-    isFailRelayAddressQuery: state.giggle.isFailRelayAddressQuery
+    relayAddress: state.walletStatus.relayAddress,
+    isFailRelayAddressQuery: state.walletStatus.isFailRelayAddressQuery
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    relayAddressQuery: (targetAvatarCode) => dispatch(GiggleActions.relayAddressQuery(targetAvatarCode))
+    relayAddressQuery: (targetAvatarCode, callback) => dispatch(GiggleActions.relayAddressQuery(targetAvatarCode, callback))
   }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Contacts)
+
 const MiddleTopItemView = styled.View`
   flex:1
 `

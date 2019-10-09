@@ -14,3 +14,11 @@ export const TRANSACTION_TYPE = {
   AskSuccess: 5,
   AskFail: 6
 }
+
+export const TRANSACTION_METHOD = {
+  AVATAR_CODE: 1,
+  RELAY_ADDRESS: 2,
+  HTTPS: 3
+}
+
+export const GRIN_UNIT = 1000000000

@@ -1,5 +1,5 @@
 import React, { Component, PureComponent } from 'react'
-import { Clipboard, Text, Image, View, FlatList, Modal, ActionSheetIOS, Alert } from 'react-native'
+import { Clipboard, Text, Image, View, FlatList, Modal, ActionSheetIOS, Alert, CameraRoll } from 'react-native'
 import ReactNative from 'react-native'
 import { ApplicationStyles, Images, Colors, Fonts, Metrics } from '../Themes'
 import styled from 'styled-components/native'
@@ -106,17 +106,19 @@ class MyAvatars extends Component {
     this.qrcodePic
   }
 
+  componentWillMount () {
+    console.log(`componentWillMount`)
+  }
   
-  componentDidMount () {
-    const { wallets, relayAddress } = this.props
-    console.log(wallets, relayAddress)
+  componentDidMount (evt) {
+    const { wallets, relayAddress } = this.props    
+    this.showActionSheet(evt, relayAddress)
   }
   
   setModalVisible (visible) {
-    const { updateWalletStatusRedux, navigation } = this.props
+    const { updateWalletStatusRedux } = this.props
     console.log(visible)
-    updateWalletStatusRedux('isAvatarModalVisible', visible)    
-    navigation.navigate('ShowMyAvatar')
+    updateWalletStatusRedux('isAvatarModalVisible', visible)
   }
 
   gotoContactDetail = (item) => {
@@ -125,7 +127,7 @@ class MyAvatars extends Component {
   }
 
   showActionSheet = (evt, relayAddress) => {
-    const { updateWalletStatusRedux } = this.props
+    const { updateWalletStatusRedux, navigation } = this.props
 
     ActionSheetIOS.showActionSheetWithOptions({
       title: 'GrinRelay Address',
@@ -138,7 +140,7 @@ class MyAvatars extends Component {
           Clipboard.setString(relayAddress)
         } else if (buttonIndex === 1) {
           ReactNative.takeSnapshot(this.qrcodePic, { format: 'png', quality: 0.8 }).then((url) => {
-            
+            CameraRoll.saveToCameraRoll(url, 'photo')
             console.log('url', url)
           }
           ).catch(
@@ -150,7 +152,7 @@ class MyAvatars extends Component {
         this.setState({ clicked: BUTTONS[buttonIndex] })
 
         updateWalletStatusRedux('isAvatarModalVisible', false)
-
+        navigation.navigate('MyAvatars')
       })
   }
 
@@ -192,34 +194,29 @@ class MyAvatars extends Component {
     return (
       <View style={styles.mainContainer}>
         
+          <View style={styles.mainContainer} >
+            
+            <RenderQRCode relayAddress={relayAddress} item={currentWallet} ref={(ref) => {
+              this.qrcodePic = ref
+            }} />          
+          </View>
 
-        <TopContainer >
-          <AvatarsDesc>
-            {I18n.t('myAvatarsMessage')}
-          </AvatarsDesc>
+          <BottomContainer>
 
-        </TopContainer>
-        <BottomContainer>
+<ListView>
+  <FlatList
+    data={wallets}
+    renderItem={({ item }) => <RenderItem item={item} onQRCodePress={() => {
+      this.setModalVisible(true)
+    }} onDeletePress={() => { this.refreshAvatar(item) }}
+      onCopyLink={() => { this.copyLink() }}
+      onSetCurrentWallet={() => { this.setSelectedCurrentWallet(item) }}
+    />}
+  />
+</ListView>
+</BottomContainer>
 
-          <ListView>
-            <FlatList
-              data={wallets}
-              renderItem={({ item }) => <RenderItem item={item} onQRCodePress={() => {
-                this.setModalVisible(true)
-              }} onDeletePress={() => { this.refreshAvatar(item) }}
-                onCopyLink={() => { this.copyLink() }}
-                onSetCurrentWallet={() => { this.setSelectedCurrentWallet(item) }}
-              />}
-            />
-          </ListView>
-        </BottomContainer>
-
-        <AlertWithBtns isShow={alertShow}
-          close={this.closeAlert}
-          title={I18n.t('deleteAvatar')}
-          message={I18n.t('deleteAvatarMessage')}
-          buttons={alertBtns}
-          input={false} />
+        
       </View >
     )
   }
