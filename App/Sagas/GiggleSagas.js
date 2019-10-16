@@ -287,7 +287,7 @@ export function* getBalance ({ avatarCode, password, isProcessLoading = true, is
 
     if (isProcessLoading) yield put(WalletStatusActions.updateGiggleRequestStatus('getBalance', false, true, false))
     // let index = yield getIndexByAvatarCode(avatarCode)
-    yield put(GiggleActions.updateCurrentWallet({ balance: parseInt(result.total) / GRIN_UNIT }))
+    yield put(GiggleActions.updateCurrentWallet({ balance: (parseInt(result.total) + parseInt(result.amount_awaiting_finalization)) / GRIN_UNIT }))
 
     if (isHomeRefresh) yield put(WalletStatusActions.updateWalletStatusRedux('homeRefreshing', false))
   } catch (e) {
