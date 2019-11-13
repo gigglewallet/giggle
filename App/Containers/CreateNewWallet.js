@@ -17,8 +17,9 @@ import WalletsStatusRedux from '../Redux/WalletStatusRedux'
 
 class CreateNewWallet extends Component {
   componentDidMount () {
-    const { clearStorage } = this.props
-    EasyLoading.dismis('type')    
+    const { clearStorage, removeWalletData } = this.props
+    removeWalletData()
+    EasyLoading.dismis('type')
   } 
 
   render () {
@@ -60,7 +61,8 @@ const mapDispatchToProps = (dispatch) => {
   return {
     updateCreateWalletTermOne: (state, value) => dispatch(WalletsStatusRedux.updateCreateWalletTermOne(state, value)),
     updateCreateWalletTermTwo: (state, value) => dispatch(WalletsStatusRedux.updateCreateWalletTermTwo(state, value)),
-    agreeCreateWalletTerms: (state, value) => dispatch(WalletsStatusRedux.agreeCreateWalletTerms(state, value))
+    agreeCreateWalletTerms: (state, value) => dispatch(WalletsStatusRedux.agreeCreateWalletTerms(state, value)),
+    removeWalletData: () => dispatch(GiggleActions.removeWalletData())
   }
 }
 

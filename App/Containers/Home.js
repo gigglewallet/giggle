@@ -18,10 +18,8 @@ class Home extends Component {
   componentWillMount = () => {
     if (this.props.currentWallet) {
       this.props.getBalance(this.props.currentWallet.avatarCode, this.props.currentWallet.password)
-      this.props.listen()
+      this.props.updateTransaction()
     }
-
-    
   }
   onPressHint = () => {
     const { navigation } = this.props
@@ -30,6 +28,7 @@ class Home extends Component {
 
   onRefresh = () => {
     this.props.getBalance(this.props.currentWallet.avatarCode, this.props.currentWallet.password, false, true)
+    this.props.updateTransaction()
   }
 
   componentDidMount = () => {
@@ -116,7 +115,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     getBalance: (avatarCode, password, isProcessLoading, isHomeRefresh) => dispatch(GiggleActions.getBalance(avatarCode, password, isProcessLoading, isHomeRefresh)),
     updateWalletStatusRedux: (key, value) => dispatch(WalletStatusActions.updateWalletStatusRedux(key, value)),
-    listen: () => dispatch(GiggleActions.listen())
+    updateTransaction: () => dispatch(GiggleActions.updateTransaction())
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Home)

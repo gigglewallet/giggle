@@ -1,5 +1,4 @@
 import { hex_md5 } from '../Lib/md5'
-import DeviceInfo from 'react-native-device-info'
 function toTrunc (value, n) {
   return Math.floor(value * Math.pow(10, n)) / (Math.pow(10, n))
 }
@@ -18,10 +17,6 @@ export function getSN () {
   var month = today.getMonth() + 1 > 9 ? today.getMonth() + 1 : '0' + (today.getMonth() + 1)
   var date = today.getDate() > 9 ? today.getDate() : '0' + today.getDate()
   return hex_md5(`${today.getFullYear()}${month}${date}giggle888`)
-}
-
-export function getDeviceId () {
-  return DeviceInfo.getDeviceId()
 }
 
 export const mapRustBalance = (rB) => {

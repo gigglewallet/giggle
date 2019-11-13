@@ -98,7 +98,7 @@ class SetSpendingPin extends Component {
     TouchID.isSupported()
       .then(authenticate(enablePinTouchId, isEnablePinTouchId))
       .then(success => {
-        (success == 'FaceID' || success == 'TouchID') ? enablePinTouchId(true) : enablePinTouchId(false)
+        (success === 'FaceID' || success === 'TouchID') ? enablePinTouchId(true) : enablePinTouchId(false)
       })
       .catch(error => {
         AlertIOS.alert(error.message)
@@ -106,7 +106,7 @@ class SetSpendingPin extends Component {
   }
 
   async saveSpendingPin () {
-    const { restorePhrase, restoreWallet, updateWalletStatusRedux } = this.props
+    const { restoreWallet, updateWalletStatusRedux } = this.props
     const { pin } = this.state
     let pinPassword = ''
 

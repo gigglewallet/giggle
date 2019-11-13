@@ -29,9 +29,9 @@
   UIViewController *rootViewController = [UIViewController new];
   rootViewController.view = rootView;
   self.window.rootViewController = rootViewController;
-  [self.window makeKeyAndVisible];
-  [RNSplashScreen show];
+  [self.window makeKeyAndVisible];  
   [FIRApp configure];
+  [RNSplashScreen show];
   return YES;
 }
 

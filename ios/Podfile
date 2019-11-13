@@ -6,32 +6,26 @@ target 'GrinWallet' do
   #use_frameworks!
   #pod 'React', :path => '../node_modules/react-native/'
   pod 'cocoa_grinwallet', :git => 'https://github.com/gottstech/cocoa_grinwallet.git', :tag => 'v1.0.5'
-  pod 'RNFirebase', :path => '../node_modules/react-native-firebase/ios'
-  pod 'Fabric', '~> 1.10.2'
-  pod 'Crashlytics', '~> 3.14.0'
+  pod 'RNFBApp', :path => '../node_modules/@react-native-firebase/app'
+  pod 'RNFBCrashlytics', :path => '../node_modules/@react-native-firebase/crashlytics'
+  pod 'Fabric', '~> 1.9.0'
+  pod 'Crashlytics', '~> 3.12.0'
   pod 'yoga', :path => '../node_modules/react-native/ReactCommon/yoga'
-    pod 'React', :path => '../node_modules/react-native', :subspecs => [
-        'Core',
-        'DevSupport',
-        'CxxBridge',
-        'RCTActionSheet',
-        'RCTGeolocation',
-        'RCTImage',
-        'RCTNetwork',
-        'RCTPushNotification',
-        'RCTSettings',
-        'RCTText',
-        'RCTVibration',
-        'RCTWebSocket',
-        'RCTLinkingIOS',
-        'RCTAnimation'
-    ]
-  pod 'DoubleConversion', :podspec => '../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec'
-  pod 'glog', :podspec => '../node_modules/react-native/third-party-podspecs/glog.podspec'
   pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
-
+  pod 'React', :path => '../node_modules/react-native', :subspecs => [
+        'Core',
+        'CxxBridge',
+    ]
   # Pods for GrinWallet
   #node_modules_path = '../node_modules'
+  post_install do |installer|
+    installer.pods_project.targets.each do |target|
+      if target.name == "React"
+        target.remove_from_project
+      end
+    end
+  end
+
 
   target 'GrinWallet-tvOSTests' do
     inherit! :search_paths
@@ -44,6 +38,7 @@ target 'GrinWallet' do
 
     #pod 'react-native-keep-awake', :path => '../node_modules/react-native-keep-awake'
 
+
   end
 
   target 'GrinWalletTests' do
@@ -52,5 +47,7 @@ target 'GrinWallet' do
   end
 
 end
+
+
 
 

@@ -7,16 +7,14 @@ import styles from './Styles/LaunchScreenStyles'
 import { Loading, EasyLoading } from 'react-native-easy-loading'
 
 export default class LaunchScreen extends Component {
-
   componentDidMount = () => {
-    EasyLoading.show('Loading...', 5000)
+    EasyLoading.show('Loading...', -1)
   }
 
-  render () { 
+  render () {
     return (
-      <View style={styles.mainContainer}>     
-          <Loading type={'type'} />
- 
+      <View style={styles.mainContainer}>
+        <Loading type={'type'} />
       </View>
     )
   }

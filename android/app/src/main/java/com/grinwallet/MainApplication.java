@@ -3,6 +3,8 @@ package com.grinwallet;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import io.invertase.firebase.ReactNativeFirebaseAppPackage;
+import io.invertase.firebase.crashlytics.ReactNativeFirebaseCrashlyticsPackage;
 import io.invertase.firebase.RNFirebasePackage;
 import com.corbt.keepawake.KCKeepAwakePackage;
 import com.oblador.keychain.KeychainPackage;
@@ -11,7 +13,6 @@ import com.rnfingerprint.FingerprintAuthPackage;
 import com.RNFetchBlob.RNFetchBlobPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import org.devio.rn.splashscreen.SplashScreenReactPackage;
-import com.learnium.RNDeviceInfo.RNDeviceInfo;
 import com.lugg.ReactNativeConfig.ReactNativeConfigPackage;
 import com.AlexanderZaytsev.RNI18n.RNI18nPackage;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
@@ -35,18 +36,19 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
-            new RNFirebasePackage(),
-            new KCKeepAwakePackage(),
-            new KeychainPackage(),
-            new SvgPackage(),
-            new FingerprintAuthPackage(),
-            new RNFetchBlobPackage(),
-            new VectorIconsPackage(),
-            new SplashScreenReactPackage(),
-            new RNDeviceInfo(),
-            new ReactNativeConfigPackage(),
-            new RNI18nPackage(),
-            new RNGestureHandlerPackage()
+          new ReactNativeFirebaseAppPackage(),
+          new ReactNativeFirebaseCrashlyticsPackage(),
+          new RNFirebasePackage(),
+          new KCKeepAwakePackage(),
+          new KeychainPackage(),
+          new SvgPackage(),
+          new FingerprintAuthPackage(),
+          new RNFetchBlobPackage(),
+          new VectorIconsPackage(),
+          new SplashScreenReactPackage(),
+          new ReactNativeConfigPackage(),
+          new RNI18nPackage(),
+          new RNGestureHandlerPackage()
       );
     }
 

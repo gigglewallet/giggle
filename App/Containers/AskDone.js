@@ -35,6 +35,7 @@ export default class AskDone extends Component {
     const note = navigation.getParam('note', 'this is note')
     const type = navigation.getParam('type', '')
     const { firstNum, endNum } = transferBalance(amount)
+
     return (
       <View style={styles.mainContainer} >
         {type === 'send'
@@ -52,7 +53,7 @@ export default class AskDone extends Component {
           {(!isContact)
             ? <RecipientGroup>
               <Text style={{ color: Colors.text, ...Fonts.style.h8, marginTop: 3 }}>{avatarCode}</Text>
-              <AddToContactsBtn marginLeft={8} onPress={this.onPressAddContacts} />
+              <AddToContactsBtn marginLeft={8} onPress={this.onPressAddContacts} display={( avatarCode.length === 6 ) ? true : false} />
             </RecipientGroup>
             : <AvatarIcon avatarCode={avatarCode} name={nickname} style={{ marginTop: 5 }} />
           }

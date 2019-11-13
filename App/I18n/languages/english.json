@@ -24,7 +24,7 @@
    "noItems": "No Items",
    "search": "Search",
    "createNewWallet": "Create new wallet",
-   "keepInMind1": "I understand that my funds are held securely on this device, not by a company.",
+   "keepInMind": "I understand that my funds are held securely on this device, not by a company.",
    "gotIt": "Got it 👍",
    "restoreWithRecoveryPhrase": "Restore with Recovery Phrase",
    "transactionHeaderTitle": "Transactions",

@@ -22,7 +22,9 @@ class Transactions extends Component {
   getSource = (datas) => {
     if (this.state.keyword.length === 0) return datas
     return datas.filter((item, index) => {
-      return (item.avatarCode.toLowerCase().indexOf(this.state.keyword.toLowerCase()) !== -1 || item.nicknname.toLowerCase().indexOf(this.state.keyword.toLowerCase()) !== -1 || item.avatarCode.toLowerCase().indexOf(this.state.keyword.toLowerCase()) !== -1)
+      if (!item.avatarCode) return false
+      if (!item.nickname) return false
+      return (item.avatarCode.toLowerCase().indexOf(this.state.keyword.toLowerCase()) !== -1 || item.nickname.toLowerCase().indexOf(this.state.keyword.toLowerCase()) !== -1)
     })
   }
   render () {
@@ -80,17 +82,17 @@ const ItemIcon = styled.Image`
 `
 const RenderItemIcon = ({ type }) => {
   switch (type) {
-    case 1:
-      return (<ItemIcon source={Images.icReceivePending} />)
-    case 2:
-      return (<ItemIcon source={Images.icReceiveConfirmed} />)
-    case 3:
-      return (<ItemIcon source={Images.icReceiveFailed} />)
     case 4:
-      return (<ItemIcon source={Images.icSendPending} />)
+      return (<ItemIcon source={Images.icReceivePending} />)
     case 5:
-      return (<ItemIcon source={Images.icSendConfirmed} />)
+      return (<ItemIcon source={Images.icReceiveConfirmed} />)
     case 6:
+      return (<ItemIcon source={Images.icReceiveFailed} />)
+    case 1:
+      return (<ItemIcon source={Images.icSendPending} />)
+    case 2:
+      return (<ItemIcon source={Images.icSendConfirmed} />)
+    case 3:
       return (<ItemIcon source={Images.icSendFailed} />)
   }
   return (null)
@@ -114,7 +116,7 @@ const RenderItem = ({ item, onPress }) => {
         <Text style={{ ...Fonts.style.h9, color: Colors.gary }} >Fee: {item.fee}</Text>
         {(item.method === TRANSACTION_METHOD.AVATAR_CODE)
           ? <Text style={{ ...Fonts.style.h9, color: Colors.gary }} numberOfLines={1} >Received from {(item.nickname) ? item.nickname + '。  ' + item.avatarCode : item.avatarCode}</Text>
-          : <Text style={{ ...Fonts.style.h9, color: Colors.gary }} >Received from {item.avatarCode}</Text>
+          : (item.avatarCode) ? <Text style={{ ...Fonts.style.h9, color: Colors.gary }} >Received from {item.avatarCode}</Text> : null
         }
       </MiddleBottomItemView>
     </ItemContainer>

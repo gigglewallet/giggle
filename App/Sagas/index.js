@@ -11,7 +11,6 @@ import { GeneralTypes } from '../Redux/GeneralRedux'
 import { startup } from './StartupSagas'
 
 import {
-  test,
   walletInit,
   walletPhrase,
   walletRecovery,
@@ -34,8 +33,10 @@ import {
   getNewAvatar,
   setCurrentWallet,
   setNewContact,
+  removeWalletData,
   logout,
-  checkFaceId
+  checkFaceId,
+  updateTransaction
 } from './GiggleSagas'
 
 import {
@@ -46,9 +47,7 @@ import {
   clearStorage
 } from './GeneralSagas'
 
-
-
-export default function * root () {
+export default function* root () {
   yield all([
     takeLatest(StartupTypes.STARTUP, startup),
     takeLatest(GiggleTypes.WALLET_RECOVERY, walletRecovery),
@@ -70,10 +69,11 @@ export default function * root () {
     takeLatest(GiggleTypes.RELAY_ADDRESS_QUERY, relayAddressQuery),
     takeLatest(GiggleTypes.SEND_TRANSACTION, sendTransaction),
     takeLatest(GiggleTypes.LISTEN, listen),
-    takeLatest(GiggleTypes.TEST1, test),
+    takeLatest(GiggleTypes.UPDATE_TRANSACTION, updateTransaction),
     takeLatest(GiggleTypes.GET_NEW_AVATAR, getNewAvatar),
     takeLatest(GiggleTypes.SET_CURRENT_WALLET, setCurrentWallet),
     takeLatest(GiggleTypes.SET_NEW_CONTACT, setNewContact),
+    takeLatest(GiggleTypes.REMOVE_WALLET_DATA, removeWalletData),
     takeLatest(GiggleTypes.LOGOUT, logout),
     takeLatest(GiggleTypes.CHECK_FACE_ID, checkFaceId),
     takeLatest(GeneralTypes.CLEAR_STORAGE, clearStorage),

@@ -24,11 +24,8 @@ const { Types, Creators } = createActions({
   getAllOutputs: ['avatarCode', 'password'],
   cleanWallet: ['avatarCode', 'password', 'path'],
   checkFaceId: null,
+  removeWalletData: null,
   logout: null,
-  test1: null,
-  test2: null,
-  test3: null,
-  test4: null,
   restoreWallet: [],
   updateVisiblePassword: ['enable'],
   enableTouchId: ['enable'],
@@ -52,7 +49,10 @@ const { Types, Creators } = createActions({
   addNewWallet: ['wallet'],
   updateCurrentWallet: ['wallet'],
   initGiggleRedux: null,
-  addErrorLog: ['error']
+  addErrorLog: ['error'],
+  updateTransaction: null,
+  clearTransaction: null,
+  updateTransactionConfirmed: ['id', 'status']
 })
 
 export const GiggleTypes = Types
@@ -140,7 +140,11 @@ export const updateCurrentWallet = (state, { wallet }) => {
   if (wallet.walletName) currentWallet.walletName = wallet.walletName
   if (wallet.avatarCode) currentWallet.avatarCode = wallet.avatarCode
   if (wallet.password) currentWallet.password = wallet.password
-  if (wallet.balance) currentWallet.balance = wallet.balance
+  if (wallet.balance || wallet.balance === 0) {
+    console.log('in call updateCurrentWallet', wallet, ', currentWallet=', currentWallet)
+    currentWallet.balance = wallet.balance
+  }
+  console.log('call updateCurrentWallet', wallet.balance, wallet, ', currentWallet=', currentWallet)
   return state.merge({ currentWallet: currentWallet })
 }
 
@@ -220,6 +224,29 @@ export const addErrorLog = (state, { error }) => {
   return state.merge({ errorList })
 }
 
+export const clearTransaction = (state) => {
+  /*
+  let result = state.transactionHistory.filter((value, index) => {
+    console.log(value, index)
+    if (value && value.type !== 5) return value
+  })
+  console.log(result)
+  return state.merge({ transactionHistory: result })
+  */
+  return state
+}
+
+export const updateTransactionConfirmed = (state, { id, status }) => {
+  console.log('call updateTransactionConfirmed id ', id, ', type=', status)
+  let result = state.transactionHistory.map((value, index) => {
+    if (value.id === id) {
+      if (status === TRANSACTION_TYPE.Asking) return { ...value, type: TRANSACTION_TYPE.AskSuccess }
+      else if (status === TRANSACTION_TYPE.Sending) return { ...value, type: TRANSACTION_TYPE.SendSuccess }
+    }
+    return value
+  })
+  return state.merge({ transactionHistory: result })
+}
 /* ------------- Hookup Reducers To Types ------------- */
 export const reducer = createReducer(INITIAL_STATE, {
 
@@ -239,5 +266,7 @@ export const reducer = createReducer(INITIAL_STATE, {
   [Types.ADD_NEW_WALLET]: addNewWallet,
   [Types.UPDATE_CURRENT_WALLET]: updateCurrentWallet,
   [Types.INIT_GIGGLE_REDUX]: initGiggleRedux,
-  [Types.ADD_ERROR_LOG]: addErrorLog
+  [Types.ADD_ERROR_LOG]: addErrorLog,
+  [Types.CLEAR_TRANSACTION]: clearTransaction,
+  [Types.UPDATE_TRANSACTION_CONFIRMED]: updateTransactionConfirmed
 })

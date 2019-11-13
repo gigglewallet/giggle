@@ -10,7 +10,7 @@ import styles from './Styles/LaunchScreenStyles'
 import { transferBalance } from '../Modules/Common'
 import { TRANSACTION_METHOD } from '../Modules/CommonType'
 const getTitle = (type) => {
-  if (type === 1 || type === 2 || type === 3) return 'Received'
+  if (type === 4 || type === 5 || type === 6) return 'Received'
   else return 'Send'
 }
 
@@ -32,11 +32,11 @@ export default class TransactionDetails extends Component {
       case 1:
       case 2:
       case 3:
-        return { borderLeftColor: Colors.btnColor2 }
+        return { borderLeftColor: Colors.btnColor3 }
       case 4:
       case 5:
       case 6:
-        return { borderLeftColor: Colors.btnColor3 }
+        return { borderLeftColor: Colors.btnColor2 }
     }
   }
 
@@ -44,14 +44,14 @@ export default class TransactionDetails extends Component {
     const { navigation } = this.props
     const type = navigation.getParam('type', 6)
     switch (type) {
-      case 1:
+      case 4:
         return (
           <StatusGroup>
             <Text style={{ ...Fonts.style.h8, color: Colors.text }} >{I18n.t('receivePaid')}</Text>
             <ItemIcon source={Images.icReceivePending} />
           </StatusGroup>
         )
-      case 2:
+      case 5:
         return (
           <StatusGroup>
             <Text style={{ ...Fonts.style.h8, color: Colors.text }} >{I18n.t('receiveConfirmed')}</Text>
@@ -59,7 +59,7 @@ export default class TransactionDetails extends Component {
           </StatusGroup>
         )
 
-      case 3:
+      case 6:
         return (
           <StatusGroup>
             <Text style={{ ...Fonts.style.h8, color: Colors.text }} >{I18n.t('receiveFailed')}</Text>
@@ -67,7 +67,7 @@ export default class TransactionDetails extends Component {
           </StatusGroup>
         )
 
-      case 4:
+      case 1:
         return (
           <StatusGroup>
             <Text style={{ ...Fonts.style.h8, color: Colors.text }} >{I18n.t('sendPaid')}</Text>
@@ -75,7 +75,7 @@ export default class TransactionDetails extends Component {
           </StatusGroup>
         )
 
-      case 5:
+      case 2:
         return (
           <StatusGroup>
             <Text style={{ ...Fonts.style.h8, color: Colors.text }} >{I18n.t('sendConfirmed')}</Text>
@@ -83,7 +83,7 @@ export default class TransactionDetails extends Component {
           </StatusGroup>
         )
 
-      case 6:
+      case 3:
         return (
           <StatusGroup>
             <Text style={{ ...Fonts.style.h8, color: Colors.text }} >{I18n.t('receiveFailed')}</Text>
@@ -114,10 +114,9 @@ export default class TransactionDetails extends Component {
           </BalanceView>
 
           <Text style={{ ...Fonts.style.h9, color: Colors.gary, marginTop: 24 }} >{I18n.t('to')}</Text>
-          {method === TRANSACTION_METHOD.AVATAR_CODE ?
-            <AvatarIcon avatarCode={avatarCode} name={nickname} style={{ marginTop: 4 }} />
-            :
-            <Text style={{ ...Fonts.style.h8, color: Colors.text, marginTop: 4 }} >{avatarCode}</Text>
+          {method === TRANSACTION_METHOD.AVATAR_CODE
+            ? <AvatarIcon avatarCode={avatarCode} name={nickname} style={{ marginTop: 4 }} />
+            : <Text style={{ ...Fonts.style.h8, color: Colors.text, marginTop: 4 }} >{avatarCode}</Text>
           }
 
           <Text style={{ ...Fonts.style.h9, color: Colors.gary, marginTop: 24 }} >{I18n.t('fee')}</Text>

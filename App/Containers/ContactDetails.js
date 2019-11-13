@@ -54,6 +54,8 @@ class ContactDetails extends Component {
   updateNickname = (n) => {
     const { updateContact, navigation } = this.props
     const avatarCode = navigation.getParam('avatarCode')
+    
+    if (!n) return
     this.setState({ nickname: n })
     updateContact(avatarCode, n)
   }

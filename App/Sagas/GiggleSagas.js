@@ -12,6 +12,7 @@ import KeepAwake from 'react-native-keep-awake'
 import { TRANSACTION_METHOD } from '../Modules/CommonType'
 import { AsyncStorage } from 'react-native'
 import * as Keychain from 'react-native-keychain'
+import { firebase } from '@react-native-firebase/crashlytics'
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
 function* getState (name) {
   const result = yield select(state => state[name])
@@ -425,6 +426,23 @@ export function* getAllTransactions ({ avatarCode, password }) {
     yield put(WalletStatusActions.updateGiggleRequestStatus('getAllTransactions', false, false, true))
   }
 }
+
+export function* getTxsGet () {
+  console.log('call getTxsGet')
+  try {
+    // yield put(WalletStatusActions.updateGiggleRequestStatus('getTransactionDetail', true, false, false))
+    const GiggleState = yield getState('giggle')
+    const password = GiggleState.currentWallet.password
+    const avatarCode = GiggleState.currentWallet.avatarCode
+    const RustState = yield getRustStateJsonString(avatarCode, password)
+    const result = yield NativeModules.GrinBridge.txsGet(RustState)
+    console.log('result=', result)
+    yield put(WalletStatusActions.updateGiggleRequestStatus('getTransactionDetail', false, true, false))
+  } catch (e) {
+    console.warn(e)
+    yield put(WalletStatusActions.updateGiggleRequestStatus('getTransactionDetail', false, false, true))
+  }
+}
 export function* getTransactionDetail ({ avatarCode, password, slateId }) {
   try {
     yield put(WalletStatusActions.updateGiggleRequestStatus('getTransactionDetail', true, false, false))
@@ -620,7 +638,7 @@ export function* sendTransaction ({ info }) {
     yield put(GiggleActions.addTransactionHistory({
       id: result.id,
       height: result.height,
-      type: TRANSACTION_TYPE.SendSuccess,
+      type: TRANSACTION_TYPE.Sending,
       isContact: info.isContact,
       avatarCode: info.avatarCode,
       nickname: info.nickname,
@@ -645,6 +663,7 @@ export function* sendTransaction ({ info }) {
     yield put(WalletStatusActions.updateWalletStatusRedux('isSendTransactionFail', true))
     yield put(WalletStatusActions.updateGiggleRequestStatus('txSend', false, false, true))
     yield put(GiggleActions.addErrorLog({ action: 'sendTransaction', message: error.toString(), time: Date.now() }))
+    firebase.crashlytics().recordError(error)
     console.warn(error)
   }
 }
@@ -702,6 +721,31 @@ export function* setNewContact ({ avatarCode, nickname, method }) {
   }
 }
 
+export function* removeWalletData () {
+  const GiggleState = yield getState('giggle')
+  const wallets = GiggleState.wallets
+
+  // console.log(wallets)
+  yield wallets.forEach((value, key) => {
+    console.log('clear wallet')
+    console.log(value)
+    GiggleActions.cleanWallet(value.avatarCode)
+  })
+
+  try {
+    const isDir = RNFetchBlob.fs.isDir(AppConfig.walletState.data_dir + 'wallet_1')
+    if (isDir) {
+      RNFetchBlob.fs.unlink(AppConfig.walletState.data_dir + 'wallet_1')
+    }
+  } catch (e) {
+    console.log(`remove wallet_1`)
+    console.log(e)
+  }
+
+  console.log(`clear storage`)
+  yield put(GeneralActions.clearStorage())
+}
+
 export function* logout () {
   console.log('logout')
   const GiggleState = yield getState('giggle')
@@ -754,38 +798,63 @@ export function* checkFaceId () {
   yield put(resetAction)
 }
 
-export function* test () {
-  // const Wallet = yield getWalletFromAvatarCode(avatarCode)
-  yield sleep(2000)
-  // 85s8zd
-  yield listen()
-  // yield AsyncStorage.clear()
-  /*
-  const GiggleState = yield getState('giggle')
-  console.log(GiggleState)
-  for (let value in GiggleState) {
-    if (GiggleState[value]) console.log(value)
-  }
-  */
-  /*
-  yield sleep(3000)
-  const GiggleState = yield getState('giggle')
-  const password = GiggleState.wallets[0].password
-  const avatarCode = GiggleState.wallets[0].avatarCode
-  const price = parseInt(10) * GRIN_UNIT
-
-  const RustState = yield getRustStateJsonString(avatarCode, password)
-  yield sleep(3000)
+export function* updateTransaction () {
+  console.log('call updateTransaction')
   try {
-    const result = yield NativeModules.GrinBridge.txSend(RustState, price, 'all', 'test', -1, 'http://sga.grin.icu:13415')
+    const GiggleState = yield getState('giggle')
+    const password = GiggleState.currentWallet.password
+    const avatarCode = GiggleState.currentWallet.avatarCode
+    const RustState = yield getRustStateJsonString(avatarCode, password)
+    let result = yield NativeModules.GrinBridge.txsGet(RustState)
+    result = JSON.parse(result)
+    console.log('updateTransaction result = ', result)
+    if (result.length < 1) return
+    const Transaction = result[1]
+    for (let item in Transaction) {
+      let isInHistory = false
+      if (Transaction[item].tx_type !== 'TxReceived') continue
+      for (let localItem in GiggleState.transactionHistory) {
+        if (Transaction[item].tx_slate_id === GiggleState.transactionHistory[localItem].id) {
+          console.log('isInHitory', Transaction[item].tx_slate_id)
+          isInHistory = true
+          break
+        }
+      }
+      if (!isInHistory) {
+        yield put(GiggleActions.addTransactionHistory({
+          id: Transaction[item].tx_slate_id,
+          height: Transaction[item].grinrelay_key_path,
+          type: (Transaction[item].confirmed) ? TRANSACTION_TYPE.AskSuccess : TRANSACTION_TYPE.Asking,
+          isContact: false,
+          avatarCode: null,
+          nickname: null,
+          method: null,
+          amount: parseInt(Transaction[item].amount_credited) / GRIN_UNIT,
+          fee: (Transaction[item].fee) ? Transaction[item].fee / GRIN_UNIT : 0,
+          note: Transaction[item].messages.messages[0].messaage,
+          date: new Date(Transaction[item].creation_ts).getTime()
+        }))
+      }
+    }
+    for (let localItem in GiggleState.transactionHistory) {
+      if (GiggleState.transactionHistory[localItem].type === TRANSACTION_TYPE.Asking || GiggleState.transactionHistory[localItem].type === TRANSACTION_TYPE.Sending) {
+        for (let item in Transaction) {
+          if (GiggleState.transactionHistory[localItem].id === Transaction[item].tx_slate_id && Transaction[item].confirmed) {
+            yield put(GiggleActions.updateTransactionConfirmed(GiggleState.transactionHistory[localItem].id, GiggleState.transactionHistory[localItem].type))
+          }
+        }
+      } else {
+        continue
+      }
+    }
 
-    console.log('tay ', JSON.parse(result))
+    /*
+    for (let item in GiggleState.transactionHistory) {
+      console.log(GiggleState.transactionHistory[item])
+      if(GiggleState.transactionHistory[item].type ==)
+    }
+    */
   } catch (err) {
-    console.log(err)
+    console.warn(err)
   }
-  */
-  // yield listen({ avatarCode: 'ydgs9l', password: '11' })
-  // yield getAllOutputs({ avatarCode: 'ydgs9l', password: '11' })
-  // yield getAllTransactions({ avatarCode: 'ydgs9l', password: '11' })
-  // yield relayAddressQuery({ targetAvatarCode: 'ydgs9l' })
 }

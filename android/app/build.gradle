@@ -138,6 +138,8 @@ android {
 }
 
 dependencies {
+    implementation project(':@react-native-firebase_app')
+    implementation project(':@react-native-firebase_crashlytics')
     implementation project(':react-native-firebase')
     implementation project(':react-native-keep-awake')
     implementation project(':react-native-keychain')
@@ -146,7 +148,6 @@ dependencies {
     implementation project(':rn-fetch-blob')
     implementation project(':react-native-vector-icons')
     implementation project(':react-native-splash-screen')
-    implementation project(':react-native-device-info')
     implementation project(':react-native-config')
     implementation project(':react-native-i18n')
     implementation project(':react-native-gesture-handler')

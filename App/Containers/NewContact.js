@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Image, View, Text } from 'react-native'
-import { AddBtn } from '../Components/Buttons'
+import { AddBtn, ConfirmBtn } from '../Components/Buttons'
 import { NormalInput } from '../Components/TextFields'
 import { Images, Metrics, Colors, Fonts } from '../Themes'
 import styled from 'styled-components/native'
@@ -13,7 +13,7 @@ import { TRANSACTION_METHOD } from '../Modules/CommonType'
 class NewContact extends Component {
   constructor (props) {
     super(props)
-    this.state = { text: 'Useless Placeholder', avatarCode: '', nickname: '' }
+    this.state = { text: 'Useless Placeholder', avatarCode: '', nickname: '', haveData: false }
     this.renderPasswordAccessory = this.renderPasswordAccessory.bind(this)
   }
 
@@ -36,8 +36,26 @@ class NewContact extends Component {
     }
   }
   onAvatarCodeChange = (avatarCode) => {
+    const { nickname } = this.state
     if (avatarCode.length <= 6) this.setState({ avatarCode })
     else if (avatarCode.length > 6) this.setState({ avatarCode: avatarCode.slice(0, 6) })
+
+    if (avatarCode.length === 6 && nickname){
+      this.setState({ haveData: true })
+    } else {
+      this.setState({ haveData: false })
+    }
+  }
+
+  onNicknameChange = (nickname) => {
+    const { avatarCode } = this.state
+
+    if (avatarCode.length === 6 && nickname){
+      this.setState({ haveData: true, nickname: nickname })
+    } else {
+      this.setState({ haveData: false, nickname: nickname })
+    }
+
   }
 
   onPress = () => {
@@ -63,7 +81,7 @@ class NewContact extends Component {
 
   render () {
     const { navigation } = this.props
-    let { avatarCode, nickname } = this.state
+    let { avatarCode, nickname, haveData } = this.state
     const avatarCodeFromNavigation = navigation.getParam('avatarCode', '')
     return (
       <View style={styles.mainContainer} >
@@ -84,13 +102,15 @@ class NewContact extends Component {
           <NormalInput
             labelText={I18n.t('nickname')}
             value={nickname}
-            onChange={(nickname) => this.setState({ nickname })}
+            onChange={this.onNicknameChange}
             maxLength={15}
             marginTop={24}
           />
         </TopContainer>
         <BottomContainer>
-          <AddBtn onPress={this.onPress} />
+          <ConfirmBtn disabled={!haveData} onPress={this.onPress}>
+              Add
+          </ConfirmBtn>
         </BottomContainer>
       </View>
     )

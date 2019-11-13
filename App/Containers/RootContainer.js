@@ -29,21 +29,13 @@ class RootContainer extends Component {
   }
   _handleAppStateChange = (nextAppState) => {
 
-    const { checkFaceId, currentWallet, isAvatarModalVisible } = this.props
-
-
-    console.log(this.state.appState)
-    console.log(nextAppState)
-    console.log(isAvatarModalVisible)
+    const { checkFaceId, currentWallet } = this.props
 
     if (this.state.appState.match(/background/) && currentWallet.avatarCode) {
-      console.log('check faceid')
-      if (!isAvatarModalVisible) checkFaceId()
-      //this.props.updateWalletStatusRedux('isVerify', false)
+      checkFaceId()
     }
 
-    if (this.state.appState.match(/inactive|background/) && nextAppState === 'active') {
-      
+    if (this.state.appState.match(/inactive|background/) && nextAppState === 'active') {      
       console.log('App has come to the foreground!')
       this.props.listen()
     }

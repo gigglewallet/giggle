@@ -430,14 +430,20 @@ const AddToContactsView = styled.TouchableOpacity`
   paddingLeft:4
   paddingRight:4
 `
-export const AddToContactsBtn = ({ children, onPress, marginLeft }) => {
+
+
+export const AddToContactsBtn = ({ children, onPress, marginLeft, display }) => {
   const mLeft = marginLeft || 0
-  return (
-    <AddToContactsView onPress={onPress} style={{ marginLeft: mLeft }}>
-      <Image source={Images.icAdd2} />
-      <Text style={{ color: Colors.darkText, ...Fonts.style.h9, marginLeft: 10 }}>{I18n.t('addToContacts')}</Text>
-    </AddToContactsView>
-  )
+  if (!display) {
+    return null
+  } else {
+    return (
+      <AddToContactsView onPress={onPress} style={{ marginLeft: mLeft }}>
+        <Image source={Images.icAdd2} />
+        <Text style={{ color: Colors.darkText, ...Fonts.style.h9, marginLeft: 10 }}>{I18n.t('addToContacts')}</Text>
+      </AddToContactsView>
+    )
+  }
 }
 
 export const PhraseItem = ({ item, CheckState, checkEvt }) => { 

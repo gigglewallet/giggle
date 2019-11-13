@@ -269,9 +269,16 @@ const PrimaryNav = createStackNavigator({
   },
   ShowMyAvatar: {
     screen: ShowMyAvatar,
-    navigationOptions: {
-      header: null
-    }
+    navigationOptions: ({ navigation }) => ({
+      title: 'My Avatars',
+      headerStyle: styles.header,
+      headerTitleStyle: styles.header,
+      headerLeft: <TouchableOpacity onPress={() => {
+        navigation.goBack()
+      }}>
+        <Image style={styles.headerLeft} source={Images.icBackL} />
+      </TouchableOpacity>
+    })
   },
   TransactionDetails: {
     screen: TransactionDetails,
