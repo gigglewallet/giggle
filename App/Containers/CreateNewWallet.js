@@ -18,7 +18,7 @@ import WalletsStatusRedux from '../Redux/WalletStatusRedux'
 class CreateNewWallet extends Component {
   componentDidMount () {
     const { clearStorage, removeWalletData } = this.props
-    removeWalletData()
+    //removeWalletData()
     EasyLoading.dismis('type')
   } 
 
